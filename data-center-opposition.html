@@ -1,1 +1,436 @@
-placeholder-retest
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>数据中心建设：居民反对浪潮</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --surface-page:    #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1:       #2a78d6; /* blue */
+    --series-2:       #eb6834; /* orange */
+    --series-3:       #1baf7a; /* aqua */
+    --series-4:       #eda100; /* yellow */
+    --series-7:       #4a3aa7; /* violet */
+    --series-8:       #e34948; /* red */
+    --track:          #cde2fb;
+    --card-shadow: 0 1px 2px rgba(11,11,11,0.06), 0 1px 1px rgba(11,11,11,0.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --surface-page:    #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-1:       #3987e5;
+      --series-2:       #d95926;
+      --series-3:       #199e70;
+      --series-4:       #c98500;
+      --series-7:       #9085e9;
+      --series-8:       #e66767;
+      --track:          #184f95;
+      --card-shadow: none;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --surface-page:    #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-1:       #3987e5;
+    --series-2:       #d95926;
+    --series-3:       #199e70;
+    --series-4:       #c98500;
+    --series-7:       #9085e9;
+    --series-8:       #e66767;
+    --track:          #184f95;
+    --card-shadow: none;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--surface-page);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  header.page-head { margin-bottom: 32px; }
+  header.page-head .eyebrow {
+    font-size: 13px; font-weight: 600; letter-spacing: .04em;
+    color: var(--series-2); text-transform: uppercase; margin-bottom: 10px;
+  }
+  header.page-head h1 { font-size: 32px; font-weight: 700; margin: 0 0 10px; line-height: 1.25; }
+  header.page-head p.sub { font-size: 15px; color: var(--text-secondary); margin: 0; max-width: 640px; line-height: 1.6; }
+
+  section { margin-top: 48px; }
+  section h2 {
+    font-size: 20px; font-weight: 700; margin: 0 0 4px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  section h2 .num { color: var(--text-muted); font-weight: 600; font-size: 15px; }
+  section p.section-sub { color: var(--text-secondary); font-size: 14px; margin: 0 0 20px; line-height: 1.6; max-width: 700px; }
+
+  /* KPI tiles */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .kpi {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px 18px 16px; box-shadow: var(--card-shadow);
+  }
+  .kpi .label { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.4; min-height: 36px; }
+  .kpi .value { font-size: 30px; font-weight: 700; line-height: 1; }
+  .kpi .value .unit { font-size: 16px; font-weight: 600; color: var(--text-secondary); margin-left: 2px; }
+  .kpi .foot { margin-top: 8px; font-size: 12px; color: var(--text-muted); }
+
+  /* Card holding a chart */
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px 24px 18px; box-shadow: var(--card-shadow);
+  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) {
+    .two-col { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .chart-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+  .chart-note { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
+
+  /* Vertical bar chart */
+  .vbars { display: flex; align-items: flex-end; gap: 28px; height: 200px; padding: 0 8px; position: relative; }
+  .vbars::before {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 28px; height: 1px; background: var(--baseline);
+  }
+  .vbar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+  .vbar-shape {
+    width: 100%; max-width: 64px; background: var(--series-1);
+    border-radius: 4px 4px 0 0; position: relative;
+    transition: filter .15s ease;
+  }
+  .vbar-col:hover .vbar-shape { filter: brightness(1.08); }
+  .vbar-shape .vval {
+    position: absolute; top: -22px; left: 0; right: 0; text-align: center;
+    font-size: 13px; font-weight: 700; color: var(--text-primary);
+  }
+  .vbar-label { margin-top: 8px; font-size: 12px; color: var(--text-secondary); text-align: center; line-height: 1.4; }
+  .vbar-sub { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 2px; }
+
+  /* Horizontal bar chart */
+  .hbars { display: flex; flex-direction: column; gap: 14px; }
+  .hbar-row { display: grid; grid-template-columns: 132px 1fr 56px; align-items: center; gap: 10px; }
+  .hbar-row .hlabel { font-size: 13px; color: var(--text-secondary); text-align: right; }
+  .hbar-track { position: relative; height: 20px; background: var(--gridline); border-radius: 4px; overflow: hidden; }
+  .hbar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--series-1); transition: filter .15s ease; }
+  .hbar-row:hover .hbar-fill { filter: brightness(1.08); }
+  .hbar-val { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+
+  /* legend */
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 6px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* reason grid */
+  .reason-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  @media (max-width: 760px) { .reason-grid { grid-template-columns: repeat(2, 1fr); } }
+  .reason-card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 14px; text-align: center; box-shadow: var(--card-shadow);
+  }
+  .reason-card .icon { font-size: 22px; margin-bottom: 8px; }
+  .reason-card .title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .reason-card .stat { font-size: 20px; font-weight: 700; color: var(--series-2); }
+  .reason-card .desc { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+
+  /* case cards */
+  .case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 760px) { .case-grid { grid-template-columns: 1fr; } }
+  .case-card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px; box-shadow: var(--card-shadow);
+  }
+  .case-card .flag { font-size: 22px; margin-bottom: 8px; }
+  .case-card h3 { font-size: 15px; margin: 0 0 6px; }
+  .case-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+
+  footer {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text-muted); line-height: 1.9;
+  }
+  footer a { color: var(--text-muted); }
+  footer .src-title { color: var(--text-secondary); font-weight: 600; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">数据看板 · 2026年8月</div>
+    <h1>居民反对声浪下的数据中心建设</h1>
+    <p class="sub">AI 算力需求推动全球数据中心建设提速，但用电、用水、噪音与房价担忧正在催生规模空前的社区抵制运动。以下图表汇总了美国及全球范围内可查证的公开数据。</p>
+  </header>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">2026年第一季度被阻挠/延迟的项目金额</div>
+      <div class="value">$130<span class="unit">B</span></div>
+      <div class="foot">约合1,300亿美元，75+ 个项目，3个月内规模已追平2025全年</div>
+    </div>
+    <div class="kpi">
+      <div class="label">活跃反对组织数量（2026年3月）</div>
+      <div class="value">833<span class="unit">个</span></div>
+      <div class="foot">覆盖美国 49 个州，2025年5月时仅142个</div>
+    </div>
+    <div class="kpi">
+      <div class="label">反对在附近新建数据中心的美国民众比例</div>
+      <div class="value">70<span class="unit">%</span></div>
+      <div class="foot">2026年年中，较2025年11月的47%大幅上升</div>
+    </div>
+    <div class="kpi">
+      <div class="label">担心AI推高电价的受访者比例</div>
+      <div class="value">77<span class="unit">%</span></div>
+      <div class="foot">路透/益普索（Reuters/Ipsos）2026年调查</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: escalation over time -->
+  <section>
+    <h2><span class="num">01</span> 反对声浪的演变：规模扩大、速度加快</h2>
+    <p class="section-sub">无论是活跃的反对组织数量，还是被叫停/延期的项目金额，都在近一年内出现陡增，反映出居民抵制正从零星个案演变为全国性运动。</p>
+    <div class="two-col">
+      <div class="card">
+        <div class="chart-title">活跃反对组织数量增长</div>
+        <div class="chart-note">Data Center Watch 统计口径</div>
+        <div class="vbars">
+          <div class="vbar-col">
+            <div class="vbar-shape" style="height:34%;background:var(--series-1);">
+              <div class="vval">142</div>
+            </div>
+            <div class="vbar-label">2025年5月</div>
+            <div class="vbar-sub">覆盖24个州</div>
+          </div>
+          <div class="vbar-col">
+            <div class="vbar-shape" style="height:73%;background:var(--series-1);">
+              <div class="vval">396</div>
+            </div>
+            <div class="vbar-label">2025年底</div>
+            <div class="vbar-sub">增长约1.8倍</div>
+          </div>
+          <div class="vbar-col">
+            <div class="vbar-shape" style="height:100%;background:var(--series-2);">
+              <div class="vval">833</div>
+            </div>
+            <div class="vbar-label">2026年3月</div>
+            <div class="vbar-sub">覆盖49个州</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="chart-title">被阻挠或延迟的项目金额</div>
+        <div class="chart-note">注意两个柱子的统计周期不同——用以体现节奏正在加快</div>
+        <div class="vbars">
+          <div class="vbar-col">
+            <div class="vbar-shape" style="height:38%;background:var(--series-1);">
+              <div class="vval">$64B</div>
+            </div>
+            <div class="vbar-label">近两年累计</div>
+            <div class="vbar-sub">截至2025年5月，18B被叫停+46B被延迟</div>
+          </div>
+          <div class="vbar-col">
+            <div class="vbar-shape" style="height:100%;background:var(--series-2);">
+              <div class="vval">$130B</div>
+            </div>
+            <div class="vbar-label">仅2026年Q1</div>
+            <div class="vbar-sub">75+个项目，单季已追平2025全年规模</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: public opinion -->
+  <section>
+    <h2><span class="num">02</span> 公众态度：从谨慎观望到明确反对</h2>
+    <p class="section-sub">益普索（Ipsos）多轮调查显示，短短数月间反对比例快速上升，且支持度在世代与党派间存在明显分化。</p>
+    <div class="two-col">
+      <div class="card">
+        <div class="chart-title">反对在自家附近新建数据中心的比例</div>
+        <div class="chart-note">Reuters/Ipsos 全美调查</div>
+        <div class="vbars">
+          <div class="vbar-col">
+            <div class="vbar-shape" style="height:47%;background:var(--series-1);">
+              <div class="vval">47%</div>
+            </div>
+            <div class="vbar-label">2025年11月</div>
+          </div>
+          <div class="vbar-col">
+            <div class="vbar-shape" style="height:100%;background:var(--series-2);">
+              <div class="vval">70%</div>
+            </div>
+            <div class="vbar-label">2026年年中</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="chart-title">不同世代对本地数据中心的支持率</div>
+        <div class="chart-note">支持"稍微支持"或"强烈支持"的受访者比例</div>
+        <div class="hbars">
+          <div class="hbar-row">
+            <div class="hlabel">千禧一代</div>
+            <div class="hbar-track"><div class="hbar-fill" style="width:50%;"></div></div>
+            <div class="hbar-val">50%</div>
+          </div>
+          <div class="hbar-row">
+            <div class="hlabel">Z世代</div>
+            <div class="hbar-track"><div class="hbar-fill" style="width:48%;"></div></div>
+            <div class="hbar-val">48%</div>
+          </div>
+          <div class="hbar-row">
+            <div class="hlabel">X世代</div>
+            <div class="hbar-track"><div class="hbar-fill" style="width:38%;"></div></div>
+            <div class="hbar-val">38%</div>
+          </div>
+          <div class="hbar-row">
+            <div class="hlabel">婴儿潮世代</div>
+            <div class="hbar-track"><div class="hbar-fill" style="width:22%;"></div></div>
+            <div class="hbar-val">22%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: legislation -->
+  <section>
+    <h2><span class="num">03</span> 地方立法回应：暂停令遍地开花</h2>
+    <p class="section-sub">截至2026年，全美已有至少30个州、225项数据中心暂停令或限制性条例被追踪到，俄亥俄、密歇根、佐治亚位列前三。</p>
+    <div class="card">
+      <div class="chart-title">暂停令/限制条例数量最多的州（Top 4）</div>
+      <div class="chart-note">全美累计追踪到225项，覆盖30个州；佐治亚州已有34个县、23个市出台相关条例</div>
+      <div class="hbars">
+        <div class="hbar-row">
+          <div class="hlabel">俄亥俄州</div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:100%;"></div></div>
+          <div class="hbar-val">35</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hlabel">密歇根州</div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:97%;"></div></div>
+          <div class="hbar-val">34</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hlabel">佐治亚州</div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:69%;"></div></div>
+          <div class="hbar-val">24</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hlabel">北卡罗来纳州</div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:54%;"></div></div>
+          <div class="hbar-val">19</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: reasons -->
+  <section>
+    <h2><span class="num">04</span> 居民反对的主要原因</h2>
+    <p class="section-sub">各地诉求略有不同，但高频出现的顾虑集中在电价、水资源、噪音、房价与土地用途五个方面。</p>
+    <div class="reason-grid">
+      <div class="reason-card">
+        <div class="icon">⚡</div>
+        <div class="title">电价上涨</div>
+        <div class="stat">77%</div>
+        <div class="desc">受访者担心AI数据中心推高居民电费</div>
+      </div>
+      <div class="reason-card">
+        <div class="icon">💧</div>
+        <div class="title">用水消耗</div>
+        <div class="stat">高频</div>
+        <div class="desc">单座大型数据中心日耗水量可媲美6,500户家庭</div>
+      </div>
+      <div class="reason-card">
+        <div class="icon">🔊</div>
+        <div class="title">噪音扰民</div>
+        <div class="stat">高频</div>
+        <div class="desc">冷却设备24小时运转带来的持续噪音</div>
+      </div>
+      <div class="reason-card">
+        <div class="icon">🏠</div>
+        <div class="title">房产贬值</div>
+        <div class="stat">高频</div>
+        <div class="desc">工业化外观与选址临近住宅区引发担忧</div>
+      </div>
+      <div class="reason-card">
+        <div class="icon">🌳</div>
+        <div class="title">绿地流失</div>
+        <div class="stat">高频</div>
+        <div class="desc">大规模用地挤占历史街区与开放空间</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: global -->
+  <section>
+    <h2><span class="num">05</span> 全球视角：不止是美国的问题</h2>
+    <p class="section-sub">欧洲与亚洲的部分市场更早出手，通过政府主导的暂停令直接限制数据中心扩张。</p>
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="flag">🇳🇱</div>
+        <h3>荷兰</h3>
+        <p>政府对超大型（Hyperscale）数据中心实施暂停令；Meta 在泽沃勒（Zeewolde）的项目因议会阻止土地出售于2022年被放弃，此后70兆瓦以上项目被限定在仅两个指定地点建设。</p>
+      </div>
+      <div class="case-card">
+        <div class="flag">🇸🇬</div>
+        <h3>新加坡</h3>
+        <p>2019年起对新建数据中心实施暂停令，2022年后转为竞争性"申请征集"机制，仅高能效、低排放项目获批。</p>
+      </div>
+      <div class="case-card">
+        <div class="flag">🇮🇪</div>
+        <h3>爱尔兰</h3>
+        <p>2018年苹果公司放弃位于阿斯隆（Athenry）的10亿美元数据中心项目，原因是居民和环保团体的法律诉讼一路打到最高法院；监管机构现要求新项目限定选址并提供本地储能。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="src-title">数据来源</div>
+    <div>
+      Data Center Watch, <a href="https://www.datacenterwatch.org/report" target="_blank" rel="noopener">$64 Billion of Data Center Projects Blocked or Delayed</a> ·
+      <a href="https://www.datacenterwatch.org/q1-2026" target="_blank" rel="noopener">Q1 2026 Update</a><br>
+      NBC News, <a href="https://www.nbcnews.com/tech/tech-news/data-center-opposition-sharply-rising-2026-study-finds-rcna349728" target="_blank" rel="noopener">Data center opponents have blocked or delayed projects worth nearly $130 billion in 2026</a><br>
+      Tom's Hardware, <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/more-than-75-data-center-build-outs-worth-usd130-billion-have-been-successfully-blocked-in-the-first-four-months-of-2026-bipartisan-opposition-mounts-nationwide-over-fears-of-soaring-power-and-water-costs" target="_blank" rel="noopener">75+ data center build-outs worth $130 billion blocked</a><br>
+      US News, <a href="https://www.usnews.com/news/politics/articles/2026-06-11/americans-wary-of-ai-driven-data-center-boom-reuters-ipsos-poll-shows" target="_blank" rel="noopener">Americans Wary of AI-Driven Data Center Boom, Reuters/Ipsos Poll</a><br>
+      Redfin / Businesswire, <a href="https://www.businesswire.com/news/home/20260722303276/en/Most-Americans-Say-Not-in-My-Backyard-to-AI-Data-Centers" target="_blank" rel="noopener">Most Americans Say "Not in My Backyard" to AI Data Centers</a><br>
+      Good Jobs First, <a href="https://goodjobsfirst.org/data-center-moratorium-bills-are-spreading-in-2026/" target="_blank" rel="noopener">Data Center Moratorium Bills Are Spreading in 2026</a><br>
+      Data Center Dynamics, <a href="https://www.datacenterdynamics.com/en/analysis/dublin-and-data-centers-the-end-of-the-road/" target="_blank" rel="noopener">Dublin and data centers: The end of the road?</a> ·
+      Waging Nonviolence, <a href="https://wagingnonviolence.org/2026/07/the-data-center-fight-is-going-global/" target="_blank" rel="noopener">The data center fight is going global</a>
+    </div>
+    <div style="margin-top:10px;">部分数字为公开报道中的估算/口径可能随统计时点调整，仅供参考，不构成投资或政策建议。制图时间：2026年8月。</div>
+  </footer>
+
+</div>
+</div>
+</body>
+</html>
