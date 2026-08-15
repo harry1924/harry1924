@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>数据中心与电价上涨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --surface-page:    #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1:       #2a78d6;
+    --series-2:       #eb6834;
+    --series-3:       #1baf7a;
+    --series-8:       #e34948;
+    --card-shadow: 0 1px 2px rgba(11,11,11,0.06), 0 1px 1px rgba(11,11,11,0.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --surface-page:    #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-1:       #3987e5;
+      --series-2:       #d95926;
+      --series-3:       #199e70;
+      --series-8:       #e66767;
+      --card-shadow: none;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --surface-page:    #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-1:       #3987e5;
+    --series-2:       #d95926;
+    --series-3:       #199e70;
+    --series-8:       #e66767;
+    --card-shadow: none;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--surface-page);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  header.page-head { margin-bottom: 32px; }
+  header.page-head .eyebrow {
+    font-size: 13px; font-weight: 600; letter-spacing: .04em;
+    color: var(--series-2); text-transform: uppercase; margin-bottom: 10px;
+  }
+  header.page-head h1 { font-size: 30px; font-weight: 700; margin: 0 0 10px; line-height: 1.3; }
+  header.page-head p.sub { font-size: 15px; color: var(--text-secondary); margin: 0; max-width: 680px; line-height: 1.6; }
+
+  section { margin-top: 48px; }
+  section h2 {
+    font-size: 20px; font-weight: 700; margin: 0 0 4px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  section h2 .num { color: var(--text-muted); font-weight: 600; font-size: 15px; }
+  section p.section-sub { color: var(--text-secondary); font-size: 14px; margin: 0 0 20px; line-height: 1.6; max-width: 720px; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .kpi {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px 18px 16px; box-shadow: var(--card-shadow);
+  }
+  .kpi .label { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.4; min-height: 36px; }
+  .kpi .value { font-size: 28px; font-weight: 700; line-height: 1; }
+  .kpi .value .unit { font-size: 15px; font-weight: 600; color: var(--text-secondary); margin-left: 2px; }
+  .kpi .foot { margin-top: 8px; font-size: 12px; color: var(--text-muted); }
+
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px 24px 18px; box-shadow: var(--card-shadow);
+  }
+  .chart-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+  .chart-note { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
+
+  /* line chart (SVG) */
+  .linechart-wrap { position: relative; }
+  .linechart-wrap svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .lc-grid line { stroke: var(--gridline); stroke-width: 1; }
+  .lc-axis text { fill: var(--text-muted); font-size: 11px; }
+  .lc-baseline { stroke: var(--baseline); stroke-width: 1; }
+  .lc-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .lc-dot { stroke: var(--surface-1); stroke-width: 2; }
+  .lc-vlabel { font-size: 12px; font-weight: 700; fill: var(--text-primary); }
+  .lc-band { fill: var(--series-2); opacity: 0.08; }
+
+  /* two-bar compare */
+  .cmp-row { display: flex; gap: 28px; align-items: flex-end; height: 170px; padding: 0 8px; position: relative; }
+  .cmp-row::before { content: ""; position: absolute; left: 0; right: 0; bottom: 26px; height: 1px; background: var(--baseline); }
+  .cmp-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+  .cmp-bar { width: 100%; max-width: 96px; border-radius: 4px 4px 0 0; position: relative; }
+  .cmp-bar .cval { position: absolute; top: -24px; left: 0; right: 0; text-align: center; font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .cmp-label { margin-top: 8px; font-size: 12px; color: var(--text-secondary); text-align: center; line-height: 1.4; max-width: 160px; }
+  .cmp-sub { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 2px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) {
+    .two-col { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .mech-box {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 22px; box-shadow: var(--card-shadow);
+    font-size: 13.5px; color: var(--text-secondary); line-height: 1.8;
+  }
+  .mech-box b { color: var(--text-primary); }
+  .mech-steps { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 4px; font-size: 12.5px; }
+  .mech-step {
+    background: var(--surface-page); border: 1px solid var(--border); border-radius: 8px;
+    padding: 6px 10px; color: var(--text-secondary);
+  }
+  .mech-arrow { color: var(--text-muted); align-self: center; }
+
+  .caveat-box {
+    border-left: 3px solid var(--series-8); background: var(--surface-1); border-radius: 0 10px 10px 0;
+    padding: 16px 18px; font-size: 13px; color: var(--text-secondary); line-height: 1.7; box-shadow: var(--card-shadow);
+  }
+  .caveat-box .caveat-title { font-weight: 700; color: var(--text-primary); margin-bottom: 6px; font-size: 13.5px; }
+
+  footer {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text-muted); line-height: 1.9;
+  }
+  footer a { color: var(--text-muted); }
+  footer .src-title { color: var(--text-secondary); font-weight: 600; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">数据看板 · 2026年8月</div>
+    <h1>数据中心建设，如何推高居民电价？</h1>
+    <p class="sub">最扎实、可持续追踪的证据来自 PJM（覆盖美国东部13州及华盛顿特区、服务6700万用户的最大区域电网）的容量拍卖市场——这是一个每年运行、由联邦能源监管委员会（FERC）监管、有独立市场监督机构公开出具分析报告的连续时间序列。</p>
+  </header>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">PJM容量拍卖清算价格一年涨幅</div>
+      <div class="value">+833<span class="unit">%</span></div>
+      <div class="foot">从2024/25年度的$28.92涨到2025/26年度的$269.92（美元/兆瓦-天）</div>
+    </div>
+    <div class="kpi">
+      <div class="label">2025/26拍卖涨价中数据中心的贡献</div>
+      <div class="value">63<span class="unit">%</span></div>
+      <div class="foot">约93亿美元的涨价将由用户电费买单（独立市场监督机构测算）</div>
+    </div>
+    <div class="kpi">
+      <div class="label">最近四次拍卖中数据中心占总费用</div>
+      <div class="value">~50<span class="unit">%</span></div>
+      <div class="foot">合计636亿美元费用中，数据中心相关负荷贡献接近一半</div>
+    </div>
+    <div class="kpi">
+      <div class="label">NRDC预测：PJM地区家庭月电费涨幅</div>
+      <div class="value">~$70<span class="unit">/月</span></div>
+      <div class="foot">到2028年，相比涨价前水平（如监管不介入）</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: PJM auction time series -->
+  <section>
+    <h2><span class="num">01</span> 核心证据：PJM容量拍卖清算价格（2018/19 – 2027/28）</h2>
+    <p class="section-sub">PJM每年提前三年为电网可靠性拍卖发电容量，清算价格是全区域统一定价、按用户比例分摊进电费账单的批发成本。这是判断"数据中心是否推高电价"最直接、最权威的连续时间序列——2025/26年度价格较上一年暴涨833%，独立市场监督机构（Monitoring Analytics）将其主因归结为数据中心负荷激增叠加燃煤电厂退役。</p>
+    <div class="card">
+      <div class="chart-title">PJM 基础剩余拍卖（BRA）清算价格，全区域（RTO）</div>
+      <div class="chart-note">单位：美元/兆瓦-天（$/MW-day）；阴影区为数据中心负荷被明确认定为主要涨价驱动因素的年份</div>
+      <div class="linechart-wrap">
+        <svg viewBox="0 0 920 320" preserveAspectRatio="xMidYMid meet">
+          <!-- scale: y = 270 - value * (250/350); value 0 -> y270 (baseline), value 300 -> y56 -->
+          <!-- gridlines -->
+          <g class="lc-grid">
+            <line x1="60" y1="56"  x2="900" y2="56" />
+            <line x1="60" y1="127" x2="900" y2="127" />
+            <line x1="60" y1="199" x2="900" y2="199" />
+          </g>
+          <g class="lc-axis" text-anchor="end">
+            <text x="52" y="60">$300</text>
+            <text x="52" y="131">$200</text>
+            <text x="52" y="203">$100</text>
+            <text x="52" y="274">$0</text>
+          </g>
+          <!-- highlight band for data-center-attributed years (2025/26 - 2027/28) -->
+          <rect class="lc-band" x="642" y="20" width="258" height="250"></rect>
+          <!-- baseline -->
+          <line class="lc-baseline" x1="60" y1="270" x2="900" y2="270" />
+          <!-- data: years and prices, y = 270 - value*250/350 -->
+          <!-- 164.77,100,76.53,140,50,34.13,28.92,269.92,329.17,333.44 -->
+          <polyline class="lc-line" stroke="var(--series-1)"
+            points="90,152 175,199 260,215 345,170 430,234 515,246 600,249 685,77 770,35 855,32" />
+          <!-- dots -->
+          <circle class="lc-dot" cx="90"  cy="152" r="5" fill="var(--series-1)"/>
+          <circle class="lc-dot" cx="175" cy="199" r="5" fill="var(--series-1)"/>
+          <circle class="lc-dot" cx="260" cy="215" r="5" fill="var(--series-1)"/>
+          <circle class="lc-dot" cx="345" cy="170" r="5" fill="var(--series-1)"/>
+          <circle class="lc-dot" cx="430" cy="234" r="5" fill="var(--series-1)"/>
+          <circle class="lc-dot" cx="515" cy="246" r="5" fill="var(--series-1)"/>
+          <circle class="lc-dot" cx="600" cy="249" r="5" fill="var(--series-1)"/>
+          <circle class="lc-dot" cx="685" cy="77"  r="6" fill="var(--series-2)"/>
+          <circle class="lc-dot" cx="770" cy="35"  r="6" fill="var(--series-2)"/>
+          <circle class="lc-dot" cx="855" cy="32"  r="6" fill="var(--series-2)"/>
+          <!-- value labels (selective: first, last-of-flat, spike years) -->
+          <text class="lc-vlabel" x="90" y="140" text-anchor="middle">$164.77</text>
+          <text class="lc-vlabel" x="600" y="237" text-anchor="middle">$28.92</text>
+          <text class="lc-vlabel" x="685" y="65" text-anchor="middle" fill="var(--series-2)">$269.92</text>
+          <text class="lc-vlabel" x="770" y="23" text-anchor="middle" fill="var(--series-2)">$329.17</text>
+          <text class="lc-vlabel" x="855" y="20" text-anchor="middle" fill="var(--series-2)">$333.44</text>
+          <!-- x axis labels -->
+          <g class="lc-axis" text-anchor="middle">
+            <text x="90"  y="290">2018/19</text>
+            <text x="175" y="290">2019/20</text>
+            <text x="260" y="290">2020/21</text>
+            <text x="345" y="290">2021/22</text>
+            <text x="430" y="290">2022/23</text>
+            <text x="515" y="290">2023/24</text>
+            <text x="600" y="290">2024/25</text>
+            <text x="685" y="290">2025/26</text>
+            <text x="770" y="290">2026/27</text>
+            <text x="855" y="290">2027/28</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: data center share of cost increase -->
+  <section>
+    <h2><span class="num">02</span> 每次拍卖里，数据中心占了多少涨价份额？</h2>
+    <p class="section-sub">独立市场监督机构在每次拍卖后都会公开拆解涨价原因。数据中心负荷在最近两次拍卖中始终被认定为最大单一驱动因素，只是占比有所回落。</p>
+    <div class="two-col">
+      <div class="card">
+        <div class="chart-title">数据中心占当次拍卖涨价/费用的比例</div>
+        <div class="chart-note">2025/26年度：占"涨价部分"的比例；2027/28年度：占"总费用"的比例（两次统计口径略有差异，见图注）</div>
+        <div class="cmp-row">
+          <div class="cmp-col">
+            <div class="cmp-bar" style="height:100%;background:var(--series-1);">
+              <div class="cval">63%</div>
+            </div>
+            <div class="cmp-label">2025/26年度拍卖</div>
+            <div class="cmp-sub">占涨价部分的比例，约93亿美元</div>
+          </div>
+          <div class="cmp-col">
+            <div class="cmp-bar" style="height:62%;background:var(--series-2);">
+              <div class="cval">38–40%</div>
+            </div>
+            <div class="cmp-label">2027/28年度拍卖</div>
+            <div class="cmp-sub">占164亿美元总费用的比例，约63–65亿美元</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="chart-title">全美住宅电价：同期走势（背景参照）</div>
+        <div class="chart-note">EIA全美住宅用电平均零售价，单位：美分/千瓦时；反映整体电价环境，PJM容量成本是其中一个上涨渠道</div>
+        <div class="linechart-wrap">
+          <svg viewBox="0 0 420 260" preserveAspectRatio="xMidYMid meet">
+            <g class="lc-grid">
+              <line x1="46" y1="20"  x2="400" y2="20" />
+              <line x1="46" y1="80"  x2="400" y2="80" />
+              <line x1="46" y1="140" x2="400" y2="140" />
+              <line x1="46" y1="200" x2="400" y2="200" />
+            </g>
+            <g class="lc-axis" text-anchor="end">
+              <text x="40" y="24">19¢</text>
+              <text x="40" y="84">16¢</text>
+              <text x="40" y="144">13¢</text>
+              <text x="40" y="204">10¢</text>
+            </g>
+            <line class="lc-baseline" x1="46" y1="200" x2="400" y2="200" />
+            <!-- scale: y = 200 - (value-10)*20; 2018:13.15 2019:13.29 2020:13.23 2021:13.86 2022:15.59 2023:16.00 2024:16.48 2025:17.30 2026:18.44 -->
+            <polyline class="lc-line" stroke="var(--series-1)"
+              points="60,137 100,134 140,135 180,123 220,88 260,80 300,70 340,54 380,31" />
+            <circle class="lc-dot" cx="60"  cy="137" r="4" fill="var(--series-1)"/>
+            <circle class="lc-dot" cx="100" cy="134" r="4" fill="var(--series-1)"/>
+            <circle class="lc-dot" cx="140" cy="135" r="4" fill="var(--series-1)"/>
+            <circle class="lc-dot" cx="180" cy="123" r="4" fill="var(--series-1)"/>
+            <circle class="lc-dot" cx="220" cy="88"  r="4" fill="var(--series-1)"/>
+            <circle class="lc-dot" cx="260" cy="80"  r="4" fill="var(--series-1)"/>
+            <circle class="lc-dot" cx="300" cy="70"  r="4" fill="var(--series-1)"/>
+            <circle class="lc-dot" cx="340" cy="54"  r="4" fill="var(--series-1)"/>
+            <circle class="lc-dot" cx="380" cy="31"  r="5" fill="var(--series-2)"/>
+            <text class="lc-vlabel" x="60"  y="124" text-anchor="middle" font-size="11">13.15¢</text>
+            <text class="lc-vlabel" x="380" y="19"  text-anchor="middle" font-size="11" fill="var(--series-2)">18.44¢</text>
+            <g class="lc-axis" text-anchor="middle" font-size="10.5">
+              <text x="60"  y="216">2018</text>
+              <text x="100" y="216">2019</text>
+              <text x="140" y="216">2020</text>
+              <text x="180" y="216">2021</text>
+              <text x="220" y="216">2022</text>
+              <text x="260" y="216">2023</text>
+              <text x="300" y="216">2024</text>
+              <text x="340" y="216">2025</text>
+              <text x="380" y="216">2026*</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: mechanism -->
+  <section>
+    <h2><span class="num">03</span> 传导机制：拍卖涨价如何变成你的电费账单</h2>
+    <div class="mech-box">
+      PJM的"基础剩余拍卖"提前三年为电网可靠性采购发电容量，本质是让所有发电资源竞价，"电网需要多少容量、市场愿意付多少钱"由拍卖决定。数据中心新增用电负荷推高了未来用电需求预测，叠加同期燃煤机组退役、新增供给跟不上，供需趋紧直接抬高清算价格；这部分容量成本按用户用电比例分摊，由各州公用事业公司计入零售电价，最终体现在居民电费账单里——通常有1–3年的滞后。
+      <div class="mech-steps">
+        <span class="mech-step">数据中心新增用电需求 ↑</span>
+        <span class="mech-arrow">→</span>
+        <span class="mech-step">PJM容量拍卖清算价格 ↑</span>
+        <span class="mech-arrow">→</span>
+        <span class="mech-step">公用事业公司容量采购成本 ↑</span>
+        <span class="mech-arrow">→</span>
+        <span class="mech-step">居民电费账单（1–3年后）↑</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: caveat -->
+  <section>
+    <h2><span class="num">04</span> 需要留意的局限性</h2>
+    <div class="caveat-box">
+      <div class="caveat-title">这不是"数据中心越多、电价越高"的简单全国规律</div>
+      有分析（Institute for Energy Research）对比各州"数据中心数量"与"当前住宅电价"，发现两者几乎不相关（Pearson r = -0.053）——例如数据中心数量全美最多的弗吉尼亚州，住宅电价反而比全国平均低10%以上。原因是：① 电价受电网基础设施投入、燃料成本、监管环境等多重因素共同影响；② 数据中心推高电价的效应主要通过<b>批发容量市场</b>传导，在有统一容量市场的区域（如PJM）最明显，其他电力市场结构不同的地区传导路径也不同；③ 容量成本从拍卖清算到体现在零售账单上有滞后期，所以"当前电价"未必能反映"未来负荷"的影响。总体上，PJM区域的证据链（官方拍卖数据+独立监督机构测算）是目前最直接、最可持续追踪的因果证据。
+    </div>
+  </section>
+
+  <footer>
+    <div class="src-title">数据来源</div>
+    <div>
+      PJM Interconnection, <a href="https://www.pjm.com/-/media/DotCom/markets-ops/rpm/rpm-auction-info/2027-2028/2027-2028-bra-report.pdf" target="_blank" rel="noopener">2027/2028 Base Residual Auction Report</a> ·
+      <a href="https://insidelines.pjm.com/pjm-capacity-auction-procures-138318-mw-of-generation-resources-as-work-continues-to-address-growing-electricity-demand/" target="_blank" rel="noopener">PJM Inside Lines auction results</a><br>
+      Monitoring Analytics (PJM独立市场监督机构), <a href="https://www.monitoringanalytics.com/reports/Reports/2026/IMM_Analysis_of_the_20272028_RPM_Base_Residual_Auction_Part_A_20260105.pdf" target="_blank" rel="noopener">Analysis of the 2027/2028 RPM Base Residual Auction</a><br>
+      Utility Dive, <a href="https://www.utilitydive.com/news/pjm-data-centers-capacity-auction-imm-bowring/825626/" target="_blank" rel="noopener">Data centers drove $6.3B in PJM capacity auction costs</a> ·
+      <a href="https://www.utilitydive.com/news/data-centers-pjm-capacity-auction/808951/" target="_blank" rel="noopener">Data centers were 40% of PJM capacity costs in last auction</a> ·
+      <a href="https://www.utilitydive.com/news/data-centers-pjm-capacity-auction-market-monitor/801780/" target="_blank" rel="noopener">Data centers "primary reason" for high PJM capacity prices</a><br>
+      IEEFA, <a href="https://ieefa.org/resources/projected-data-center-growth-spurs-pjm-capacity-prices-factor-10" target="_blank" rel="noopener">Projected data center growth spurs PJM capacity prices by factor of 10</a><br>
+      Citizens Utility Board, <a href="https://www.citizensutilityboard.org/blog/2026/07/15/cub-sustained-high-pjm-capacity-prices-ramp-up-urgency-for-data-center-reform/" target="_blank" rel="noopener">Sustained High PJM Capacity Prices Ramp Up Urgency For Data Center Reform</a>（含NRDC家庭账单预测引用）<br>
+      U.S. Energy Information Administration (EIA), <a href="https://www.eia.gov/todayinenergy/detail.php?id=63064" target="_blank" rel="noopener">Retail electricity prices closely tracked inflation over the last 10 years</a> ·
+      <a href="https://www.eia.gov/electricity/monthly/update/end-use.php" target="_blank" rel="noopener">Electricity Monthly Update</a><br>
+      Institute for Energy Research, <a href="https://www.instituteforenergyresearch.org/the-grid/have-data-centers-driven-up-electricity-prices-the-state-level-data-dont-support-the-narrative/" target="_blank" rel="noopener">Have Data Centers Driven Up Electricity Prices? The State-Level Data Don't Support the Narrative</a>（反方视角，用于平衡呈现）
+    </div>
+    <div style="margin-top:10px;">2026年数据为截至2026年8月的最新可得数据，全年数值待EIA正式公布后可能调整；PJM 2022/23、2023/24年度拍卖曾因监管规则调整（如冬季风暴Elliott后的可靠性要求变化）而延期/改制，数值受此影响。仅供参考，不构成投资或政策建议。制图时间：2026年8月。</div>
+  </footer>
+
+</div>
+</div>
+</body>
+</html>
