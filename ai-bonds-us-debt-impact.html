@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>AI发债与美债市场</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-page:   #f6f4ef;
+    --surface-1:      #fcfbf8;
+    --surface-2:      #eeebe2;
+    --text-primary:   #1a1712;
+    --text-secondary: #52493c;
+    --text-muted:     #8c8171;
+    --border:         rgba(26,23,18,0.12);
+    --gridline:       #e2ddd0;
+    --accent:         #1f4d7a;   /* treasury blue */
+    --accent-strong:  #123453;
+    --accent-soft:    #dce7f0;
+    --heat:           #b8631c;   /* AI-debt amber */
+    --heat-soft:      #f3e2cd;
+    --good:           #2f7a52;
+    --bad:            #a63a3a;
+    --shadow: 0 1px 2px rgba(26,23,18,0.06), 0 6px 20px -8px rgba(26,23,18,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .viz-root {
+      color-scheme: dark;
+      --surface-page:   #14120e;
+      --surface-1:      #1c1913;
+      --surface-2:      #262119;
+      --text-primary:   #f3efe6;
+      --text-secondary: #c9bfac;
+      --text-muted:     #8f8672;
+      --border:         rgba(243,239,230,0.12);
+      --gridline:       #2d2820;
+      --accent:         #6fa3d1;
+      --accent-strong:  #9cc2e6;
+      --accent-soft:    #1f3247;
+      --heat:           #e0954f;
+      --heat-soft:      #3a2a17;
+      --good:           #5cb583;
+      --bad:            #e07a7a;
+      --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-page:   #14120e;
+    --surface-1:      #1c1913;
+    --surface-2:      #262119;
+    --text-primary:   #f3efe6;
+    --text-secondary: #c9bfac;
+    --text-muted:     #8f8672;
+    --border:         rgba(243,239,230,0.12);
+    --gridline:       #2d2820;
+    --accent:         #6fa3d1;
+    --accent-strong:  #9cc2e6;
+    --accent-soft:    #1f3247;
+    --heat:           #e0954f;
+    --heat-soft:      #3a2a17;
+    --good:           #5cb583;
+    --bad:            #e07a7a;
+    --shadow: none;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--surface-page); color: var(--text-primary); }
+  .viz-root {
+    font-family: "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: var(--surface-page);
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  h1, h2, h3, .serif { font-family: "Source Serif 4", "Noto Serif SC", Georgia, serif; }
+  .num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+
+  header.page-head { margin-bottom: 40px; }
+  .eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--heat); display: inline-block; }
+  h1 {
+    font-size: clamp(30px, 4.4vw, 42px); font-weight: 600; line-height: 1.18; margin: 0 0 16px;
+    text-wrap: balance; color: var(--text-primary);
+  }
+  .lede { font-size: 17.5px; line-height: 1.7; color: var(--text-secondary); max-width: 64ch; margin: 0 0 8px; }
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 20px;
+    font-size: 13px; color: var(--text-muted);
+  }
+  .meta-row span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* stat band */
+  .stat-band {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; margin: 32px 0 8px; box-shadow: var(--shadow);
+  }
+  .stat-cell { background: var(--surface-1); padding: 20px 18px; }
+  .stat-cell .v { font-size: 26px; font-weight: 600; color: var(--accent-strong); line-height: 1.1; }
+  .stat-cell .v.heat { color: var(--heat); }
+  .stat-cell .l { font-size: 12.5px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+  @media (max-width: 640px) { .stat-band { grid-template-columns: repeat(2, 1fr); } }
+
+  section { margin-top: 52px; }
+  section > h2 {
+    font-size: 22px; font-weight: 600; margin: 0 0 6px; color: var(--text-primary);
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  section > h2 .idx { font-family: "IBM Plex Mono", monospace; font-size: 14px; color: var(--heat); font-weight: 500; }
+  .section-sub { font-size: 14.5px; color: var(--text-muted); margin: 0 0 22px; max-width: 64ch; }
+  p { line-height: 1.75; font-size: 15.5px; color: var(--text-secondary); max-width: 68ch; }
+  p.tight { margin-top: 8px; }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 22px 24px; box-shadow: var(--shadow); margin: 18px 0;
+  }
+  .card h3 { font-size: 15.5px; margin: 0 0 10px; color: var(--text-primary); font-weight: 600; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-scroll { overflow-x: auto; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); font-weight: 600; }
+  td.num, th.num { text-align: right; font-family: "IBM Plex Mono", monospace; }
+  tr:last-child td { border-bottom: none; }
+  td.label { white-space: normal; color: var(--text-primary); font-weight: 500; }
+
+  .bar-row { display: grid; grid-template-columns: 96px 1fr 64px; align-items: center; gap: 12px; margin: 10px 0; }
+  .bar-row .yr { font-size: 13px; color: var(--text-muted); font-family: "IBM Plex Mono", monospace; }
+  .bar-track { height: 20px; background: var(--surface-2); border-radius: 5px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 5px 0 0 5px; }
+  .bar-row .val { font-size: 13.5px; font-family: "IBM Plex Mono", monospace; text-align: right; color: var(--text-primary); }
+
+  .chain {
+    display: grid; gap: 14px; margin: 20px 0;
+  }
+  .chain-step {
+    display: grid; grid-template-columns: 30px 1fr; gap: 14px; align-items: start;
+    padding-bottom: 14px; border-bottom: 1px dashed var(--border);
+  }
+  .chain-step:last-child { border-bottom: none; padding-bottom: 0; }
+  .chain-step .dot {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-strong);
+    display: flex; align-items: center; justify-content: center; font-family: "IBM Plex Mono", monospace;
+    font-size: 13px; font-weight: 600;
+  }
+  .chain-step h4 { margin: 2px 0 4px; font-size: 15px; color: var(--text-primary); }
+  .chain-step p { font-size: 14.5px; margin: 0; }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .split { grid-template-columns: 1fr; } }
+  .pill {
+    display: inline-block; font-size: 11.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+    letter-spacing: .02em; margin-bottom: 8px;
+  }
+  .pill.yes { background: var(--heat-soft); color: var(--heat); }
+  .pill.no  { background: var(--accent-soft); color: var(--accent-strong); }
+
+  .src-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+  @media (max-width: 640px) { .src-grid { grid-template-columns: 1fr; } }
+  .src-card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+  .src-card .cat {
+    font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--heat);
+    margin-bottom: 8px;
+  }
+  .src-card h3 { font-size: 15.5px; margin: 0 0 8px; }
+  .src-card ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+  .src-card li::marker { color: var(--text-muted); }
+  .src-card a { color: var(--accent-strong); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+  .src-card a:hover { border-bottom-color: var(--accent-strong); }
+
+  footer.refs {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+  }
+  footer.refs h2 { font-size: 15px; color: var(--text-muted); font-weight: 600; margin: 0 0 14px; }
+  footer.refs ol { padding-left: 20px; margin: 0; columns: 2; column-gap: 32px; }
+  footer.refs li { font-size: 12.5px; line-height: 1.9; color: var(--text-muted); break-inside: avoid; }
+  footer.refs a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid var(--border); }
+  footer.refs a:hover { color: var(--accent-strong); border-bottom-color: var(--accent-strong); }
+  @media (max-width: 640px) { footer.refs ol { columns: 1; } }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">固定收益市场研究 · 2026年8月</div>
+    <h1>AI 发债狂潮，正在如何重塑美债市场？</h1>
+    <p class="lede">
+      超大规模科技公司为建设 AI 数据中心，正以前所未有的速度涌入债券市场融资。
+      本报告梳理发债规模、传导至美债收益率的具体机制、市场证据与分歧观点，
+      并在末尾给出一份可持续跟踪 AI 发债规模的数据源清单。
+    </p>
+    <div class="meta-row">
+      <span>数据截至 2026 年 8 月</span>
+      <span>· 来源含 Moody's / S&amp;P Global / Dallas Fed / BofA 等公开研究</span>
+    </div>
+  </header>
+
+  <div class="stat-band">
+    <div class="stat-cell">
+      <div class="v">$121<span style="font-size:16px">B</span></div>
+      <div class="l">五大超大规模科技公司(Alphabet/Amazon/Meta/Microsoft/Oracle) 2025 年全年发债总额，2020 年仅约 $40B</div>
+    </div>
+    <div class="stat-cell">
+      <div class="v heat">$570<span style="font-size:16px">B</span></div>
+      <div class="l">Morgan Stanley 预测的 2026 年全球 AI 相关发债规模；UBS 给出的上限估计高达 $900B</div>
+    </div>
+    <div class="stat-cell">
+      <div class="v">$460<span style="font-size:16px">B</span></div>
+      <div class="l">Moody's 统计的六大超大规模企业(含 CoreWeave)直接债务余额，另有约 $1.2T 表外融资敞口</div>
+    </div>
+    <div class="stat-cell">
+      <div class="v heat">+0.3<span style="font-size:16px">pp</span></div>
+      <div class="l">美国银行估算，企业债(叠加 MBS)供给激增今年为 10 年期美债利率贡献的额外涨幅</div>
+    </div>
+  </div>
+
+  <section>
+    <h2><span class="idx">01</span> 规模速览：发债节奏有多快</h2>
+    <p class="section-sub">五家头部超大规模企业 2025 年发债总额是 2020 年的三倍，且大部分融资发生在下半年，2026 年仍在加速。</p>
+
+    <div class="card">
+      <h3>五大超大规模企业公司债发行规模（十亿美元）</h3>
+      <div class="bar-row">
+        <div class="yr">2020</div>
+        <div class="bar-track"><div class="bar-fill" style="width:7%; background:var(--accent-soft);"></div></div>
+        <div class="val num">40</div>
+      </div>
+      <div class="bar-row">
+        <div class="yr">2024</div>
+        <div class="bar-track"><div class="bar-fill" style="width:16%; background:var(--accent);"></div></div>
+        <div class="val num">17</div>
+      </div>
+      <div class="bar-row">
+        <div class="yr">2025</div>
+        <div class="bar-track"><div class="bar-fill" style="width:60%; background:var(--accent);"></div></div>
+        <div class="val num">121</div>
+      </div>
+      <div class="bar-row">
+        <div class="yr">2026E</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--heat);"></div></div>
+        <div class="val num">570</div>
+      </div>
+      <p class="tight" style="font-size:12.5px; color:var(--text-muted); margin-top:14px;">
+        2024/2025 为披露口径下的近似值；2026E 为 Morgan Stanley 对全球 AI 相关发债的预测中值。
+      </p>
+    </div>
+
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>发行人</th><th>时间</th><th class="num">规模</th><th>用途 / 备注</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="label">Amazon</td><td>2025</td><td class="num">$53B</td><td>含 $37B 美元债 + &gt;$16B 欧元债，为史上最大科技公司债之一</td></tr>
+        <tr><td class="label">Alphabet</td><td>2025</td><td class="num">$20B</td><td>为云与 AI 基础设施建设融资</td></tr>
+        <tr><td class="label">Oracle</td><td>2025</td><td class="num">$25B</td><td>支持激进的 AI 算力扩张计划</td></tr>
+        <tr><td class="label">Meta</td><td>2025→2026</td><td class="num">$30B+</td><td>2025 年创纪录发债后，2026 年再度发行规模更大的数据中心债</td></tr>
+        <tr><td class="label">Broadcom / Anthropic AI XPV</td><td>2026</td><td class="num">$35B</td><td>Apollo 主导、Blackstone 参与的私募信贷"资本方案"，非公开债券</td></tr>
+        <tr><td class="label">Nvidia 算力融资平台</td><td>2026</td><td class="num">&gt;$500B</td><td>与 Apollo/BlackRock/Blackstone/Brookfield/高盛/KKR 合作的第三方资本动员计划(多年期)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="idx">02</span> 传导机制：为什么公司发债会影响美债？</h2>
+    <p class="section-sub">达拉斯联储(Dallas Fed, 2026)将影响路径归纳为三条"久期供给"渠道。</p>
+
+    <div class="chain">
+      <div class="chain-step">
+        <div class="dot">1</div>
+        <div>
+          <h4>直接发行长期投资级公司债</h4>
+          <p>超大规模企业为匹配数据中心 15-20 年的资产寿命，倾向发行 10 年期以上的长久期债券，
+          与美债在长端争夺同一批保险公司、养老金等"久期买家"。</p>
+        </div>
+      </div>
+      <div class="chain-step">
+        <div class="dot">2</div>
+        <div>
+          <h4>利率互换将浮息负债转为长久期敞口</h4>
+          <p>私募信贷提供的浮动利率贷款常被搭配利率互换"拉长久期"，达拉斯联储估算 2025 年四季度
+          由此产生的久期供给相当于至少 $500 亿的 10 年期美债当量。</p>
+        </div>
+      </div>
+      <div class="chain-step">
+        <div class="dot">3</div>
+        <div>
+          <h4>挤出传统"久期对冲"发行人</h4>
+          <p>银行与保险等金融类发行人原本也依赖发债对冲自身久期缺口；AI 发债潮可能挤压其发行空间，
+          间接减少市场中原本会流向美债的配置需求。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>信用市场的可见证据</h3>
+      <p class="tight">
+        Oracle 五年期 CDS 利差在 2026 年 7 月底升至约 <strong>212–215 个基点</strong>的历史高位,
+        反映其资产负债表相对紧绷；Microsoft、Amazon、Alphabet、Meta 的利差则相对平稳。
+        超大规模企业 CDS 名义交易量从 2025 年一季度的 <strong>$7.59 亿</strong> 飙升至 2026 年同期的
+        <strong>$46 亿</strong>，约六倍，显示投资者正重新为曾被视为"近乎无风险"的科技巨头信用定价。
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="idx">03</span> 表内与表外：被低估的杠杆</h2>
+    <p class="section-sub">Moody's 提醒，直接债务只是冰山一角，大量融资通过特殊目的载体(SPV)和私募信贷"表外化"。</p>
+    <div class="split">
+      <div class="card">
+        <h3>Moody's 口径（六大超大规模企业）</h3>
+        <table>
+          <tbody>
+            <tr><td class="label">直接债务余额</td><td class="num">≈ $460B</td></tr>
+            <tr><td class="label">表外融资敞口</td><td class="num">≈ $1.2T</td></tr>
+            <tr><td class="label">其中：在建数据中心相关</td><td class="num">&gt; $820B</td></tr>
+            <tr><td class="label">2026 年资本开支预测</td><td class="num">≈ $785B</td></tr>
+            <tr><td class="label">2027 年资本开支预测</td><td class="num">≈ $1T</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>S&amp;P Global 口径</h3>
+        <p class="tight">
+          超大规模企业及其"关联实体"(如 Nvidia 参与的融资平台)2026 年至年中已发行约
+          <strong>$225B</strong> 债券，同比激增 <strong>973.7%</strong>。
+          S&amp;P 将私募信贷、AI 驱动的科技发债与杠杆上升列为 2026 年影响信用市场流动性的关键因素。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="idx">04</span> 分歧：这算不算"挤出"美债？</h2>
+    <p class="section-sub">机构之间尚无共识，核心分歧在于把"利率上升"归因于供给挤出，还是货币政策与通胀预期。</p>
+    <div class="split">
+      <div class="card">
+        <span class="pill yes">支持挤出观点</span>
+        <p class="tight">美国银行经济学家认为 AI 发债"可能正在挤出长端美债需求"，
+        并估算企业债与 MBS 供给激增合计推高 10 年期利率约 0.3 个百分点。
+        Dallas Fed 的研究也指出久期供给渠道确已在市场行为中"匹配"上了。</p>
+      </div>
+      <div class="card">
+        <span class="pill no">反对/存疑观点</span>
+        <p class="tight">另一派分析认为，公共部门(美债)发行并未挤出私营部门融资需求，
+        公私两端并不存在对稀缺资本的"零和竞争"；2026 年利率上行的时点更多与
+        货币政策预期和通胀数据相关，而非单纯由企业发债供给驱动。</p>
+      </div>
+    </div>
+    <p>
+      一个背景数字有助于校准这场争论的量级：2026 年 1-8 月美国投资级公司债发行总额已达
+      <strong>$1.68 万亿</strong>，同比增长约 27%；同期美债净发行规模仍是数量级更大的存量，
+      因此 AI 发债更可能是"边际推手"而非主导变量——但其增速本身正在改变市场对久期供给的预期。
+    </p>
+  </section>
+
+  <section>
+    <h2><span class="idx">05</span> 去哪找"AI 发债规模"数据？</h2>
+    <p class="section-sub">没有单一数据库专门标注"AI 债券"；实践中需要拼接官方统计、评级机构专题研究与新闻追踪。以下按可获取性分类。</p>
+
+    <div class="src-grid">
+      <div class="src-card">
+        <div class="cat">免费 · 官方统计</div>
+        <h3>宏观与市场总量数据</h3>
+        <ul>
+          <li><a href="https://www.sifma.org/research/statistics/us-corporate-bonds-statistics" target="_blank" rel="noopener">SIFMA – US Corporate Bonds Statistics</a>：按月/季/年披露美国公司债发行与存量，可下拉投资级/高收益、公募/144A 口径</li>
+          <li><a href="https://fred.stlouisfed.org/series/BCNSDODNS" target="_blank" rel="noopener">FRED – 非金融企业债务证券余额 (Z.1)</a>：美联储资金流量表(Financial Accounts)口径，免费下载历史序列</li>
+          <li><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany" target="_blank" rel="noopener">SEC EDGAR</a>：逐笔查询各超大规模企业 10-K/10-Q/8-K 中的债券发行说明书与到期结构，最原始但最权威的数字</li>
+        </ul>
+      </div>
+
+      <div class="src-card">
+        <div class="cat">免费 · 央行/智库研究</div>
+        <h3>专题分析与传导机制</h3>
+        <ul>
+          <li><a href="https://www.dallasfed.org/research/economics/2026/0210-searls-aifinancing" target="_blank" rel="noopener">Dallas Fed – How AI Debt Financing Impacts Duration Supply</a>：拆解直接发债/互换/挤出三条渠道的定量研究</li>
+          <li><a href="https://www.oecd.org/en/publications/global-debt-report-2026_e9d80efd-en.html" target="_blank" rel="noopener">OECD – Global Debt Report 2026</a>：政府与公司债投资者结构的跨国比较</li>
+          <li>各地区联储(如 SF Fed)转载的联储系统研究，通常附带原始数据附录</li>
+        </ul>
+      </div>
+
+      <div class="src-card">
+        <div class="cat">付费/机构 · 评级与交易数据</div>
+        <h3>评级机构专题报告</h3>
+        <ul>
+          <li>Moody's Ratings：超大规模企业信用观察专题(含直接债务与表外融资拆分口径)</li>
+          <li>S&amp;P Global Ratings：《2026 Liquidity Outlook》等私募信贷与科技发债专题</li>
+          <li>Fitch Ratings：数据中心/超大规模企业信用报告</li>
+          <li>需机构订阅账号获取完整 PDF，媒体报道通常摘录关键数字</li>
+        </ul>
+      </div>
+
+      <div class="src-card">
+        <div class="cat">付费 · 终端与交易数据</div>
+        <h3>逐笔发行与二级市场</h3>
+        <ul>
+          <li><a href="https://www.finra.org/finra-data/browse-catalog/trace" target="_blank" rel="noopener">FINRA TRACE</a>：美国公司债二级市场逐笔成交数据，部分历史数据免费查询</li>
+          <li>LSEG (原 Refinitiv) Workspace / Deals Intelligence：发行承销排名、期限结构、CDS 名义交易量</li>
+          <li>Bloomberg Terminal（DDIS / CACS / CDSW 等功能）：实时发行日历、CDS 利差、私募信贷追踪</li>
+          <li>Dealogic (现并入 LSEG)：投行主承销排行榜与发行明细</li>
+        </ul>
+      </div>
+
+      <div class="src-card">
+        <div class="cat">私募信贷专项</div>
+        <h3>表外融资 / SPV 数据</h3>
+        <ul>
+          <li>Preqin / PitchBook：私募信贷基金规模、AI 基础设施相关交易数据库</li>
+          <li>Apollo、Blackstone、KKR、Brookfield、Blue Owl 等机构官方新闻稿：披露单笔 SPV 融资规模(如 Broadcom AI XPV 的 $35B)</li>
+          <li>公司 8-K/投资者关系页面：私募信贷协议条款(利率、期限)有时会在附注中披露</li>
+        </ul>
+      </div>
+
+      <div class="src-card">
+        <div class="cat">持续追踪 · 新闻与投行研究</div>
+        <h3>高频动态更新</h3>
+        <ul>
+          <li>Axios、Fortune、Reuters、Bloomberg News 的科技信贷跟踪报道，常汇总多家投行(Morgan Stanley/JPMorgan/UBS/BofA)的最新预测数字</li>
+          <li>投行研究报告(需机构销售渠道或客户权限)：Morgan Stanley、JPMorgan、UBS、Bank of America 均设有 AI 信贷专题追踪</li>
+          <li>行业博客(如 Axis Intelligence 的 AI Data Center Financing Statistics)会持续更新汇总表，可作为二手线索快速定位一手来源</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:22px;">
+      <h3>实操建议</h3>
+      <p class="tight">
+        若只需要"总量级"数字，<strong>FRED + SIFMA</strong> 免费组合足以覆盖公司债大盘；
+        若要拆到"AI/数据中心"这一细分，目前没有权威官方口径，最可靠的做法是：
+        (1) 直接读六家超大规模企业的 10-K 融资活动现金流量表与债务附注；
+        (2) 关注 Moody's / S&amp;P 每季度更新的超大规模企业信用专题(通常免费摘要+付费全文)；
+        (3) 用新闻检索(Axios/Fortune/Bloomberg)交叉验证投行预测数字，
+        因为这些数字本身多来自 Morgan Stanley、JPMorgan 等尚未公开完整方法论的内部模型。
+      </p>
+    </div>
+  </section>
+
+  <footer class="refs">
+    <h2>主要信息来源</h2>
+    <ol>
+      <li><a href="https://finance.yahoo.com/technology/ai/articles/meta-latest-ai-data-center-104924131.html" target="_blank" rel="noopener">Yahoo Finance – Meta's Latest AI Data Center Debt Raise</a></li>
+      <li><a href="https://www.mellon.com/insights/insights-articles/record-breaking-ai-related-debt-issuance-in-2025.html" target="_blank" rel="noopener">Mellon Investments – Record-Breaking AI-Related Debt Issuance in 2025</a></li>
+      <li><a href="https://axis-intelligence.com/ai-data-center-financing-statistics/" target="_blank" rel="noopener">Axis Intelligence – AI Data Center Financing Statistics 2026</a></li>
+      <li><a href="https://energynow.com/2026/02/the-3-trillion-ai-data-center-build-out-becomes-all-consuming-for-debt-markets/" target="_blank" rel="noopener">EnergyNow – The $3 Trillion AI Data Center Build-Out</a></li>
+      <li><a href="https://finance.yahoo.com/technology/article/techs-ai-debt-boom-in-one-chart-143849995.html" target="_blank" rel="noopener">Yahoo Finance – Tech's AI Debt Boom, in One Chart</a></li>
+      <li><a href="https://mezha.net/eng/bukvy/55384f9b_ai_debt_boom/" target="_blank" rel="noopener">Mezha – AI Debt Boom Pushes US Corporate Bond Issuance to Record Levels</a></li>
+      <li><a href="https://finance.yahoo.com/economy/policy/articles/ai-driving-treasury-yields-just-093000747.html" target="_blank" rel="noopener">Yahoo Finance – AI Is Driving Up Treasury Yields</a></li>
+      <li><a href="https://realeconomy.rsmus.com/market-minute-is-public-debt-crowding-out-corporate-issuance-not-yet/" target="_blank" rel="noopener">RSM – Is Public Debt Crowding Out Corporate Issuance? Not Yet.</a></li>
+      <li><a href="https://www.dallasfed.org/research/economics/2026/0210-searls-aifinancing" target="_blank" rel="noopener">Dallas Fed – How AI Debt Financing Impacts Duration Supply and Interest Rates</a></li>
+      <li><a href="https://www.frbsf.org/research-and-insights/publications/system-research-dallas-fed/2026/04/how-ai-debt-financing-impacts-duration-supply-interest-rates/" target="_blank" rel="noopener">SF Fed (System Research) – How AI Debt Financing Impacts Duration Supply</a></li>
+      <li><a href="https://www.cnbc.com/2026/07/24/moodys-ai-spending-credit-quality-amazon-meta-alphabet.html" target="_blank" rel="noopener">CNBC – Moody's on AI Spending and Credit Quality</a></li>
+      <li><a href="https://fortune.com/2026/07/31/ai-debt-hypescalers-capex-capital-spending-hidden-borrowing-bond-issuance/" target="_blank" rel="noopener">Fortune – Hidden Borrowing Has Exploded to $1.65 Trillion</a></li>
+      <li><a href="https://press.spglobal.com/2026-02-17-Private-Credit,-Tech-Issuance-fuelled-by-AI,-and-Increasing-Leverage-Among-Key-Driving-Factors-Impacting-Credit-Market-Liquidity-in-2026-according-to-S-P-Global-Ratings" target="_blank" rel="noopener">S&amp;P Global Ratings – 2026 Liquidity Outlook Press Release</a></li>
+      <li><a href="https://ir.apollo.com/news-events/press-releases/detail/629/apollo-leads-35-billion-capital-solution-for-broadcom-ai" target="_blank" rel="noopener">Apollo Global Management – $35B Capital Solution for Broadcom AI XPV</a></li>
+      <li><a href="https://www.blackstone.com/news/press/nvidia-partners-with-apollo-blackrock-blackstone-brookfield-goldman-sachs-and-kkr-to-establish-ai-compute-infrastructure-financing-platforms-to-mobilize-over-500-billion-of-third-party-capital/" target="_blank" rel="noopener">Blackstone – Nvidia Partners to Mobilize Over $500B of Third-Party Capital</a></li>
+      <li><a href="https://cryptobriefing.com/jpmorgan-cds-basket-ai-hyperscalers-hedging/" target="_blank" rel="noopener">Cryptobriefing – JPMorgan Introduces CDS Basket for AI Hyperscalers</a></li>
+      <li><a href="https://www.sageadvisory.com/article/hyperscaler-debt-deluge-the-new-driver-of-ig-spread-pressure" target="_blank" rel="noopener">Sage Advisory – Hyperscaler Debt Deluge, the New Driver of IG Spread Pressure</a></li>
+      <li><a href="https://www.axios.com/2026/07/27/debt-data-center-oracle-goole" target="_blank" rel="noopener">Axios – The Growing Jitters Over Hyperscaler Debt</a></li>
+      <li><a href="https://www.sifma.org/research/statistics/us-corporate-bonds-statistics" target="_blank" rel="noopener">SIFMA – US Corporate Bonds Statistics</a></li>
+      <li><a href="https://fred.stlouisfed.org/series/BCNSDODNS" target="_blank" rel="noopener">FRED – Nonfinancial Corporate Business Debt Securities and Loans</a></li>
+    </ol>
+  </footer>
+
+</div>
+</div>
+</body>
+</html>
