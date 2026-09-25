@@ -26,16 +26,17 @@
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.85;padding-inline:16px;padding-block:0 64px}
-.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:40px}
-@media (min-width:1180px){.wrap{grid-template-columns:200px minmax(0,1fr)}}
-nav.toc{display:none}
-@media (min-width:1180px){
-  nav.toc{display:block;position:sticky;top:calc(env(safe-area-inset-top,0px) + 32px);align-self:start;padding-top:40px;font-size:13px;line-height:1.6}
-  nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:5px 0 5px 12px;border-left:1px solid var(--line)}
-  nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);border-left-color:var(--accent)}
-  nav.toc .toc-h{color:var(--ink-2);font-weight:700;letter-spacing:.08em;margin-bottom:8px;font-size:12px}
-}
+.wrap{max-width:940px;margin:0 auto}
 main{min-width:0}
+.toc-block{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:28px}
+.toc-card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 20px}
+.toc-card h2{font-size:18px;margin:0 0 8px}
+.toc-card ol{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.6}
+.toc-card li{margin:0}
+.toc-card a{display:flex;gap:8px;color:var(--ink);text-decoration:none;padding:4px 0;border-bottom:1px dotted var(--line)}
+.toc-card a:hover,.toc-card a:focus-visible{color:var(--accent)}
+.toc-card li.l3 a{padding-left:1.4em;color:var(--ink-2)}
+.toc-card li.fig a{color:var(--ink-2);font-size:13px}
 header.cover{padding-block:48px 28px;border-bottom:1px solid var(--line)}
 .eyebrow{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:500}
 h1{font-family:var(--serif);font-weight:700;font-size:clamp(28px,4.4vw,42px);line-height:1.3;margin:10px 0 6px;text-wrap:balance}
@@ -84,22 +85,9 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 
 <div class="wrap">
-<nav class="toc" aria-label="目录">
-  <div class="toc-h">目录</div>
-  <a href="#abstract">摘要</a>
-  <a href="#s1">（一）选情</a>
-  <a href="#s2">（二）历史规律</a>
-  <a href="#s3">（三）选举结果与资产</a>
-  <a href="#s4">（四）选举结果与政策</a>
-  <a href="#s5">（五）情景映射</a>
-  <a href="#s6">（六）本轮特殊性</a>
-  <a href="#assets">二、大类资产</a>
-  <a href="#calendar">三、宏观日历</a>
-  <a href="#notes">数据说明</a>
-</nav>
 <main>
 <header class="cover">
-  <div class="eyebrow">专题报告 · 2026 美国中期选举</div>
+  <div class="eyebrow">深度报告 · 2026 美国中期选举</div>
   <h1>中期选举前后，大类资产如何定价？</h1>
   <p class="series">——"2026美国中期选举"专题</p>
   <div class="meta"><span>2026 年 9 月 25 日</span><span>样本：二战以来 20 次中期选举（1946—2022）</span><span>窗口：选前一个月至选后两个月</span></div>
@@ -110,6 +98,8 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     <div class="kpi"><div class="lab">当前 VIX</div><div class="val">14.2</div><div class="sub">历次选举日均值 21.6</div></div>
   </div>
 </header>
+
+<!--TOC-->
 
 <section id="abstract">
 <h2>摘要</h2>
@@ -126,9 +116,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </section>
 
 <section>
-<h2>一、热点思考：蓝潮定价过半，选举结果改变的是政策路径</h2>
-
-<h3 id="s1">（一）选情：众议院易主接近定局，参议院由七个摇摆州决定</h3>
+<h2 id="s1">一、选情：众议院易主接近定局，参议院由七个摇摆州决定</h2>
 <p><b>二战后执政党在中期选举中丢失众议院席位几乎是定律，低支持率会放大席位损失。</b>1946 年以来 20 次中期选举，总统所在党有 18 次在众议院丢席，例外只有 1998 年和 2002 年。据 Gallup 统计，总统支持率低于 50% 时，执政党众议院席位平均损失 37 席。特朗普支持率处在 34.6%—38.0% 区间，位于二战后历次中选前的最低一档。</p>
 <p><b>众议院门槛极低，民主党净增 3 席即可翻转。</b>参考摩根士丹利，共和党以 220:215 控制众议院，是 1930 年以来最窄的多数。Polymarket 给民主党拿下众议院的定价为 90%—92.5%，Piper Sandler 将概率上调至 80%。据 270toWin，传统评级机构的判断偏保守，量化模型对"蓝潮"的估计更积极。</p>
 <p><b>参议院才是真正的"胜负手"，结果或拖至 12 月初。</b>共和党以 53:47 控制参议院，50:50 时由副总统万斯投出决定票，民主党需净增 4 席。据 Fortune，七场参议院选举差距在 2.5 个点以内；据 RCP，德州塔拉里科领先帕克斯顿 2.6 个点。缅因、阿拉斯加实行排序复选制，佐治亚若无候选人过半需在 12 月初决选，选后存在一段"半确定"窗口。</p>
@@ -148,8 +136,12 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </figure>
 </div>
 
-<h3 id="s2">（二）规律：二战以来 20 次中选，美债长端的规律最稳定</h3>
+</section>
+
+<section>
+<h2 id="s2">二、历史规律：二战以来 20 次中选，美债长端的规律最稳定</h2>
 <p><b>本文只考察选举前后的窗口，样本拉长至二战以来全部 20 次中期选举。</b>以选举日为 T，选前一个月为 T-21 至 T，选后一个月为 T 至 T+21，选后两个月为 T 至 T+42 个交易日。样本长度取决于日度数据起点：标普 500 始于 1946 年（20 次），3 个月国债始于 1954 年（18 次），10 年美债始于 1962 年（16 次），美元指数始于 1974 年（13 次），WTI 与 VIX 始于 1986 年（10 次），黄金期货始于 2002 年（6 次），黄金另以月度数据补足 1974 年以来 13 次。</p>
+<h3 id="s2-1">（一）美股：选前多在 10 月筑底，选后温和修复</h3>
 <p><b>选前一个月美股多在 10 月筑底，选后温和修复。</b>标普 500 较 7 月以来高点回撤超过 5% 的 13 个年份中，12 个年份的选前低点出现在 10 月。20 次平均路径显示，标普 500 选前一个月上涨 3.4%，选后两个月再涨 3.8%；宽松阶段的修复斜率高于加息阶段，但两者差异统计上不显著。</p>
 
 <figure class="fig">
@@ -160,6 +152,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <p class="src">资料来源：Yahoo Finance；加息阶段为 1958、1966、1978、1994、2018、2022 年，宽松阶段为 1954、1970、1974、1982、1986、1990、1998、2002、2010 年</p>
 </figure>
 
+<h3 id="s2-2">（二）美债：选后下行是长样本中胜率最高的规律</h3>
 <p><b>选后一个月 10 年美债下行，是长样本中胜率最高的规律。</b>1962 年以来 16 次中选，选后一个月 10 年美债收益率仅 2 次上行，平均下行 19.8bp；选后两个月同样仅 2 次上行，平均下行 21.0bp。两次例外都对应政策的重新扩张：1978 年 11 月 1 日美国推出美元救助计划、美联储上调贴现率 1 个点；2010 年选后次日美联储宣布 QE2，12 月两党又达成减税延期协议，选后两个月 10 年美债上行 73bp。</p>
 
 <figure class="fig">
@@ -170,6 +163,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <p class="src">资料来源：FRED（DGS10）</p>
 </figure>
 
+<h3 id="s2-3">（三）黄金、美元与原油：规律弱于美债</h3>
 <p><b>黄金的选后上涨是 2000 年以后的现象，美元与原油各有特点。</b>2002 年以来黄金选后一个月 6 次全部上涨，但以月度数据拉长至 1974 年以来 13 次，选后两个月仅 7 次上涨。美元指数选后两个月 13 次中 5 次上涨，没有稳定方向。WTI 选前一个月 10 次中 8 次下跌、选后一个月 7 次下跌，或与执政党的"可负担性"诉求有关：2018 年 11 月 5 日伊朗制裁生效时美国对 8 个经济体发放豁免，2022 年 10 月 19 日拜登宣布再释放 1500 万桶战略石油储备。</p>
 
 <figure class="fig">
@@ -196,7 +190,10 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </tbody></table></div>
 <p class="src">注：括号内为上涨次数/样本数；美债为收益率变动；VIX 1990 年以前用 VXO；月度口径的选后一个月为 10 月至 11 月，选后两个月为 10 月至 12 月。</p>
 
-<h3 id="s3">（三）选举结果与资产：分组差异存在，但统计上均不显著</h3>
+</section>
+
+<section>
+<h2 id="s3">三、选举结果与资产：分组差异存在，但统计上均不显著</h2>
 <p><b>按选举结果分组，选后两个月标普 500 的表现差异不大。</b>执政党保住两院的 5 次平均上涨 5.9%，反对党新获两院的 6 次平均上涨 3.3%，众议院易主（参议院未易主）的 3 次平均上涨 0.9%。组内离散远大于组间差异：同为"众议院易主"，2010 年上涨 6.6%，2018 年下跌 6.2%。</p>
 
 <figure class="fig">
@@ -230,8 +227,13 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <p class="src">资料来源：本文测算</p>
 </figure>
 
-<h3 id="s4">（四）选举结果与政策：国会格局改写的是 6—18 个月后的财政与人事</h3>
+</section>
+
+<section>
+<h2 id="s4">四、选举结果与政策：国会格局改写的是 6—18 个月后的财政与人事</h2>
+<h3 id="s4-1">（一）财政立法：执政党保住两院时最为活跃</h3>
 <p><b>执政党保住两院时，大规模财政立法落地的概率最高，方向取决于战争与周期。</b>1950 年杜鲁门保住两院，1950、1951 年两部收入法为朝鲜战争加税；1962 年肯尼迪保住两院，1964 年减税法落地；1966 年约翰逊保住两院，1968 年通过 10% 所得税附加税；2002 年小布什收复参议院，2003 年通过就业与增长减税法案和医保 D 部分。5 个样本中有 4 次在选后两年内出台大规模财政立法，1978 年的主要变化来自美联储紧缩。</p>
+<h3 id="s4-2">（二）财政博弈：反对党拿下众议院后，债务上限危机频发</h3>
 <p><b>反对党拿下众议院后，财政政策进入"边缘博弈"，结果多以支出上限收尾。</b>1994 年共和党拿下两院，1995—1996 年两次停摆合计 26 天，最终以 1997 年平衡预算法收尾，1998—2001 年联邦财政转为盈余；2010 年共和党拿下众议院，2011 年债务上限危机催生预算控制法和自动减支，8 月标普下调美国评级；2022 年共和党拿下众议院，2023 年债务上限对峙以财政责任法设定 2024—2025 财年支出上限收尾，8 月惠誉下调美国评级。2011、2013、2023 年三次逼近违约的债务上限危机，均发生在众议院由反对党控制期间。</p>
 <p><b>政府分治对赤字的约束体现在个别时期，全样本统计上并不明显。</b>1947—2025 财年，分治年份联邦赤字率年均改善 0.05 个点，统一政府年份年均恶化 0.04 个点，差异很小。1990 年代后半段赤字转为盈余，与平衡预算法和经济繁荣同步；2019—2020 年分治期间赤字率仍大幅扩张，主因是疫情应对。</p>
 
@@ -253,6 +255,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <p class="src">资料来源：美国国会研究服务处（CRS），本文整理；2018—2019 年停摆始于共和党统一政府的跛脚鸭会期，2019 年 1 月 3 日起转为分治</p>
 </figure>
 
+<h3 id="s4-3">（三）人事、行政权与危机应对：国会换手的影响各不相同</h3>
 <p><b>反对党拿下参议院后，人事确认成为主要博弈场。</b>1986 年民主党收复参议院，1987 年参议院否决里根提名的最高法院大法官博克；2014 年共和党拿下参议院，2016 年搁置奥巴马提名的最高法院大法官加兰德。本轮若民主党拿下参议院，2027 年起美联储理事等关键职位的提名都需经民主党多数确认。</p>
 <p><b>关税、外交、汇率等行政权领域，几乎不受国会换手影响。</b>1971 年 8 月尼克松在民主党国会下宣布关闭黄金窗口、实施工资物价管制；2019 年 5 月、8 月特朗普在民主党众议院下两次加码对华关税；贸易协定则常在分治下以两党方式通过，例如 2015 年贸易促进授权、2020 年 1 月美墨加协定。</p>
 <p><b>危机应对跨越党派格局，调查与弹劾集中在反对党控制众议院期间。</b>2008 年 2 月经济刺激法案和 10 月 TARP 在民主党国会、共和党总统下通过，2020 年 3 月 CARES 法案在民主党众议院、共和党总统下通过。1987 年伊朗门听证、1998 年克林顿弹劾、2019 年特朗普弹劾，均发生在反对党控制众议院期间；参议院定罪需 67 票，弹劾成案的概率较低。</p>
@@ -281,7 +284,10 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </tbody></table></div>
 <p class="src">资料来源：美国国会记录、CRS，本文整理</p>
 
-<h3 id="s5">（五）情景映射：三种结果对应的政策与资产</h3>
+</section>
+
+<section>
+<h2 id="s5">五、情景映射：三种结果对应的政策与资产</h2>
 <p><b>民主党全胜：定价已超六成，选后美债下行最确定，政策博弈集中在 2027 年。</b>第二轮和解法案的窗口关闭，财政扩张预期回落；2027 年起美联储理事提名需经民主党多数确认，"美联储政治化"的尾部风险下降；众议院大概率重启调查。历史对应的 6 个样本中，选后两个月 10 年美债有数据的 4 次全部下行，3 个月国债平均上行 13.0bp，曲线趋于平坦。</p>
 <p><b>分治：立法同样陷入僵局，美联储和司法提名仍可顺利确认。</b>历史对应的 2010、2018、2022 年，选后 6—9 个月均出现财政"边缘博弈"。选举窗口内的资产反应与全胜情景接近，美股能源、金融板块或相对占优。</p>
 <p><b>共和党守住两院：唯一会改变财政路径的情景，对资产定价的冲击最大。</b>第二轮和解法案重新进入定价，减税或"关税分红"类财政扩张预期升温。历史对应的 5 个样本中，选举次日与选后两个月标普 500 全部上涨；2010 年减税延期后，10 年美债两个月上行 73bp、美元指数上涨 3.1%，可作为美债上行的上限参考。</p>
@@ -299,7 +305,10 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <tr><td>黄金</td><td>财政尾部风险回落，略偏空</td><td>跟随美联储与地缘</td><td>短期回调</td></tr>
 </tbody></table></div>
 
-<h3 id="s6">（六）本轮特殊性：选举窗口叠加加息周期和油价冲击</h3>
+</section>
+
+<section>
+<h2 id="s6">六、本轮特殊性：选举窗口叠加加息周期和油价冲击</h2>
 <p><b>2018 年是最接近的样本：特朗普任期、众议院易主、美联储加息。</b>2018 年标普 500 从 9 月 20 日高点回撤至 10 月 29 日，选后反弹不足两周即再度下跌，选举日至年末下跌 9.0%，是二战以来 20 次中选中最差的一次，直至 2019 年 1 月 4 日鲍威尔转鸽才确认底部。2022 年同样处在加息阶段，但 11 月 10 日 CPI 低于预期，选后两个月标普 500 上涨 2.4%。</p>
 
 <figure class="fig">
@@ -323,48 +332,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <p><b>VIX 仅 14.2，风险定价偏薄；选前压低油价是白宫的"必选项"。</b>1986 年以来 10 次中选，选举日 VIX 均值为 21.6，最低为 2006 年的 11.1。据 Fortune，美国汽油均价 4.47 美元/加仑、柴油 6.52 美元/加仑，布伦特在 99—100 美元附近，"可负担性"成为选民最关注的经济议题；释放战略石油储备、推动伊朗局势降温等操作在 10 月的概率上升，选举结束后这一约束随之解除。</p>
 </section>
 
-<section id="assets">
-<h2>二、大类资产 &amp; 海外事件 &amp; 数据</h2>
-<p><b>大类资产方面，选举窗口内美债长端的胜率最高，美股宜在 10 月回撤中分批布局、等待 12 月 FOMC 确认。</b></p>
-<p><b>美股：10 月或延续选前震荡，选后修复取决于美联储何时停止加息。</b>标普 500 当前处在 7704.1 点附近。二战以来回撤超过 5% 的年份中，12/13 的选前低点出现在 10 月；本轮 10 月 27—28 日 FOMC 若再次加息，选前低点或后移至 11 月。行业上，参考摩根士丹利，民主党主导的国会将加强对能源、医疗、私募股权的监管审查，以及 AI 反垄断和数据隐私听证。</p>
-<p><b>美债：选后下行是二战以来胜率最高的交易，曲线或趋于平坦。</b>10 年美债收益率 5.11%，1962 年以来 16 次中选选后一个月仅 2 次上行。两次例外均对应货币或财政的重新扩张，本轮只有共和党守住两院的情景与之对应，概率为 5%—8%。</p>
-<p><b>美元：长样本中没有稳定的选举规律，方向由利差和油价决定。</b>美元指数当前 101.28，1974 年以来选后两个月 13 次中 5 次上涨、平均下跌 1.1%。美联储加息、中东风险溢价上升，利差对美元形成支撑。</p>
-<p><b>黄金：选后上涨的规律只在近 20 年成立，本轮更多受加息和地缘驱动。</b>黄金当前处在 4303.3 美元/盎司附近。民主党全胜压缩"财政主导"的尾部风险，对黄金略偏空；央行购金和伊朗局势提供托底。</p>
-<p><b>原油：选前受政策压制，选后回归地缘和供给定价。</b>WTI 当前 96.41 美元/桶，1986 年以来选前一个月 10 次中 8 次下跌；选举结束后政治约束解除，伊朗局势和 OPEC+ 供给决定方向。</p>
-<p><b>人民币、港股、A股：国会对华立法两党共识度高，国会换手的边际影响较小。</b>关税主要依托 232、301 等行政授权条款，历史上国会换手未能改变行政权主导的关税路径。特朗普无法谋求 2028 年连任，选后推动中美"交易"的倾向或上升；人民币定价锚仍是美元指数和中美利差。</p>
-<p><b>未来两个月，重点观察四点：</b>一是 10 月通用选票和特朗普支持率的走势，特别是油价能否回落；二是 10 月 27—28 日 FOMC 是否再次加息；三是参议院七场胶着选举的计票进度，以及 12 月初佐治亚可能的决选；四是国会跛脚鸭会期内的拨款安排，若全年拨款未完成，临时拨款的到期日就是下一个停摆节点。</p>
-
-<div class="table-wrap"><table>
-<caption>图表17：当前 10 年美债处在 5.11%、VIX 仅 14.2，选举窗口的风险定价偏薄</caption>
-<thead><tr><th>资产</th><th class="num">最新值</th><th class="num">日期</th></tr></thead>
-<tbody>
-<tr><td>标普 500</td><td class="num">7704.1</td><td class="num">2026-09-24</td></tr>
-<tr><td>3 个月国债</td><td class="num">4.04%</td><td class="num">2026-09-23</td></tr>
-<tr><td>2 年美债</td><td class="num">4.85%</td><td class="num">2026-09-23</td></tr>
-<tr><td>10 年美债</td><td class="num">5.11%</td><td class="num">2026-09-23</td></tr>
-<tr><td>美元指数</td><td class="num">101.28</td><td class="num">2026-09-25</td></tr>
-<tr><td>黄金（美元/盎司）</td><td class="num">4303.3</td><td class="num">2026-09-25</td></tr>
-<tr><td>WTI（美元/桶）</td><td class="num">96.41</td><td class="num">2026-09-22</td></tr>
-<tr><td>VIX</td><td class="num">14.2</td><td class="num">2026-09-22</td></tr>
-</tbody></table></div>
-</section>
-
-<section id="calendar">
-<h2>三、全球宏观日历（2026 年 10 月—2027 年 1 月）</h2>
-<div class="table-wrap"><table>
-<thead><tr><th>时间</th><th>事件</th><th>关注点</th></tr></thead>
-<tbody>
-<tr><td>10 月 2 日（按惯例）</td><td>美国 9 月非农</td><td>就业走弱是否压低加息预期</td></tr>
-<tr><td>10 月中旬</td><td>美国 9 月 CPI</td><td>能源价格对通胀的传导</td></tr>
-<tr><td>10 月 27—28 日</td><td>FOMC 议息会议</td><td>是否兑现点阵图中的年内第二次加息</td></tr>
-<tr><td>11 月 3 日</td><td>美国中期选举投票</td><td>众议院归属当晚大概率明确</td></tr>
-<tr><td>11 月 6 日（按惯例）</td><td>美国 10 月非农</td><td>选后第一份宏观数据</td></tr>
-<tr><td>11 月中旬</td><td>缅因、阿拉斯加排序复选制计票</td><td>参议院归属的关键变量</td></tr>
-<tr><td>12 月 1 日（如需）</td><td>佐治亚参议院决选</td><td>参议院归属或在此确定</td></tr>
-<tr><td>12 月 8—9 日</td><td>FOMC 议息会议</td><td>本轮加息是否结束</td></tr>
-<tr><td>2027 年 1 月 3 日</td><td>第 120 届国会就职</td><td>新国会格局正式生效</td></tr>
-</tbody></table></div>
-
+<section id="end">
 <div class="risk">
 <p><b>风险提示：</b>美联储加息超预期；中东地缘冲突升级；选举结果争议或计票延迟超预期。</p>
 <p class="sign">2026 年 9 月 25 日</p>
@@ -379,7 +347,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <li>美联储阶段：加息为 1958、1966、1978、1994、2018、2022 年；宽松为 1954、1970、1974、1982、1986、1990、1998、2002、2010 年；暂停为 1946、1950（利率钉住）、1962、2006、2014 年。1966 年处于紧缩末段，划分存在一定主观性。</li>
 <li>选举结果：反对党新获两院为 1946、1954、1986、1994、2006、2014 年；众议院易主为 2010、2018、2022 年；执政党保住两院为 1950、1962、1966、1978、2002 年；维持分治为 1958、1970、1974、1982、1990、1998 年。</li>
 <li>选情参考：<a href="https://fortune.com/2026/09/22/midterm-polls-show-democrats-taking-senate/">Fortune</a>、<a href="https://polymarket.com/event/balance-of-power-2026-midterms">Polymarket</a>、<a href="https://kalshi.com/markets/controls/senate-winner/controls-2026">Kalshi</a>、<a href="https://www.270towin.com/news/2026/09/24/2026-house-election-current-consensus-forecast-type_1844.html">270toWin</a>、<a href="https://fiftyplusone.news/polls/approval/president">FiftyPlusOne</a>、<a href="https://www.cnbc.com/2026/09/16/fed-rate-decision-september-2026.html">CNBC</a>、<a href="https://www.morganstanley.com/insights/articles/2026-us-midterm-elections-stock-market-impact">Morgan Stanley</a>。</li>
-<li>待核实：Gallup 席位损失均值；停摆天数与起止日期；1978 年美元救助计划、2018/2022 年选前油价操作的日期；图表13 的政策事件按公开史料整理；非农等数据发布日期按惯例推定。</li>
+<li>待核实：Gallup 席位损失均值；停摆天数与起止日期；1978 年美元救助计划、2018/2022 年选前油价操作的日期；图表13 的政策事件按公开史料整理。</li>
 </ul>
 </section>
 </main>

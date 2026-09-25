@@ -2,7 +2,7 @@
 
 "2026美国中期选举"专题报告（2026 年 9 月 25 日）。
 
-- **报告正文**：`report.html`（含 17 张图表，浏览器直接打开）
+- **报告正文**：`report.html`（深度报告，含目录与 16 张图表，浏览器直接打开）
 - **模板**：`report_template.html`，数据由 `scripts/build_report.py` 注入
 - **数据**：`data/`，FRED、Yahoo Finance、datasets/gold-prices 原始数据及统计结果
 - **脚本**：
