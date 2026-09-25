@@ -1,0 +1,108 @@
+{
+ "races": [
+  {
+   "state": "北卡罗来纳",
+   "inc": "R",
+   "margin": 6.1,
+   "source": "Pollsmax 均值，Cooper 48.3 vs Whatley 42.2",
+   "p_d": 0.858
+  },
+  {
+   "state": "俄亥俄（特别）",
+   "inc": "R",
+   "margin": 3.7,
+   "source": "PollingSource 近 30 天均值，Brown 46.7 vs Husted 43.0",
+   "p_d": 0.744
+  },
+  {
+   "state": "得克萨斯",
+   "inc": "R",
+   "margin": 2.6,
+   "source": "RCP 均值，Talarico 领先",
+   "p_d": 0.676
+  },
+  {
+   "state": "阿拉斯加",
+   "inc": "R",
+   "margin": 2.0,
+   "source": "RCP 均值，Peltola 49 vs Sullivan 47",
+   "p_d": 0.636
+  },
+  {
+   "state": "缅因",
+   "inc": "R",
+   "margin": 0.8,
+   "source": "RCP 均值，Jackson 46.8 vs Collins 46.0",
+   "p_d": 0.555
+  },
+  {
+   "state": "爱荷华",
+   "inc": "R",
+   "margin": -1.1,
+   "source": "RCP 均值，Hinson 领先",
+   "p_d": 0.424
+  },
+  {
+   "state": "内布拉斯加",
+   "inc": "R",
+   "margin": -6.0,
+   "source": "假设：按 Lean R 赋值（Osborn 为独立候选人）",
+   "p_d": 0.146
+  },
+  {
+   "state": "堪萨斯",
+   "inc": "R",
+   "margin": -6.0,
+   "source": "假设：按 Cook Lean R 赋值",
+   "p_d": 0.146
+  },
+  {
+   "state": "密歇根",
+   "inc": "D",
+   "margin": 4.0,
+   "source": "假设：按 Cook Lean D 赋值",
+   "p_d": 0.759
+  },
+  {
+   "state": "新罕布什尔",
+   "inc": "D",
+   "margin": 4.0,
+   "source": "假设：按 Lean D 赋值",
+   "p_d": 0.759
+  },
+  {
+   "state": "佐治亚",
+   "inc": "D",
+   "margin": 7.0,
+   "source": "假设：按 Cook Likely D 赋值",
+   "p_d": 0.891
+  }
+ ],
+ "national_sd": 3.5,
+ "state_sd": 4.5,
+ "n": 200000,
+ "p_control": 0.553,
+ "dist": {
+  "-3": 0.0066,
+  "-2": 0.0185,
+  "-1": 0.036,
+  "0": 0.0577,
+  "1": 0.0834,
+  "2": 0.1093,
+  "3": 0.1354,
+  "4": 0.1544,
+  "5": 0.1595,
+  "6": 0.1367,
+  "7": 0.0762,
+  "8": 0.0261
+ },
+ "sensitivity": {
+  "-3": 0.269,
+  "-2": 0.357,
+  "-1": 0.454,
+  "0": 0.553,
+  "1": 0.649,
+  "2": 0.737,
+  "3": 0.813
+ }
+}
