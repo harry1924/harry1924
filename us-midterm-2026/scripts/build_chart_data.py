@@ -43,6 +43,55 @@ def event_paths():
               "执政党保住两院": lambda m: m[1] == "执政党保住两院"}
     out["SPX"] = {g: avg_path("SPX", "pct", f) for g, f in groups.items()}
     out["UST10"] = {g: avg_path("UST10", "bp", f) for g, f in groups.items()}
+    out["DXY"] = {g: avg_path("DXY", "pct", f) for g, f in groups.items()}
+    out["Gold"] = {g: avg_path("Gold", "pct", f) for g, f in groups.items()}
+    out["Gold_years"] = {e[:4]: p for e in ELECTIONS
+                         for p in [path("Gold", dt.date.fromisoformat(e), "pct")] if p}
+    return out
+
+
+def election_day(y):
+    d = dt.date(y, 11, 1)
+    while d.weekday() != 0:
+        d += dt.timedelta(1)
+    return d + dt.timedelta(1)
+
+
+def control():
+    """中期选举年与大选年、其他年份同一日期之后的表现对照。"""
+    out = {}
+    specs = {"UST10": ("bp", 1962), "DXY": ("pct", 1974), "Gold": ("pct", 2000)}
+    for name, (mode, y0) in specs.items():
+        s = S[name]
+        keys = sorted(s)
+        res = {"中期选举年": [], "大选年": [], "其他年份": []}
+        for y in range(y0, 2026):
+            day = election_day(y)
+            i = bisect.bisect_right(keys, day) - 1
+            if i < 0 or i + 42 >= len(keys) or (day - keys[i]).days > 5:
+                continue
+            k = "中期选举年" if y % 4 == 2 else ("大选年" if y % 4 == 0 else "其他年份")
+            x, a, b = s[keys[i]], s[keys[i + 21]], s[keys[i + 42]]
+            f = (lambda u, v: (v - u) * 100) if mode == "bp" else (lambda u, v: (v / u - 1) * 100)
+            res[k].append((y, f(x, a), f(x, b)))
+        out[name] = {k: {"n": len(v), "m1": round(st.mean([z[1] for z in v]), 2),
+                         "m2": round(st.mean([z[2] for z in v]), 2),
+                         "up1": sum(z[1] > 0 for z in v), "down1": sum(z[1] < 0 for z in v),
+                         "up2": sum(z[2] > 0 for z in v), "down2": sum(z[2] < 0 for z in v)}
+                     for k, v in res.items()}
+    # 黄金月度长样本：10 月至 11 月、10 月至 12 月
+    gm = S["Gold_M"]
+    res = {"中期选举年": [], "大选年": [], "其他年份": []}
+    for y in range(1974, 2026):
+        o, n_, d_ = gm.get(dt.date(y, 10, 1)), gm.get(dt.date(y, 11, 1)), gm.get(dt.date(y, 12, 1))
+        if o and n_ and d_:
+            k = "中期选举年" if y % 4 == 2 else ("大选年" if y % 4 == 0 else "其他年份")
+            res[k].append((y, (n_ / o - 1) * 100, (d_ / o - 1) * 100))
+    out["Gold_M"] = {k: {"n": len(v), "m1": round(st.mean([z[1] for z in v]), 2),
+                         "m2": round(st.mean([z[2] for z in v]), 2),
+                         "up1": sum(z[1] > 0 for z in v), "down1": sum(z[1] < 0 for z in v),
+                         "up2": sum(z[2] > 0 for z in v), "down2": sum(z[2] < 0 for z in v)}
+                     for k, v in res.items()}
     return out
 
 
@@ -154,6 +203,7 @@ def main():
         "long": long_series(),
         "deficit_regime": deficit_by_regime(),
         "tests": tests(),
+        "control": control(),
     }
     with open(os.path.join(DATA, "chart_data.json"), "w") as f:
         json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
@@ -161,6 +211,11 @@ def main():
     print("analog", data["analog"]["days_left"], data["analog"]["latest"])
     for g, v in data["event"]["SPX"].items():
         print("SPX", g, v["n"], v["values"][63 - 21], v["values"][63], v["values"][63 + 21], v["values"][63 + 42])
+    print(json.dumps(data["control"], ensure_ascii=False))
+    for k in ("DXY", "Gold"):
+        for g, v in data["event"][k].items():
+            if v["n"]:
+                print(k, g, v["n"], v["values"][63 - 21], v["values"][63 + 21], v["values"][63 + 42])
     for g, v in data["event"]["UST10"].items():
         print("UST10", g, v["n"], v["values"][63 - 21], v["values"][63 + 21], v["values"][63 + 42])
 
