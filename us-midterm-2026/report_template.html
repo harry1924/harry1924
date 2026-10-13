@@ -504,6 +504,24 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <p class="src">资料来源：FRED，Yahoo Finance，LBMA；小图标题括号内依次为只丢众议院、两院皆失、两院皆保的样本数，0 表示无数据</p>
 </figure>
 
+<p><b>补充美股指标显示，两院皆保时小盘股跑赢、两院皆失时价值股跑赢，两条规律在战后样本中均为 4 次全中。</b>以 Ken French 数据库基于 CRSP 的日度收益为补充（1926 年起，含股息），全市场在两院皆保的 4 次中选后两个月全部上涨、平均上涨 8.4%，两院皆失平均上涨 4.8%，只丢众议院平均上涨 1.5%。规模因子上，两院皆保时小盘股 4 次全部跑赢大盘、平均超额 3.8%，两院皆失时 4 次全部跑输；价值因子上，两院皆失时价值股 4 次全部跑赢成长股、平均超额 3.2%。行业上，国防在只丢众议院的 3 次中选后两个月全部下跌、平均下跌 5.3%，两院皆保的 1966、1978 年平均上涨 23.0%；医药在两院皆保时 4 次全部上涨、平均上涨 10.0%。</p>
+<p><b>纳入战前 1930—1942 年后，两院皆保的优势明显减弱。</b>1930 年大萧条中全市场选后两个月下跌 11.4%，1938 年衰退中基本持平，含战前的 8 次两院皆保，全市场平均上涨 3.9%、8 次中 7 次上涨，小盘股跑赢仅 5 次，价值因子在战前 4 次中全部跑输。战前处于大萧条与战时管制，与当下可比性较弱，本文以战后样本为主，战前样本作为稳健性参照。</p>
+
+<figure class="fig">
+  <p class="ft">图表#：两院皆保时全市场与小盘股走势最强，两院皆失时价值股相对成长股走强</p>
+  <p class="fs">选前统一政府三种结果下的平均走势，以选举日为 100；规模、价值因子为多空组合累计收益；虚线为含战前（1930—1942 年）的两院皆保</p>
+  <div class="legend"><span><i style="background:var(--s3)"></i>只丢众议院</span><span><i style="background:var(--s1)"></i>两院皆失</span><span><i style="background:var(--s8)"></i>两院皆保</span><span><i style="background:var(--s8);opacity:.55"></i>两院皆保（含战前，虚线）</span></div>
+  <div class="grid3" id="ext-ts-grid"></div>
+  <p class="src">资料来源：Kenneth R. French Data Library（基于 CRSP，市值加权日度收益），Yahoo Finance（纳斯达克综合指数，1971 年起）；国防行业始于 1963 年。小图标题括号内依次为只丢众议院、两院皆失、两院皆保、含战前两院皆保的样本数</p>
+</figure>
+
+<div class="table-wrap"><table>
+<caption>图表#：小盘股在两院皆保时 4 次全部跑赢，价值股在两院皆失时 4 次全部跑赢</caption>
+<thead><tr><th>指标</th><th>选举结果</th><th class="num">样本</th><th class="num">选后一个月</th><th class="num">选后两个月</th></tr></thead>
+<tbody id="ext-body"></tbody>
+</table></div>
+<p class="src">注：括号内为上涨次数/样本数；规模因子为小盘减大盘、价值因子为价值减成长的多空组合收益，正值代表前者跑赢。资料来源：Kenneth R. French Data Library，Yahoo Finance，本文测算</p>
+
 <div class="table-wrap"><table>
 <caption>图表#：两院皆保时美股选后两个月 4 次全部上涨，10 年美债在三种结果下均下行</caption>
 <thead><tr><th>资产</th><th>选举结果</th><th class="num">样本</th><th class="num">选举次日</th><th class="num">选后一个月</th><th class="num">选后两个月</th></tr></thead>
@@ -571,6 +589,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <li>数据来源：3 个月国债、2 年/10 年美债、WTI、VIX/VXO、联邦财政收支/GDP 来自 FRED；标普 500、美元指数、COMEX 黄金期货来自 Yahoo Finance；黄金月度价格来自 datasets/gold-prices。</li>
 <li>美联储阶段：加息为 1958、1966、1978、1994、2018、2022 年；宽松为 1954、1970、1974、1982、1986、1990、1998、2002、2010 年；暂停为 1946、1950（利率钉住）、1962、2006、2014 年。1966 年处于紧缩末段，划分存在一定主观性。</li>
 <li>选举结果采用两层分类。第一层（全部 20 次）：统一→分治为 1946、1954、1994、2006、2010、2018、2022 年；统一保持为 1950、1962、1966、1978 年；分治保持为 1958、1970、1974、1982、1986、1990、1998、2014 年；分治→统一为 2002 年。第二层（选前统一政府 11 次）：只丢众议院为 2010、2018、2022 年；两院皆失为 1946、1954、1994、2006 年；两院皆保为 1950、1962、1966、1978 年；只丢参议院无样本。</li>
+<li>补充美股指标：Kenneth R. French Data Library 的 Fama/French 三因子日度数据（全市场含股息总回报、规模因子、价值因子）与 49 个行业组合（市值加权）日度收益，基于 CRSP，1926 年 7 月起；国防（Guns）行业始于 1963 年。纳斯达克综合指数来自 Yahoo Finance，1971 年起。</li>
 <li>黄金：LBMA 伦敦金下午定盘价（美元），1968 年起，取自公开存档（unbalancedparentheses/forex-centuries），校验值 86057834…；COMEX 黄金期货与月度价格仅用于第二章。</li>
 <li>参议院测算：<code>scripts/senate_sim.py</code>，以 6 个有民调州的民调均值为中枢，内布拉斯加、堪萨斯按倾向共和党赋值 -6 个点，密歇根、新罕布什尔按倾向民主党赋值 +4 个点，佐治亚按可能民主党赋值 +7 个点；全国共同误差标准差 3.5 个点、州独立误差标准差 4.5 个点，模拟 20 万次。内布拉斯加独立候选人胜选按席位翻转计。</li>
 <li>政策现状参考：<a href="https://nlihc.org/resource/house-republicans-pass-and-president-signs-law-reconciliation-20-providing-70-billion-ice">NLIHC（第二轮和解法案）</a>、<a href="https://baselinepolicy.substack.com/p/chart-of-the-week-projecting-the">Baseline Policy（债务上限）</a>、<a href="https://globaltradealert.org/blog/from-ieepa-to-section-122">Global Trade Alert（关税）</a>、<a href="https://www.scotusblog.com/2026/06/court-prevents-trump-from-firing-fed-governor/">SCOTUSblog（Trump v. Cook）</a>、<a href="https://www.cbsnews.com/news/kevin-warsh-senate-confirms-fed-governor/">CBS（沃什确认）</a>、<a href="https://www.gelliottmorris.com/p/2026-09-18-race-raters-lagging-midterms">G. Elliott Morris（评级偏差）</a>、<a href="https://decisiondeskhq.substack.com/p/2026-redistricting-math">Decision Desk HQ（选区重划）</a>。</li>
@@ -756,6 +775,33 @@ const D = /*__DATA__*/null;
         [first?g:'',y+'·'+p,fed,pair('SPX',y,1,'%'),pair('UST10',y,0,'bp'),one('DXY',y,1,'%'),one('GoldL',y,1,'%'),ctx].forEach((v,ci)=>{const td=document.createElement('td'); if(ci>=3&&ci<=6) td.className='num'; td.textContent=v; tr.appendChild(td);});
         cb.appendChild(tr);});
       const tr=document.createElement('tr'); ['只丢参议院','二战以来无先例','—','—','—','—','—','本文测算 2026 年概率 1%—2%'].forEach((v,ci)=>{const td=document.createElement('td'); if(ci>=3&&ci<=6) td.className='num'; td.textContent=v; tr.appendChild(td);}); cb.appendChild(tr);}
+
+    // 补充美股指标
+    const EX=[['全市场（CRSP，含股息）','MKT'],['纳斯达克综合','IXIC'],['小盘相对大盘（规模因子）','SMB'],['价值相对成长（价值因子）','HML'],['银行','IND_Banks'],['石油天然气','IND_Oil'],['医药','IND_Drugs'],['公用事业','IND_Util'],['国防','IND_Guns']];
+    const EG=[['只丢众议院',t.s3,{}],['两院皆失',t.s1,{}],['两院皆保',t.s8,{}],['两院皆保（含战前）',t.s8,{borderDash:[5,4],borderWidth:1.4}]];
+    const exg=document.getElementById('ext-ts-grid'); if(exg&&D.ext){ exg.textContent='';
+      EX.forEach(([lab,a],k)=>{const L=D.ext.paths[a];
+        const box=document.createElement('div'); box.className='mini';
+        const h=document.createElement('p'); h.className='mini-t'; h.textContent=lab+'（样本 '+EG.map(g=>L[g[0]].n).join('/')+'）'; box.appendChild(h);
+        const wrap=document.createElement('div'); wrap.className='chart mini-ts'; const cv=document.createElement('canvas'); cv.id='ext-ts-'+k;
+        cv.setAttribute('role','img'); cv.setAttribute('aria-label',lab+'在选前统一政府三种结果下的平均走势');
+        wrap.appendChild(cv); box.appendChild(wrap); exg.appendChild(box);
+        const ds=EG.filter(g=>L[g[0]].n>0&&!(g[0]==='两院皆保（含战前）'&&L[g[0]].n===L['两院皆保'].n)).map(g=>lineDs(g[0]+'（'+L[g[0]].n+'）',L[g[0]].values.map((v,i)=>({x:D.layer.offsets[i],y:v})),g[1],Object.assign({borderWidth:1.8},g[2])));
+        const o=pathOpts('idx'); o.scales.x.ticks.stepSize=42; o.scales.y.ticks={color:t.muted,maxTicksLimit:6}; o.plugins.vline.label='';
+        add(cv.id,{type:'line',data:{datasets:ds},options:o});});}
+    const eb=document.getElementById('ext-body'); if(eb&&D.ext){ eb.textContent='';
+      EX.forEach(([lab,a])=>{
+        const grp=[['只丢众议院',null],['两院皆失',null],['两院皆保',null],['两院皆保（含战前）','pre']];
+        grp.forEach(([g,mode],j)=>{
+          const base=rows.filter(r=>r.asset===a&&r.strict===(mode?'两院皆保':g));
+          const pre=mode?Object.values(D.ext.prewar[a]||{}):[];
+          const vals=c=>base.filter(r=>r[c]!==null).map(r=>r[c]).concat(pre.map(p=>p[c]).filter(v=>v!==undefined&&v!==null));
+          const v1=vals('post_1m'), v2=vals('post_2m');
+          if(mode&&pre.length===0) return;
+          const f=v=>v.length?fmt(mean(v),2)+'%（'+v.filter(x=>x>0).length+'/'+v.length+'）':'—';
+          const tr=document.createElement('tr');
+          [j===0?lab:'',g,String(v2.length),f(v1),f(v2)].forEach((v,ci)=>{const td=document.createElement('td'); if(ci>=2) td.className='num'; td.textContent=v; tr.appendChild(td);});
+          eb.appendChild(tr);});});}
 
     // 第一层：20 次标普选后两个月，按第一层分类着色
     const rc=Object.fromEntries(RG);

@@ -213,6 +213,33 @@ def layer_paths():
     return out
 
 
+EXT_ASSETS = ["MKT", "IXIC", "SMB", "HML", "IND_Banks", "IND_Oil", "IND_Drugs", "IND_Util", "IND_Guns"]
+PREWAR = {"1930": "1930-11-04", "1934": "1934-11-06", "1938": "1938-11-08", "1942": "1942-11-03"}
+
+
+def ext_paths():
+    """补充美股指标：第二层三种结果的平均路径，另给出含战前（1930—1942）的两院皆保。"""
+    out = {}
+    for name in EXT_ASSETS:
+        out[name] = {}
+        groups = {g: [e for e in ELECTIONS if e[:4] in ys] for g, ys in STRICT.items() if ys}
+        groups["两院皆保（含战前）"] = groups["两院皆保"] + list(PREWAR.values())
+        for g, dates in groups.items():
+            ps = [p for e in dates for p in [path(name, dt.date.fromisoformat(e), "pct")] if p]
+            out[name][g] = {"n": len(ps), "values": [round(st.mean(c), 3) for c in zip(*ps)] if ps else []}
+    # 战前四次的选后表现（用于表格）
+    pre = {}
+    for name in EXT_ASSETS:
+        pre[name] = {}
+        for y, e in PREWAR.items():
+            d = dt.date.fromisoformat(e)
+            vals = [path(name, d, "pct")]
+            if vals[0]:
+                v = vals[0]
+                pre[name][y] = {"post_1m": round(v[63 + 21] - 100, 2), "post_2m": round(v[63 + 42] - 100, 2)}
+    return out, pre
+
+
 def regime_tests():
     """第一层：统一→分治与统一保持的差异，以及四类分组整体的解释度。"""
     rnd = random.Random(2026)
@@ -244,6 +271,7 @@ def main():
         "deficit_regime": deficit_by_regime(),
         "tests": tests(),
         "layer": layer_paths(),
+        "ext": dict(zip(("paths", "prewar"), ext_paths())),
         "regime_tests": regime_tests(),
         "control": control(),
     }

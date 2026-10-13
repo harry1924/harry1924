@@ -73,7 +73,11 @@ def label(groups, year):
 
 FRED = {"UST10": "DGS10", "UST2": "DGS2", "UST3M": "DTB3", "WTI": "DCOILWTICO",
         "VIX": "VIXCLS", "VXO": "VXOCLS", "WTI_M": "WTISPLC"}
-YAHOO = {"SPX": "%5EGSPC", "DXY": "DX-Y.NYB", "Gold": "GC%3DF"}
+YAHOO = {"SPX": "%5EGSPC", "DXY": "DX-Y.NYB", "Gold": "GC%3DF", "IXIC": "%5EIXIC"}
+# Ken French 数据库（基于 CRSP，1926 年 7 月起）：全市场含股息总回报、规模与价值因子、行业组合（市值加权）
+FF_BASE = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
+FF_INDUSTRIES = {"Banks": "IND_Banks", "Oil": "IND_Oil", "Drugs": "IND_Drugs", "Util": "IND_Util", "Guns": "IND_Guns"}
+EQX = ["MKT", "SMB", "HML"] + list(FF_INDUSTRIES.values())
 LBMA_URL = ("https://raw.githubusercontent.com/unbalancedparentheses/forex-centuries/main/"
             "data/sources/lbma/lbma_gold_daily.csv")
 GOLD_M_URL = "https://raw.githubusercontent.com/datasets/gold-prices/main/data/monthly.csv"
@@ -82,11 +86,55 @@ LEVELS = {"VIX"}
 START = {"DXY": dt.date(1974, 1, 1)}  # 1971—1973 为布雷顿森林体系解体过渡期
 OFFSETS = [(-21, 0), (0, 1), (0, 21), (0, 42)]
 M_OFFSETS = [(-1, 0), (0, 1), (0, 2)]  # 相对 10 月
-ASSETS = ["SPX", "UST3M", "UST2", "UST10", "DXY", "Gold", "GoldL", "WTI", "VIX", "Gold_M", "WTI_M"]
+ASSETS = ["SPX", "UST3M", "UST2", "UST10", "DXY", "Gold", "GoldL", "WTI", "VIX", "Gold_M", "WTI_M", "IXIC"] + EQX
+
+
+def _ff_table(name, header_prefix):
+    """读取 Ken French 日度 CSV（zip），返回第一个表格（市值加权）的 {日期: {列: 日收益%}}。"""
+    import io
+    import zipfile
+    raw = urllib.request.urlopen(urllib.request.Request(FF_BASE + name, headers={"User-Agent": "Mozilla/5.0"})).read()
+    z = zipfile.ZipFile(io.BytesIO(raw))
+    lines = z.read(z.namelist()[0]).decode("latin1").splitlines()
+    start = next(i for i, l in enumerate(lines) if l.startswith(header_prefix))
+    cols = [c.strip() for c in lines[start].split(",")[1:]]
+    out = {}
+    for l in lines[start + 1:]:
+        parts = l.split(",")
+        if len(parts) < 2 or not parts[0].strip().isdigit():
+            break
+        d = parts[0].strip()
+        out[f"{d[:4]}-{d[4:6]}-{d[6:]}"] = {c: float(v) for c, v in zip(cols, parts[1:])}
+    return out
+
+
+def fetch_equity_ext():
+    """把日收益累乘为指数（起点 100），写入 data/EQX.csv。缺失值（-99.99）期间不计入。"""
+    fac = _ff_table("F-F_Research_Data_Factors_daily_CSV.zip", ",Mkt-RF")
+    ind = _ff_table("49_Industry_Portfolios_daily_CSV.zip", ",Agric")
+    level = {k: None for k in EQX}
+    with open(os.path.join(DATA, "EQX.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["date"] + EQX)
+        for d in sorted(fac):
+            rets = {"MKT": fac[d]["Mkt-RF"] + fac[d]["RF"], "SMB": fac[d]["SMB"], "HML": fac[d]["HML"]}
+            for src, dst in FF_INDUSTRIES.items():
+                v = ind.get(d, {}).get(src)
+                rets[dst] = v if v is not None and v > -99 else None
+            row = [d]
+            for k in EQX:
+                r = rets[k]
+                if r is None:
+                    level[k] = None
+                else:
+                    level[k] = (level[k] or 100.0) * (1 + r / 100)
+                row.append("" if level[k] is None else round(level[k], 6))
+            w.writerow(row)
 
 
 def fetch():
     os.makedirs(DATA, exist_ok=True)
+    fetch_equity_ext()
     for sid in FRED.values():
         urllib.request.urlretrieve(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}",
                                    os.path.join(DATA, f"{sid}.csv"))
@@ -118,13 +166,13 @@ def fetch():
                     w.writerow([day.isoformat(), round(c, 4)])
 
 
-def load(path):
+def load(path, col=1):
     out = {}
     with open(path) as f:
         for row in list(csv.reader(f))[1:]:
             try:
                 d = row[0] if len(row[0]) > 7 else row[0] + "-01"
-                out[dt.date.fromisoformat(d)] = float(row[1])
+                out[dt.date.fromisoformat(d)] = float(row[col])
             except (ValueError, IndexError):
                 pass
     return out
@@ -135,6 +183,8 @@ def series():
     s.update({k: load(os.path.join(DATA, f"{k}.csv")) for k in YAHOO})
     s["Gold_M"] = load(os.path.join(DATA, "gold_monthly.csv"))
     s["GoldL"] = load(os.path.join(DATA, "GoldLBMA.csv"))
+    for j, k in enumerate(EQX, start=1):
+        s[k] = load(os.path.join(DATA, "EQX.csv"), col=j)
     # VIX 1990 年起，此前用 VXO 补足
     vxo = s.pop("VXO")
     s["VIX"] = {**{d: v for d, v in vxo.items() if d.year < 1990}, **s["VIX"]}
