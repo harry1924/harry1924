@@ -1,0 +1,239 @@
+<title>中期选举与美股长样本</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap">
+/*__STYLE__*/
+<style>
+.heat td.num{font-size:12.5px;padding:6px 8px}
+.heat th{font-size:12px;white-space:normal;min-width:64px;vertical-align:bottom}
+.heat td.yr{white-space:nowrap;font-variant-numeric:tabular-nums}
+.heat td.grp{white-space:nowrap;font-size:12px;color:var(--ink-2)}
+</style>
+
+<div class="wrap">
+<main>
+<header class="cover">
+  <div class="eyebrow">专题 · 2026 美国中期选举</div>
+  <h1>中期选举与美股：1926—2022 年 25 次中选的长样本检验</h1>
+  <p class="series">——"2026美国中期选举"专题·美股篇</p>
+  <div class="meta"><span>2026 年 10 月</span><span>样本：1926—2022 年全部 25 次中期选举</span><span>数据：Ken French 数据库（基于 CRSP，含股息，市值加权，日度）</span></div>
+  <div class="kpis">
+    <div class="kpi"><div class="lab">中期选举后两个月全市场上涨次数</div><div class="val">20 / 25</div><div class="sub">平均上涨 3.8%</div></div>
+    <div class="kpi"><div class="lab">非中期选举年同期平均</div><div class="val">+2.4%</div><div class="sub">大选年 +2.5%，其他年份 +2.4%</div></div>
+    <div class="kpi"><div class="lab">统一→分治 vs 统一保持（全样本）</div><div class="val">p = 0.83</div><div class="sub">全市场选后两个月</div></div>
+    <div class="kpi"><div class="lab">两院皆失时价值股跑赢成长股</div><div class="val">4 / 4</div><div class="sub">平均超额 3.1%</div></div>
+  </div>
+</header>
+
+<!--TOC-->
+
+<section id="abstract">
+<h2>摘要</h2>
+<div class="abstract">
+<p>前文的美股统计以标普 500 为主，样本始于 1946 年，纳斯达克、行业指数的起点各不相同，不同指标之间难以比较。本篇把全部美股指标统一到 Ken French 数据库基于 CRSP 的日度收益，样本期统一为 1926—2022 年，覆盖全部 25 次中期选举，并检验此前发现的规律在更长样本中是否仍然成立。</p>
+<p><b>中期选举后美股上涨居多，长样本中这一规律依然成立。</b>25 次中选后两个月，全市场 20 次上涨、平均上涨 3.8%；同一日期之后的两个月，大选年平均上涨 2.5%，其他年份平均上涨 2.4%。</p>
+<p><b>"两院皆保时美股最强"只在战后成立，纳入战前样本后基本消失。</b>战后 4 次两院皆保，全市场选后两个月全部上涨、平均上涨 8.4%；战前 1926—1942 年 5 次平均仅上涨 0.7%，1930 年下跌 11.4%。全样本下统一→分治与统一保持之间的差异仅 0.8 个点，置换检验 p 值为 0.83。</p>
+<p><b>风格与行业层面，两院皆失时价值股、公用事业、电子设备 4 次全部跑赢或上涨。</b>价值因子在两院皆失的 4 次中全部为正、平均超额 3.1%；公用事业、电子设备同样 4 次全部上涨。战后统一保持时小盘股跑赢大盘的规律（p=0.03）在纳入战前后不再成立。</p>
+<p><b>全样本 28 组检验的 p 值均高于 0.16，仅战后样本中 1 组低于 0.05，结论以描述为主。</b>按 5% 的显著性水平，28 组检验预期会有 1—2 组偶然显著；选举结果对美股选后表现的系统性影响较弱，同期的经济周期与美联储更为关键。</p>
+</div>
+</section>
+
+<section>
+<h2 id="e1">一、样本与指标：统一到 1926—2022 年</h2>
+<p><b>全部指标统一使用 Ken French 数据库的日度收益，样本起点均为 1926 年 7 月 1 日。</b>该数据库基于 CRSP 全部美股计算，含股息、市值加权，指数、风格、行业口径一致。1926 年是公开日度数据所能覆盖的最早起点，可以纳入 1926—2022 年全部 25 次中期选举。标普 500 的日度数据始于 1928 年，纳斯达克始于 1971 年，前文所用国防行业组合始于 1963 年，本篇改用起点一致的替代指标：全市场替代标普 500，航空航天替代国防，电子设备替代科技。</p>
+
+<div class="table-wrap"><table>
+<caption>图表#：14 个美股指标的样本期均为 1926—2022 年</caption>
+<thead><tr><th>类别</th><th>指标</th><th>构造</th></tr></thead>
+<tbody>
+<tr><td>整体</td><td>全市场</td><td>CRSP 全部美股市值加权总回报（Mkt-RF + RF）</td></tr>
+<tr><td rowspan="2">规模</td><td>大盘股 / 小盘股</td><td>按市值排序的前 30% / 后 30% 组合</td></tr>
+<tr><td>小盘相对大盘</td><td>规模因子 SMB，正值代表小盘跑赢</td></tr>
+<tr><td rowspan="2">风格</td><td>价值股 / 成长股</td><td>按账面市值比排序的前 30% / 后 30% 组合</td></tr>
+<tr><td>价值相对成长</td><td>价值因子 HML，正值代表价值跑赢</td></tr>
+<tr><td>行业</td><td>银行、石油天然气、医药、公用事业、航空航天、电子设备、零售</td><td>49 个行业组合中的对应行业，航空航天作为国防代理，电子设备作为科技代理</td></tr>
+</tbody></table></div>
+<p class="src">资料来源：Kenneth R. French Data Library</p>
+
+<p><b>25 次中选按两层分类，战前 5 次全部属于统一保持。</b>1926、1930、1934、1938、1942 年选前均为统一政府，选后总统党保住两院，因此统一保持与两院皆保的样本由 4 次扩大到 9 次，其他分组不变。1930 年共和党在投票中保住众议院，随后因议员去世补选失去多数，按投票结果归类。</p>
+
+<div class="table-wrap"><table>
+<caption>图表#：纳入战前样本后，统一保持由 4 次增至 9 次</caption>
+<thead><tr><th>第一层</th><th class="num">次数</th><th>第二层（选前统一政府）</th><th>年份</th></tr></thead>
+<tbody>
+<tr><td rowspan="2">统一→分治</td><td class="num" rowspan="2">7</td><td>只丢众议院</td><td>2010、2018、2022</td></tr>
+<tr><td>两院皆失</td><td>1946、1954、1994、2006</td></tr>
+<tr><td>统一保持</td><td class="num">9</td><td>两院皆保</td><td>战前 1926、1930、1934、1938、1942；战后 1950、1962、1966、1978</td></tr>
+<tr><td>分治保持</td><td class="num">8</td><td>—</td><td>1958、1970、1974、1982、1986、1990、1998、2014</td></tr>
+<tr><td>分治→统一</td><td class="num">1</td><td>—</td><td>2002</td></tr>
+</tbody></table></div>
+<p class="src">注：只丢参议院无历史样本。资料来源：美国众议院历史办公室，本文整理</p>
+</section>
+
+<section>
+<h2 id="e2">二、整体规律：中期选举后美股上涨居多，强于其他年份同期</h2>
+<p><b>25 次中选后两个月，全市场 20 次上涨，平均涨幅高于非中期选举年同期。</b>以每年 11 月选举日（或同日）为起点，中期选举年之后两个月全市场平均上涨 3.8%；大选年 25 次平均上涨 2.5%、17 次上涨，其他年份 50 次平均上涨 2.4%、36 次上涨。中期选举后的季节性修复在长样本中依然存在，但幅度领先仅 1—1.5 个点。</p>
+
+<figure class="fig">
+  <p class="ft">图表#：中期选举年选后两个月平均涨幅高于大选年与其他年份</p>
+  <p class="fs">每年 11 月选举日（或同日）之后 42 个交易日的平均涨跌幅（%），1926—2025 年</p>
+  <div class="chart short"><canvas id="c-ctl" role="img" aria-label="中期选举年、大选年、其他年份选后两个月平均涨跌幅"></canvas></div>
+  <p class="src">资料来源：Kenneth R. French Data Library，本文测算；括号内为上涨次数/样本数</p>
+</figure>
+</section>
+
+<section>
+<h2 id="e3">三、第一层：失去立法主导权与美股</h2>
+<p><b>全样本下，统一→分治与统一保持的美股表现几乎没有差别。</b>选后两个月，全市场在统一→分治的 7 次中平均上涨 3.4%，统一保持的 9 次平均上涨 4.1%，分治保持的 8 次平均上涨 4.2%。大盘、小盘、价值、成长的分组差异同样在 2 个点以内。</p>
+<p><b>战后样本与战前样本的方向相反，是全样本差异消失的原因。</b>战后 4 次统一保持，全市场、小盘股、航空航天、电子设备选后两个月分别平均上涨 8.4%、14.4%、14.5%、11.8%，全部上涨；战前 5 次分别平均上涨 0.7%、-2.9%、4.6%、1.6%。战前处在大萧条与战时管制，1930 年选后两个月全市场下跌 11.4%，政策与市场环境与战后差异很大。</p>
+
+<div class="table-wrap heat"><table>
+<caption>图表#：第一层分组下，各指标选后两个月的平均表现差异多在 2 个点以内</caption>
+<thead id="reg-head"></thead><tbody id="reg-body"></tbody></table></div>
+<p class="src">注：括号内为上涨次数/样本数；颜色深浅代表平均涨跌幅大小，蓝色为正、红色为负。资料来源：Kenneth R. French Data Library，本文测算</p>
+
+<figure class="fig">
+  <p class="ft">图表#：统一保持与统一→分治的平均路径在全样本中基本重合，仅战后统一保持明显偏强</p>
+  <p class="fs">选举日前后 63 个交易日的平均走势，以选举日为 100；虚线为仅战后的统一保持</p>
+  <div class="legend"><span><i style="background:var(--s1)"></i>统一→分治</span><span><i style="background:var(--s8)"></i>统一保持（含战前）</span><span><i style="background:var(--s8);opacity:.55"></i>统一保持（仅战后，虚线）</span><span><i style="background:var(--s4)"></i>分治保持</span></div>
+  <div class="grid3" id="reg-grid"></div>
+  <p class="src">资料来源：Kenneth R. French Data Library；分治→统一仅 2002 年一例，未绘制</p>
+</figure>
+
+<p><b>置换检验显示，全样本下所有指标的差异均不显著，战后样本中只有规模因子显著。</b>对 14 个指标的选后一个月、两个月共 28 组检验，统一→分治与统一保持之间的差异，全样本 p 值全部高于 0.16；仅战后样本时，规模因子选后两个月 p 值为 0.03，航空航天、规模因子选后一个月为 0.05—0.06，小盘股选后两个月为 0.08。按 5% 的显著性水平，28 组检验预期会有 1—2 组偶然显著，战后样本的个别显著结果需谨慎解读。</p>
+
+<figure class="fig">
+  <p class="ft">图表#：全样本下 28 组检验 p 值均高于 0.16，战后样本中仅规模因子低于 0.05</p>
+  <p class="fs">统一→分治 vs 统一保持的置换检验 p 值（2 万次），选后两个月；虚线为 0.10</p>
+  <div class="legend"><span><i class="box" style="background:var(--s1)"></i>全样本（7 vs 9）</span><span><i class="box" style="background:var(--s2)"></i>仅战后（7 vs 4）</span></div>
+  <div class="chart tall"><canvas id="c-p" role="img" aria-label="各指标置换检验 p 值"></canvas></div>
+  <p class="src">资料来源：本文测算</p>
+</figure>
+</section>
+
+<section>
+<h2 id="e4">四、第二层：选前统一政府的三种结果</h2>
+<p><b>两院皆失时，价值股、公用事业、电子设备 4 次全部跑赢或上涨。</b>两院皆失的 4 次（1946、1954、1994、2006 年）全部在战后，价值因子选后两个月全部为正、平均超额 3.1%；公用事业、电子设备同样 4 次全部上涨，平均分别上涨 4.0%、7.6%；规模因子则 4 次全部为负，小盘跑输大盘。</p>
+<p><b>只丢众议院时美股整体偏弱，两院皆保的优势依赖战后样本。</b>只丢众议院的 3 次（2010、2018、2022 年），全市场选后两个月平均上涨 1.5%，电子设备平均下跌 2.1%、3 次中仅 1 次上涨。两院皆保的 9 次中，全市场平均上涨 4.1%、8 次上涨，与两院皆失的 4.7% 接近；仅看战后 4 次时，优势才明显。</p>
+
+<div class="table-wrap heat"><table>
+<caption>图表#：两院皆失时价值因子、公用事业、电子设备 4 次全部为正</caption>
+<thead id="str-head"></thead><tbody id="str-body"></tbody></table></div>
+<p class="src">注：括号内为上涨次数/样本数；两院皆保含战前 5 次。资料来源：Kenneth R. French Data Library，本文测算</p>
+
+<figure class="fig">
+  <p class="ft">图表#：两院皆失时价值因子与电子设备选后持续走强，只丢众议院时电子设备走弱</p>
+  <p class="fs">选举日前后 63 个交易日的平均走势，以选举日为 100；虚线为仅战后的两院皆保</p>
+  <div class="legend"><span><i style="background:var(--s3)"></i>只丢众议院</span><span><i style="background:var(--s1)"></i>两院皆失</span><span><i style="background:var(--s8)"></i>两院皆保（含战前）</span><span><i style="background:var(--s8);opacity:.55"></i>两院皆保（仅战后，虚线）</span></div>
+  <div class="grid3" id="str-grid"></div>
+  <p class="src">资料来源：Kenneth R. French Data Library</p>
+</figure>
+</section>
+
+<section>
+<h2 id="e5">五、逐届表现：25 次中选后两个月</h2>
+<p><b>逐届来看，同一组内部的分化远大于组间差异。</b>统一保持组中，1930 年全市场下跌 11.4%，1962 年上涨 12.1%；统一→分治组中，1954 年上涨 16.2%，2018 年下跌 5.8%。决定各届表现的，多是当时的衰退、战争、美联储政策等事件。</p>
+<div class="table-wrap heat"><table>
+<caption>图表#：同一类选举结果内部，各届美股表现分化明显</caption>
+<thead id="all-head"></thead><tbody id="all-body"></tbody></table></div>
+<p class="src">注：选后两个月为选举日起 42 个交易日的涨跌幅（%），规模、价值因子为多空组合收益；颜色深浅代表涨跌幅大小，蓝色为正、红色为负。资料来源：Kenneth R. French Data Library，本文测算</p>
+</section>
+
+<section>
+<h2 id="e6">六、结论与对 2026 年的含义</h2>
+<p><b>长样本支持"中期选举后美股上涨居多"，选举结果本身的影响较弱。</b>中期选举后两个月全市场 25 次中 20 次上涨，强于其他年份同期；但无论按立法主导权还是按选前统一政府的三种结果分组，全样本下的差异都不显著。</p>
+<p><b>战后规律可以作为参考，但需要意识到它对样本区间敏感。</b>"两院皆保时美股最强""统一保持时小盘跑赢"只在战后成立，纳入战前后消失；"两院皆失时价值跑赢成长"全部来自战后 4 次，尚无战前样本可供检验。</p>
+<p><b>对 2026 年，民主党横扫对应的两院皆失情景下，价值、公用事业、电子设备的历史表现相对占优。</b>这一判断仅基于 4 次样本，本轮美联储处在加息阶段，选后美股的方向仍主要取决于 12 月 FOMC 能否确认加息结束。</p>
+</section>
+
+<section id="notes" class="notes">
+<h2>数据与方法说明</h2>
+<ul>
+<li>数据：Kenneth R. French Data Library 的 Fama/French 三因子日度数据、按市值与账面市值比分组的组合、49 个行业组合（均为市值加权），基于 CRSP，1926 年 7 月 1 日至 2026 年 8 月 31 日。计算脚本为 <code>us-midterm-2026/scripts/equity_long.py</code>。</li>
+<li>窗口：以选举日（或其前最近一个交易日）为 T，选后一个月、两个月分别为 T+21、T+42 个交易日。1952 年以前纽交所周六开市，同样交易日数对应的日历天数略短。</li>
+<li>检验：统一→分治与统一保持的均值差异做 2 万次随机置换；全样本为 7 次 vs 9 次，仅战后为 7 次 vs 4 次。未对多重检验做校正。</li>
+<li>局限：战前处在大萧条、金本位与战时管制，与当下可比性较弱；样本量小，所有分组结果均为描述性统计。</li>
+</ul>
+</section>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const D = /*__DATA__*/null;
+(function(){
+  const charts=[];
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const T=()=>({ink:css('--ink'),ink2:css('--ink-2'),muted:css('--muted'),line:css('--line'),surface:css('--surface'),s1:css('--s1'),s2:css('--s2'),s3:css('--s3'),s4:css('--s4'),s8:css('--s8'),sans:css('--sans')});
+  const fmt=(v,d=1)=>(v>0?'+':'')+v.toFixed(d);
+  const mean=v=>v.reduce((a,b)=>a+b,0)/v.length;
+  const vline={id:'vline',afterDraw(c,a,o){if(!o||o.x===undefined)return;const x=c.scales.x.getPixelForValue(o.x);const{top,bottom}=c.chartArea;const g=c.ctx;g.save();g.strokeStyle=o.color;g.lineWidth=1;g.beginPath();g.moveTo(x,top);g.lineTo(x,bottom);g.stroke();g.restore();}};
+  const hline={id:'hline',afterDatasetsDraw(c,a,o){if(!o||o.y===undefined)return;const sc=o.axis==='x'?c.scales.x:c.scales.y;const g=c.ctx;const{left,right,top,bottom}=c.chartArea;g.save();g.strokeStyle=o.color;g.lineWidth=1;g.setLineDash([4,4]);g.beginPath();if(o.axis==='x'){const x=sc.getPixelForValue(o.y);g.moveTo(x,top);g.lineTo(x,bottom);}else{const y=sc.getPixelForValue(o.y);g.moveTo(left,y);g.lineTo(right,y);}g.stroke();g.restore();}};
+  Chart.register(vline,hline);
+  const add=(el,cfg)=>{const e=typeof el==='string'?document.getElementById(el):el;if(e)charts.push(new Chart(e,cfg));};
+  const IND=D.indicators, NAME=Object.fromEntries(IND.map(i=>[i.code,i.name]));
+  const short=n=>n.replace(/（.*?）/,'');
+  const cell=(v,txt,t)=>{const td=document.createElement('td');td.className='num';td.textContent=txt;
+    if(v!==null&&v!==undefined){const a=Math.min(Math.abs(v)/12,1)*0.5;td.style.background=(v>=0?t.s1:t.s8)+Math.round(a*255).toString(16).padStart(2,'0');}return td;};
+
+  function render(){
+    charts.splice(0).forEach(c=>c.destroy());
+    const t=T();
+    Chart.defaults.font.family=t.sans;Chart.defaults.font.size=12;Chart.defaults.color=t.ink2;
+    const base=()=>({responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false},tooltip:{backgroundColor:t.surface,titleColor:t.ink,bodyColor:t.ink,borderColor:t.line,borderWidth:1,padding:10,usePointStyle:true,boxWidth:10,boxHeight:2}}});
+    const axis=(x={})=>Object.assign({grid:{color:t.line,drawTicks:false},border:{display:false},ticks:{color:t.muted,padding:6}},x);
+    const rows=D.rows;
+
+    // 对照
+    const C=D.control.MKT, yt=['中期选举年','大选年','其他年份'];
+    add('c-ctl',{type:'bar',data:{labels:yt.map(k=>[k,'（'+C[k].up+'/'+C[k].n+'）']),datasets:[{data:yt.map(k=>C[k].mean),backgroundColor:[t.s1,t.s4,t.s4],borderRadius:{topLeft:4,topRight:4},borderSkipped:'start',maxBarThickness:28}]},
+      options:Object.assign(base(),{scales:{x:axis({grid:{display:false},ticks:{color:t.ink2}}),y:axis({min:0,ticks:{color:t.muted,callback:v=>v+'%'}})},
+        plugins:Object.assign(base().plugins,{tooltip:Object.assign(base().plugins.tooltip,{callbacks:{title:i=>yt[i[0].dataIndex],label:c=>' 全市场选后两个月：'+fmt(c.raw,2)+'%'}})})})});
+
+    // 分组表（行为指标，列为分组）
+    const groupTable=(headId,bodyId,key,groups)=>{const h=document.getElementById(headId),b=document.getElementById(bodyId);if(!h||!b)return;h.textContent='';b.textContent='';
+      const tr=document.createElement('tr');['指标',...groups.map(g=>g[0])].forEach((x,i)=>{const th=document.createElement('th');th.textContent=x;if(i)th.className='num';tr.appendChild(th);});h.appendChild(tr);
+      IND.forEach(({code,name})=>{const r=document.createElement('tr');const td=document.createElement('td');td.textContent=name;r.appendChild(td);
+        groups.forEach(([g,filter])=>{const v=rows.filter(x=>x.asset===code&&filter(x)&&x.post_2m!==null).map(x=>x.post_2m);
+          r.appendChild(v.length?cell(mean(v),fmt(mean(v),1)+'%（'+v.filter(z=>z>0).length+'/'+v.length+'）',t):cell(null,'—',t));});b.appendChild(r);});};
+    groupTable('reg-head','reg-body','regime',[['统一→分治',x=>x.regime==='统一→分治'],['统一保持（含战前）',x=>x.regime==='统一保持'],['统一保持（仅战后）',x=>x.regime==='统一保持'&&!x.prewar],['分治保持',x=>x.regime==='分治保持'],['分治→统一',x=>x.regime==='分治→统一']]);
+    groupTable('str-head','str-body','strict',[['只丢众议院',x=>x.strict==='只丢众议院'],['两院皆失',x=>x.strict==='两院皆失'],['两院皆保（含战前）',x=>x.strict==='两院皆保'],['两院皆保（仅战后）',x=>x.strict==='两院皆保'&&!x.prewar]]);
+
+    // 路径小图
+    const grid=(id,layer,groups,prefix)=>{const el=document.getElementById(id);if(!el)return;el.textContent='';
+      IND.forEach(({code,name},k)=>{const P=D.paths[layer][code];
+        const box=document.createElement('div');const hh=document.createElement('p');hh.className='mini-t';hh.textContent=short(name)+(code==='SMB'||code==='HML'?'（'+(code==='SMB'?'规模因子':'价值因子')+'）':'');box.appendChild(hh);
+        const w=document.createElement('div');w.className='chart mini-ts';const cv=document.createElement('canvas');cv.id=prefix+k;cv.setAttribute('role','img');cv.setAttribute('aria-label',name+'选举前后平均走势');w.appendChild(cv);box.appendChild(w);el.appendChild(box);
+        const ds=groups.filter(g=>P[g[0]]&&P[g[0]].n>0).map(([g,c,extra])=>Object.assign({label:g+'（'+P[g].n+'）',data:P[g].values.map((v,i)=>({x:D.offsets[i],y:v})),borderColor:c,backgroundColor:c,borderWidth:1.8,pointRadius:0,pointHoverRadius:3,tension:0.15},extra||{}));
+        add(cv,{type:'line',data:{datasets:ds},options:Object.assign(base(),{interaction:{mode:'index',intersect:false},
+          scales:{x:axis({type:'linear',min:-63,max:63,ticks:{color:t.muted,stepSize:42,callback:v=>v===0?'T':(v>0?'T+'+v:'T'+v)}}),y:axis({ticks:{color:t.muted,maxTicksLimit:6}})},
+          plugins:Object.assign(base().plugins,{vline:{x:0,color:t.muted},tooltip:Object.assign(base().plugins.tooltip,{callbacks:{title:i=>{const v=i[0].parsed.x;return v===0?'选举日':(v>0?'选后第 '+v+' 个交易日':'选前第 '+(-v)+' 个交易日')},label:c=>' '+c.dataset.label+'：'+c.parsed.y.toFixed(2)}})})})});});};
+    const dash={borderDash:[5,4],borderWidth:1.4};
+    grid('reg-grid','regime',[['统一→分治',t.s1],['统一保持',t.s8],['统一保持（仅战后）',t.s8,dash],['分治保持',t.s4]],'rg-');
+    grid('str-grid','strict',[['只丢众议院',t.s3],['两院皆失',t.s1],['两院皆保',t.s8],['两院皆保（仅战后）',t.s8,dash]],'sg-');
+
+    // p 值
+    const TS=D.tests.filter(x=>x.col==='post_2m');
+    add('c-p',{type:'bar',data:{labels:TS.map(x=>short(NAME[x.asset])),datasets:[
+      {label:'全样本',data:TS.map(x=>x.p),backgroundColor:t.s1,borderRadius:{topRight:4,bottomRight:4},borderSkipped:'start',maxBarThickness:12,categoryPercentage:0.75,barPercentage:0.9},
+      {label:'仅战后',data:TS.map(x=>x.p_postwar),backgroundColor:t.s2,borderRadius:{topRight:4,bottomRight:4},borderSkipped:'start',maxBarThickness:12,categoryPercentage:0.75,barPercentage:0.9}]},
+      options:Object.assign(base(),{indexAxis:'y',scales:{x:axis({min:0,max:1,ticks:{color:t.muted,stepSize:0.2}}),y:axis({grid:{display:false},ticks:{color:t.ink2,autoSkip:false}})},
+        plugins:Object.assign(base().plugins,{hline:{y:0.1,axis:'x',color:t.muted},tooltip:Object.assign(base().plugins.tooltip,{callbacks:{label:c=>{const x=TS[c.dataIndex];return c.datasetIndex?' 仅战后：p = '+x.p_postwar.toFixed(3)+'，差值 '+fmt(x.diff_postwar,2)+' 个点':' 全样本：p = '+x.p.toFixed(3)+'，差值 '+fmt(x.diff,2)+' 个点';}}})})})});
+
+    // 逐届热力表
+    const ah=document.getElementById('all-head'),ab=document.getElementById('all-body');
+    if(ah&&ab){ah.textContent='';ab.textContent='';const tr=document.createElement('tr');
+      ['年份','第一层','第二层',...IND.map(i=>short(i.name))].forEach((x,i)=>{const th=document.createElement('th');th.textContent=x;if(i>2)th.className='num';tr.appendChild(th);});ah.appendChild(tr);
+      const order=['统一→分治','统一保持','分治保持','分治→统一'];
+      const years=Object.keys(D.elections).sort((a,b)=>order.indexOf(D.elections[a].regime)-order.indexOf(D.elections[b].regime)||a.localeCompare(b));
+      years.forEach(e=>{const y=e.slice(0,4),r=document.createElement('tr');
+        [[y,'yr'],[D.elections[e].regime,'grp'],[D.elections[e].strict||'—','grp']].forEach(([v,c])=>{const td=document.createElement('td');td.className=c;td.textContent=v;r.appendChild(td);});
+        IND.forEach(({code})=>{const x=rows.find(z=>z.asset===code&&z.year===y);const v=x?x.post_2m:null;r.appendChild(v===null?cell(null,'—',t):cell(v,fmt(v,1),t));});
+        ab.appendChild(r);});}
+  }
+  if(window.Chart&&D){render();}
+  let pend=null;const re=()=>{clearTimeout(pend);pend=setTimeout(render,60);};
+  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',re);}catch(e){}
+  new MutationObserver(re).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
