@@ -1,0 +1,227 @@
+<title>中期选举与美债美元黄金</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap">
+/*__STYLE__*/
+<style>
+.heat td.num{font-size:12.5px;padding:6px 8px}
+.heat th{font-size:12px;white-space:normal;min-width:64px;vertical-align:bottom}
+.heat td.yr{white-space:nowrap;font-variant-numeric:tabular-nums}
+.heat td.grp{white-space:nowrap;font-size:12px;color:var(--ink-2)}
+.heat td.na{color:var(--muted);font-size:11.5px;text-align:center}
+</style>
+
+<div class="wrap">
+<main>
+<header class="cover">
+  <div class="eyebrow">专题 · 2026 美国中期选举</div>
+  <h1>中期选举与美债、美元、黄金：最长可用样本的检验</h1>
+  <p class="series">——"2026美国中期选举"专题·美债美元黄金篇</p>
+  <div class="meta"><span>2026 年 10 月</span><span>统一样本：1974—2022 年 13 次中选</span><span>最长样本：10 年美债日度 1962 年起，长期国债月度 1926 年起</span></div>
+  <div class="kpis">
+    <div class="kpi"><div class="lab">中期选举后一个月 10 年美债上行次数</div><div class="val">2 / 16</div><div class="sub">1962 年以来，日度</div></div>
+    <div class="kpi"><div class="lab">长期国债选后两个月平均变动</div><div class="val">-11.9bp</div><div class="sub">1926 年以来，剔除钉住期，月度</div></div>
+    <div class="kpi"><div class="lab">美元选后两个月：中期年 vs 其他年份</div><div class="val">-1.1% / -0.9%</div><div class="sub">1974 年以来，无明显差别</div></div>
+    <div class="kpi"><div class="lab">黄金选后两个月：中期年 vs 其他年份</div><div class="val">+3.2% / +5.1%</div><div class="sub">1970 年以来，中期年不占优</div></div>
+  </div>
+</header>
+
+<!--TOC-->
+
+<section id="abstract">
+<h2>摘要</h2>
+<div class="abstract">
+<p>美股样本可以统一拉长到 1926 年，美债、美元、黄金则受制于当时的货币制度。美元在 1973 年以前实行布雷顿森林体系下的固定汇率，黄金在 1968 年以前由官方定价，美联储在 1942—1951 年钉住国债收益率。本篇按"统一样本 + 各资产最长样本"两套口径，检验中期选举前后三类资产的规律。</p>
+<p><b>10 年美债选后下行是三类资产中唯一与中期选举相关的规律，长样本中方向不变。</b>1962 年以来日度数据显示，中期选举后一个月 10 年美债 16 次中仅 2 次上行、平均下行 19.8bp，大选年与其他年份同期仅下行 4—5bp；以月度长期国债收益率拉长至 1926 年并剔除钉住期，中期选举年选后两个月平均下行 11.9bp，大选年与其他年份分别下行 1.6bp、4.1bp。</p>
+<p><b>美元、黄金在中期选举后没有区别于其他年份的规律。</b>1974 年以来美元指数选后两个月，中期选举年平均下跌 1.1%，其他年份下跌 0.9%；1970 年以来黄金选后两个月，中期选举年平均上涨 3.2%，其他年份上涨 5.1%。</p>
+<p><b>按选举结果分组，三类资产的差异均不显著，主要由同期美联储决定。</b>10 年美债在统一→分治与统一保持之间，选后两个月仅差 0.3bp，月度长样本仅差 1.2bp，p 值分别为 1.00、0.96；3 个月国债的分组差异对应各届所处的加息或降息阶段。</p>
+</div>
+</section>
+
+<section>
+<h2 id="m1">一、样本：货币制度决定了起点</h2>
+<p><b>美债、美元、黄金的可用样本起点由货币制度决定，数据源无法弥补。</b>1973 年以前美元汇率固定，1968 年以前黄金官方定价，1942—1951 年美联储钉住国债收益率，这些时期的价格变动不反映市场判断。日度数据中，10 年美债始于 1962 年，3 个月国债始于 1954 年，2 年美债始于 1976 年，黄金 LBMA 定盘价始于 1968 年，美元指数始于 1971 年、1974 年起计入。</p>
+
+<div class="table-wrap"><table>
+<caption>图表#：美元与黄金的可用样本始于 1970 年代，美债日度始于 1960 年代</caption>
+<thead><tr><th>资产</th><th>数据起点</th><th>市场化起点</th><th>首个可用中选</th><th class="num">中选次数</th><th>更早时期不可用的原因</th></tr></thead>
+<tbody>
+<tr><td>10 年美债（日度）</td><td>1962 年</td><td>1951 年</td><td>1962</td><td class="num">16</td><td>日度恒定期限收益率始于 1962 年</td></tr>
+<tr><td>长期国债（月度）</td><td>1925 年</td><td>1951 年（剔除 1942—1950）</td><td>1926</td><td class="num">22</td><td>1942—1951 年美联储钉住收益率；月均值口径</td></tr>
+<tr><td>3 个月国债（日度）</td><td>1954 年</td><td>1951 年</td><td>1954</td><td class="num">18</td><td>日度数据始于 1954 年</td></tr>
+<tr><td>2 年美债（日度）</td><td>1976 年</td><td>—</td><td>1978</td><td class="num">12</td><td>日度数据始于 1976 年</td></tr>
+<tr><td>美元指数（日度）</td><td>1971 年</td><td>1973 年</td><td>1974</td><td class="num">13</td><td>布雷顿森林体系下汇率固定</td></tr>
+<tr><td>黄金（LBMA，日度）</td><td>1968 年</td><td>1968 年（双轨制），1971 年完全浮动</td><td>1970</td><td class="num">14</td><td>1934—1968 年官方金价固定在每盎司 35 美元</td></tr>
+</tbody></table></div>
+<p class="src">资料来源：FRED（DGS10、DTB3、DGS2、LTGOVTBD、GS10、TB3MS），Yahoo Finance（DX-Y.NYB），LBMA 下午定盘价公开存档，本文整理</p>
+
+<p><b>统一样本取 1974—2022 年 13 次中选，三类资产口径一致，但分组样本极少。</b>统一样本中，统一→分治 5 次、分治保持 6 次，统一保持仅 1978 年 1 次、分治→统一仅 2002 年 1 次。因此分组分析以各资产最长样本为主，统一样本用于横向对照。</p>
+</section>
+
+<section>
+<h2 id="m2">二、整体规律：只有 10 年美债与中期选举相关</h2>
+<p><b>10 年美债：中期选举后下行，日度与月度长样本方向一致。</b>1962 年以来，中期选举后一个月 10 年美债平均下行 19.8bp、16 次中仅 2 次上行，大选年与其他年份同期分别下行 4.2bp、5.2bp。以月度长期国债收益率拉长至 1926 年、剔除 1942—1950 年钉住期，中期选举年 10 月至 12 月平均下行 11.9bp、22 次中 13 次下行，大选年、其他年份分别下行 1.6bp、4.1bp。月均值会平滑选后的变化，月度口径的幅度小于日度口径。</p>
+<p><b>3 个月国债、美元、黄金：中期选举年与其他年份没有稳定差别。</b>3 个月国债选后两个月，中期选举年平均下行 9.5bp，大选年上行 5.2bp，其他年份下行 2.6bp，方向主要由美联储决定。美元指数中期选举年平均下跌 1.1%，其他年份下跌 0.9%。黄金中期选举年平均上涨 3.2%，低于其他年份的 5.1%。</p>
+
+<div class="grid2">
+<figure class="fig">
+  <p class="ft">图表#：10 年美债选后下行只在中期选举年明显</p>
+  <p class="fs">每年 11 月选举日（或同日）之后收益率平均变动（bp）</p>
+  <div class="legend"><span><i class="box" style="background:var(--s1)"></i>日度 10 年美债·两个月（1962—）</span><span><i class="box" style="background:var(--s2)"></i>月度长期国债·10 月至 12 月（1926—，剔除钉住期）</span></div>
+  <div class="chart short"><canvas id="c-ctl-rate" role="img" aria-label="10 年美债与长期国债选后变动对照"></canvas></div>
+  <p class="src">资料来源：FRED，本文测算</p>
+</figure>
+<figure class="fig">
+  <p class="ft">图表#：美元与黄金在中期选举年的表现与其他年份接近</p>
+  <p class="fs">每年 11 月选举日（或同日）之后两个月平均涨跌幅（%）</p>
+  <div class="legend"><span><i class="box" style="background:var(--s1)"></i>美元指数（1974—）</span><span><i class="box" style="background:var(--s4)"></i>黄金 LBMA（1970—）</span></div>
+  <div class="chart short"><canvas id="c-ctl-fx" role="img" aria-label="美元与黄金选后两个月对照"></canvas></div>
+  <p class="src">资料来源：Yahoo Finance，LBMA，本文测算</p>
+</figure>
+</div>
+</section>
+
+<section>
+<h2 id="m3">三、第一层：失去立法主导权与美债、美元、黄金</h2>
+<p><b>10 年美债：转为分治后第一个月下行更快，两个月后与统一保持趋同。</b>最长样本中，统一→分治 5 次选后两个月平均下行 11.4bp，统一保持 3 次平均下行 11.7bp，差异 0.3bp、p 值 1.00；分治保持 7 次全部下行、平均下行 33.4bp，集中在 1970、1974、1990 年等衰退或降息年份。月度长样本纳入 1926—1938 年后，统一→分治与统一保持之间同样仅差 1.2bp，p 值 0.96。</p>
+<p><b>3 个月国债、美元、黄金：分组差异主要反映美联储阶段，部分组别样本不足。</b>3 个月国债在统一→分治时选后两个月平均上行 17.0bp、6 次中 5 次上行，主要因为 1994、2018、2022 年选后美联储仍在加息；分治保持平均下行 30.0bp，对应 1970、1974、1990 年的降息。美元、黄金的统一保持组只有 1978 年 1 次，无法检验。</p>
+
+<div class="table-wrap heat"><table>
+<caption>图表#：按第一层分组，10 年美债各组均下行，3 个月国债随美联储阶段分化</caption>
+<thead id="reg-head"></thead><tbody id="reg-body"></tbody></table></div>
+<p class="src">注：选后两个月；美债为收益率变动（bp），美元、黄金为涨跌幅（%）；括号内为上行（上涨）次数/样本数；颜色深浅代表变动大小，蓝色为上行、红色为下行。各资产使用最长样本。资料来源：FRED，Yahoo Finance，LBMA，本文测算</p>
+
+<figure class="fig">
+  <p class="ft">图表#：分治保持时 10 年美债与 3 个月国债下行最多，美元、黄金各组路径交错</p>
+  <p class="fs">选举日前后 63 个交易日的平均走势；美债为相对选举日的收益率变动（bp），美元、黄金以选举日为 100；各资产最长样本</p>
+  <div class="legend"><span><i style="background:var(--s1)"></i>统一→分治</span><span><i style="background:var(--s8)"></i>统一保持</span><span><i style="background:var(--s4)"></i>分治保持</span></div>
+  <div class="grid3" id="reg-grid"></div>
+  <p class="src">资料来源：FRED，Yahoo Finance，LBMA；小图标题括号内依次为三组样本数</p>
+</figure>
+</section>
+
+<section>
+<h2 id="m4">四、第二层：选前统一政府的三种结果，逐届案例</h2>
+<p><b>选前统一政府的中选中，三类资产可用的样本更少，只能逐届对照。</b>10 年美债日度覆盖只丢众议院 3 次、两院皆失 2 次（1994、2006 年）、两院皆保 3 次（1962、1966、1978 年）；美元、黄金的两院皆保只有 1978 年。月度长期国债可补充战前 1926—1938 年的两院皆保与 1954 年的两院皆失。</p>
+<p><b>逐届来看，10 年美债的例外都对应政策加码。</b>只丢众议院的 2010 年选后两个月上行 73bp，对应 QE2 与减税延期；两院皆保的 1978 年上行 31bp，对应美元救助计划与加息。其余可用样本中，10 年美债选后两个月均为下行或持平。</p>
+
+<div class="table-wrap heat"><table>
+<caption>图表#：选前统一政府的中选中，10 年美债的两次上行均对应政策加码</caption>
+<thead id="case-head"></thead><tbody id="case-body"></tbody></table></div>
+<p class="src">注：选后两个月；"钉住"为 1942—1951 年美联储钉住收益率期间，"固定"为汇率或金价由官方固定的时期；月度长债为 10 月至 12 月月均值变动。资料来源：FRED，Yahoo Finance，LBMA，本文测算</p>
+
+<figure class="fig">
+  <p class="ft">图表#：只丢众议院时 10 年美债选后回落、黄金走强，样本仅 3 次</p>
+  <p class="fs">选前统一政府三种结果下的平均走势；美债为收益率变动（bp），美元、黄金以选举日为 100；各资产最长样本</p>
+  <div class="legend"><span><i style="background:var(--s3)"></i>只丢众议院</span><span><i style="background:var(--s1)"></i>两院皆失</span><span><i style="background:var(--s8)"></i>两院皆保</span></div>
+  <div class="grid3" id="str-grid"></div>
+  <p class="src">资料来源：FRED，Yahoo Finance，LBMA；小图标题括号内依次为三组样本数，0 表示无数据</p>
+</figure>
+</section>
+
+<section>
+<h2 id="m5">五、逐届表现：25 次中选后两个月</h2>
+<p><b>逐届表现显示，三类资产的方向主要由当时的美联储与全球事件决定。</b>10 年美债在 1970、1974、1990 年衰退中选后两个月分别下行 77bp、41bp、27bp；美元在 1986 年《广场协议》后的贬值周期下跌 5.1%，在 2014 年美联储退出 QE 时上涨 5.2%；黄金在 2002、2022 年分别上涨 10.6%、12.2%。</p>
+<div class="table-wrap heat"><table>
+<caption>图表#：同一类选举结果内部，各届美债、美元、黄金表现分化明显</caption>
+<thead id="all-head"></thead><tbody id="all-body"></tbody></table></div>
+<p class="src">注：选后两个月；美债为收益率变动（bp），美元、黄金为涨跌幅（%）；"—"为无数据。资料来源：FRED，Yahoo Finance，LBMA，本文测算</p>
+</section>
+
+<section>
+<h2 id="m6">六、结论与对 2026 年的含义</h2>
+<p><b>三类资产中，只有 10 年美债选后下行与中期选举相关，长样本支持这一规律。</b>日度 1962 年以来 16 次中仅 2 次上行，月度 1926 年以来方向一致；两次例外均对应政策加码。</p>
+<p><b>选举结果对三类资产的影响均不显著，美元、黄金在中期选举后没有独立规律。</b>美债的组间差异在 0.3—1.2bp 之间，美元、黄金的分组样本过少；三类资产的方向主要取决于美联储与全球事件。</p>
+<p><b>对 2026 年，10 年美债选后下行的历史概率较高，例外条件是政策重新加码。</b>共和党守住两院带来的财政扩张、美联储在 10 月或 12 月超预期加息，是打破这一规律的两种情形；美元、黄金的判断应以美联储与伊朗局势为主。</p>
+</section>
+
+<section id="notes" class="notes">
+<h2>数据与方法说明</h2>
+<ul>
+<li>日度数据：10 年、3 个月、2 年美债收益率来自 FRED（DGS10、DTB3、DGS2）；美元指数来自 Yahoo Finance（DX-Y.NYB），1974 年起计入；黄金为 LBMA 下午定盘价（美元），1968 年起，取自公开存档。计算脚本为 <code>us-midterm-2026/scripts/macro_long.py</code>。</li>
+<li>月度数据：长期国债收益率（FRED LTGOVTBD，1925—2000 年）用于 1961 年及以前，10 年美债月均值（GS10）用于 1962 年起；窗口为 10 月月均值至 11 月、12 月月均值。1942—1950 年中选（钉住期）不计入。</li>
+<li>窗口：日度以选举日（或其前最近一个交易日）为 T，选后一个月、两个月分别为 T+21、T+42 个交易日。</li>
+<li>检验：统一→分治与统一保持的均值差异做 2 万次随机置换，样本少于 2 次的组不检验。</li>
+</ul>
+</section>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const D = /*__DATA__*/null;
+(function(){
+  const charts=[];
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const T=()=>({ink:css('--ink'),ink2:css('--ink-2'),muted:css('--muted'),line:css('--line'),surface:css('--surface'),s1:css('--s1'),s2:css('--s2'),s3:css('--s3'),s4:css('--s4'),s8:css('--s8'),sans:css('--sans')});
+  const fmt=(v,d=1)=>(v>0?'+':'')+v.toFixed(d);
+  const mean=v=>v.reduce((a,b)=>a+b,0)/v.length;
+  const vline={id:'vline',afterDraw(c,a,o){if(!o||o.x===undefined)return;const x=c.scales.x.getPixelForValue(o.x);const{top,bottom}=c.chartArea;const g=c.ctx;g.save();g.strokeStyle=o.color;g.lineWidth=1;g.beginPath();g.moveTo(x,top);g.lineTo(x,bottom);g.stroke();g.restore();}};
+  const hline={id:'hline',afterDatasetsDraw(c,a,o){if(!o||o.y===undefined)return;const g=c.ctx;const{left,right}=c.chartArea;const y=c.scales.y.getPixelForValue(o.y);g.save();g.strokeStyle=o.color;g.lineWidth=1;g.setLineDash([4,4]);g.beginPath();g.moveTo(left,y);g.lineTo(right,y);g.stroke();g.restore();}};
+  Chart.register(vline,hline);
+  const add=(el,cfg)=>{const e=typeof el==='string'?document.getElementById(el):el;if(e)charts.push(new Chart(e,cfg));};
+  const A=D.assets, NAME=Object.fromEntries(A.map(a=>[a.code,a.name])), UNIT=Object.fromEntries(A.map(a=>[a.code,a.unit]));
+  const cellOf=(v,txt,t,scale)=>{const td=document.createElement('td');td.className='num';td.textContent=txt;
+    if(v!==null&&v!==undefined){const a=Math.min(Math.abs(v)/scale,1)*0.5;td.style.background=(v>=0?t.s1:t.s8)+Math.round(a*255).toString(16).padStart(2,'0');}return td;};
+  const naCell=txt=>{const td=document.createElement('td');td.className='na';td.textContent=txt;return td;};
+  const scaleOf=u=>u==='bp'?60:8, fv=(v,u)=>u==='bp'?fmt(v,0)+'bp':fmt(v,1)+'%';
+
+  function render(){
+    charts.splice(0).forEach(c=>c.destroy());
+    const t=T();Chart.defaults.font.family=t.sans;Chart.defaults.font.size=12;Chart.defaults.color=t.ink2;
+    const base=()=>({responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false},tooltip:{backgroundColor:t.surface,titleColor:t.ink,bodyColor:t.ink,borderColor:t.line,borderWidth:1,padding:10,usePointStyle:true,boxWidth:10,boxHeight:2}}});
+    const axis=(x={})=>Object.assign({grid:{color:t.line,drawTicks:false},border:{display:false},ticks:{color:t.muted,padding:6}},x);
+    const rows=D.rows, C=D.control, yt=['中期选举年','大选年','其他年份'];
+    const bar=(label,data,color)=>({label,data,backgroundColor:color,borderRadius:4,borderSkipped:'start',maxBarThickness:24,categoryPercentage:0.7,barPercentage:0.9});
+
+    add('c-ctl-rate',{type:'bar',data:{labels:yt.map(k=>[k,'（'+C.UST10[k].n+' / '+C.LT_monthly[k].n+'）']),datasets:[bar('日度 10 年美债',yt.map(k=>C.UST10[k].m2),t.s1),bar('月度长期国债',yt.map(k=>C.LT_monthly[k].m2),t.s2)]},
+      options:Object.assign(base(),{scales:{x:axis({grid:{display:false},ticks:{color:t.ink2}}),y:axis({ticks:{color:t.muted,callback:v=>v+'bp'}})},
+        plugins:Object.assign(base().plugins,{hline:{y:0,color:t.muted},tooltip:Object.assign(base().plugins.tooltip,{callbacks:{title:i=>yt[i[0].dataIndex],label:c=>' '+c.dataset.label+'：'+fmt(c.raw,1)+'bp'}})})})});
+    add('c-ctl-fx',{type:'bar',data:{labels:yt.map(k=>[k,'（'+C.DXY[k].n+' / '+C.GoldL[k].n+'）']),datasets:[bar('美元指数',yt.map(k=>C.DXY[k].m2),t.s1),bar('黄金',yt.map(k=>C.GoldL[k].m2),t.s4)]},
+      options:Object.assign(base(),{scales:{x:axis({grid:{display:false},ticks:{color:t.ink2}}),y:axis({ticks:{color:t.muted,callback:v=>v+'%'}})},
+        plugins:Object.assign(base().plugins,{hline:{y:0,color:t.muted},tooltip:Object.assign(base().plugins.tooltip,{callbacks:{title:i=>yt[i[0].dataIndex],label:c=>' '+c.dataset.label+'：'+fmt(c.raw,2)+'%'}})})})});
+
+    // 第一层表格（行为资产，列为分组），附月度长债
+    const RG=['统一→分治','统一保持','分治保持','分治→统一'];
+    const rh=document.getElementById('reg-head'),rb=document.getElementById('reg-body');
+    if(rh&&rb){rh.textContent='';rb.textContent='';const tr=document.createElement('tr');['资产（样本起点）',...RG].forEach((x,i)=>{const th=document.createElement('th');th.textContent=x;if(i)th.className='num';tr.appendChild(th);});rh.appendChild(tr);
+      A.forEach(a=>{const r=document.createElement('tr');const td=document.createElement('td');td.textContent=a.name+'（'+a.start+'—）';r.appendChild(td);
+        RG.forEach(g=>{const v=rows.filter(x=>x.asset===a.code&&x.regime===g&&x.post_2m!==null).map(x=>x.post_2m);
+          r.appendChild(v.length?cellOf(mean(v),fv(mean(v),a.unit)+'（'+v.filter(z=>z>0).length+'/'+v.length+'）',t,scaleOf(a.unit)):naCell('无样本'));});rb.appendChild(r);});
+      const r=document.createElement('tr');const td=document.createElement('td');td.textContent='长期国债·月度（1926—，剔除钉住期）';r.appendChild(td);
+      RG.forEach(g=>{const v=D.monthly.filter(m=>m.regime===g&&!m.peg&&m.lt_2m!==null).map(m=>m.lt_2m);
+        r.appendChild(v.length?cellOf(mean(v),fmt(mean(v),0)+'bp（'+v.filter(z=>z>0).length+'/'+v.length+'）',t,60):naCell('无样本'));});rb.appendChild(r);}
+
+    // 路径小图
+    const grid=(id,layer,groups,prefix)=>{const el=document.getElementById(id);if(!el)return;el.textContent='';
+      A.forEach((a,k)=>{const P=D.paths.longest[layer][a.code];
+        const box=document.createElement('div');const hh=document.createElement('p');hh.className='mini-t';hh.textContent=a.name+(a.unit==='bp'?'（bp）':'')+'（样本 '+groups.map(g=>P[g[0]].n).join('/')+'）';box.appendChild(hh);
+        const w=document.createElement('div');w.className='chart mini-ts';const cv=document.createElement('canvas');cv.id=prefix+k;cv.setAttribute('role','img');cv.setAttribute('aria-label',a.name+'选举前后平均走势');w.appendChild(cv);box.appendChild(w);el.appendChild(box);
+        const ds=groups.filter(g=>P[g[0]].n>0).map(([g,c])=>({label:g+'（'+P[g].n+'）',data:P[g].values.map((v,i)=>({x:D.offsets[i],y:v})),borderColor:c,backgroundColor:c,borderWidth:1.8,pointRadius:0,pointHoverRadius:3,tension:0.15}));
+        add(cv,{type:'line',data:{datasets:ds},options:Object.assign(base(),{interaction:{mode:'index',intersect:false},
+          scales:{x:axis({type:'linear',min:-63,max:63,ticks:{color:t.muted,stepSize:42,callback:v=>v===0?'T':(v>0?'T+'+v:'T'+v)}}),y:axis({ticks:{color:t.muted,maxTicksLimit:6}})},
+          plugins:Object.assign(base().plugins,{vline:{x:0,color:t.muted},tooltip:Object.assign(base().plugins.tooltip,{callbacks:{title:i=>{const v=i[0].parsed.x;return v===0?'选举日':(v>0?'选后第 '+v+' 个交易日':'选前第 '+(-v)+' 个交易日')},label:c=>' '+c.dataset.label+'：'+c.parsed.y.toFixed(a.unit==='bp'?1:2)+(a.unit==='bp'?'bp':'')}})})})});});};
+    grid('reg-grid','regime',[['统一→分治',t.s1],['统一保持',t.s8],['分治保持',t.s4]],'rg-');
+    grid('str-grid','strict',[['只丢众议院',t.s3],['两院皆失',t.s1],['两院皆保',t.s8]],'sg-');
+
+    // 逐届表：第二层案例与全部 25 次
+    const COLS=[['UST10','10 年美债'],['LT','长期国债（月度）'],['UST3M','3 个月国债'],['UST2','2 年美债'],['DXY','美元指数'],['GoldL','黄金']];
+    const valOf=(code,y)=>{if(code==='LT'){const m=D.monthly.find(z=>z.year===y);if(!m)return [null,'—'];if(m.peg)return [null,'钉住'];return m.lt_2m===null?[null,'—']:[m.lt_2m,'bp'];}
+      const r=rows.find(z=>z.asset===code&&z.year===y);
+      if(!r||r.post_2m===null){const yy=+y;if((code==='DXY'&&yy<1974)||(code==='GoldL'&&yy<1970))return [null,'固定'];if(['UST10','UST3M','UST2'].includes(code)&&yy>=1942&&yy<=1950)return [null,'钉住'];return [null,'—'];}
+      return [r.post_2m,UNIT[code]];};
+    const table=(hid,bid,filter,order,showStrict)=>{const h=document.getElementById(hid),b=document.getElementById(bid);if(!h||!b)return;h.textContent='';b.textContent='';
+      const tr=document.createElement('tr');['年份','第一层',...(showStrict?['第二层']:[]),...COLS.map(c=>c[1])].forEach((x,i)=>{const th=document.createElement('th');th.textContent=x;if(i>=(showStrict?3:2))th.className='num';tr.appendChild(th);});h.appendChild(tr);
+      Object.keys(D.elections).filter(e=>filter(D.elections[e])).sort((x,y)=>order(D.elections[x],D.elections[y])||x.localeCompare(y)).forEach(e=>{const y=e.slice(0,4),r=document.createElement('tr');
+        [[y,'yr'],[D.elections[e].regime,'grp'],...(showStrict?[[D.elections[e].strict||'—','grp']]:[])].forEach(([v,c])=>{const td=document.createElement('td');td.className=c;td.textContent=v;r.appendChild(td);});
+        COLS.forEach(([code])=>{const [v,u]=valOf(code,y);r.appendChild(v===null?naCell(u):cellOf(v,fv(v,u),t,scaleOf(u)));});b.appendChild(r);});};
+    const so=['只丢众议院','两院皆失','两院皆保'], ro=['统一→分治','统一保持','分治保持','分治→统一'];
+    table('case-head','case-body',e=>!!e.strict,(a,b)=>so.indexOf(a.strict)-so.indexOf(b.strict),true);
+    table('all-head','all-body',e=>true,(a,b)=>ro.indexOf(a.regime)-ro.indexOf(b.regime),true);
+  }
+  if(window.Chart&&D){render();}
+  let pend=null;const re=()=>{clearTimeout(pend);pend=setTimeout(render,60);};
+  try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',re);}catch(e){}
+  new MutationObserver(re).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
