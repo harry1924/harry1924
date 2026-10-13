@@ -284,51 +284,70 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </section>
 
 <section>
-<h2 id="s3">三、选举结果与资产：分组差异存在，但统计上均不显著</h2>
-<p><b>按选举结果分组，选后两个月标普 500 的表现差异不大。</b>执政党保住两院的 5 次平均上涨 5.9%，反对党新获两院的 6 次平均上涨 3.3%，众议院易主（参议院未易主）的 3 次平均上涨 0.9%。组内离散远大于组间差异：同为"众议院易主"，2010 年上涨 6.6%，2018 年下跌 6.2%。</p>
+<h2 id="s3">三、选举结果与资产：失去立法主导权的影响方向符合财政逻辑，但统计上不显著</h2>
+<p><b>本文对选举结果采用两层分类，第一层服务于全样本检验，第二层服务于 2026 年的情景对照。</b>对资产定价影响最大的，是总统党能否继续以简单多数推进财政立法，而这取决于选举是否改变了立法主导权。第一层按这一机制，把二战以来 20 次中选分为"统一→分治""统一保持""分治保持""分治→统一"四类；第二层只在选前为统一政府的 11 次中选内部，细分为只丢众议院、两院皆失、两院皆保、只丢参议院四种结果，与 2026 年共和党选前控制两院的起点一致，在第五章第六节逐届展开。</p>
+
+<div class="table-wrap"><table>
+<caption>图表#：两层分类覆盖二战以来全部 20 次中期选举</caption>
+<thead><tr><th>第一层：立法主导权变化</th><th class="num">次数</th><th>第二层：选前统一政府内部</th><th>年份</th></tr></thead>
+<tbody>
+<tr><td rowspan="2">统一→分治</td><td class="num" rowspan="2">7</td><td>只丢众议院</td><td>2010、2018、2022</td></tr>
+<tr><td>两院皆失</td><td>1946、1954、1994、2006</td></tr>
+<tr><td>统一保持</td><td class="num">4</td><td>两院皆保</td><td>1950、1962、1966、1978</td></tr>
+<tr><td>（无样本）</td><td class="num">0</td><td>只丢参议院</td><td>二战以来没有先例</td></tr>
+<tr><td>分治保持</td><td class="num">8</td><td>—</td><td>1958、1970、1974、1990、1998（总统党选前两院皆无）；1982（保住参议院）；1986、2014（丢掉参议院，选前已是分治）</td></tr>
+<tr><td>分治→统一</td><td class="num">1</td><td>—</td><td>2002（保住众议院、收复参议院）</td></tr>
+</tbody></table></div>
+<p class="src">注：统一政府指总统党同时控制两院；参议院 50:50 时按副总统所属党计。资料来源：美国众议院历史办公室，本文整理</p>
 
 <figure class="fig">
-  <p class="ft">图表#：同一类选举结果内部，选后两个月美股表现分化大于组间差异</p>
-  <p class="fs">各次中选标普 500 选后两个月涨跌幅（%），颜色为选举结果类型</p>
+  <p class="ft">图表#：二战以来 20 次中选中，分治保持 8 次、统一转分治 7 次</p>
+  <p class="fs">第一层分类的分布（次）</p>
+  <div class="chart short"><canvas id="c-dist" role="img" aria-label="20 次中期选举第一层分类分布：统一转分治 7 次，统一保持 4 次，分治保持 8 次，分治转统一 1 次"></canvas></div>
+  <p class="src">资料来源：本文整理</p>
+</figure>
+
+<p><b>美股：保持统一政府时选后表现最好，转为分治时最弱。</b>统一保持的 4 次，标普 500 选后一个月、两个月全部上涨，平均分别上涨 3.3%、7.1%；统一→分治的 7 次，选后一个月平均仅上涨 0.3%、7 次中 4 次上涨，两个月平均上涨 2.9%；分治保持的 8 次居中，两个月平均上涨 3.2%。两者差异的置换检验 p 值为 0.29—0.32。</p>
+<p><b>10 年美债：转为分治后第一个月下行更快，两个月后各组趋同。</b>统一→分治有数据的 5 次，选后一个月 10 年美债平均下行 18.6bp，统一保持的 3 次仅下行 0.7bp，方向与"财政扩张通道关闭、期限溢价回落"一致，但 p 值为 0.46；选后两个月两组均下行约 11.5bp。分治保持的 7 次全部下行、两个月平均下行 33.4bp，这组集中在 1970、1974、1990、1998 等衰退或降息年份，利率走势主要由周期与美联储决定。</p>
+<p><b>短端利率与其他资产：分组差异主要反映美联储阶段，部分资产样本不足以检验。</b>3 个月国债在统一→分治时选后两个月平均上行 17.0bp、6 次中 5 次上行，统一保持时平均下行 3.3bp，主要因为 1994、2018、2022 年选后美联储仍在加息。美元、黄金、WTI 的数据始于 1970 年代以后，统一保持组只有 1978 年一次或没有样本，无法做组间检验。</p>
+
+<div class="table-wrap"><table>
+<caption>图表#：保持统一政府时美股选后表现最好，转为分治时 10 年美债第一个月下行更快</caption>
+<thead><tr><th>资产</th><th>第一层分类</th><th class="num">样本</th><th class="num">选后一个月</th><th class="num">选后两个月</th></tr></thead>
+<tbody id="reg-body"></tbody>
+</table></div>
+<p class="src">注：括号内为上涨次数/有数据的样本数，美债为收益率变动（bp）；黄金为 LBMA 下午定盘价（1968 年起），WTI 为 1986 年以来日度口径。资料来源：FRED，Yahoo Finance，LBMA，本文测算</p>
+
+<figure class="fig">
+  <p class="ft">图表#：保持统一政府时美股选后走势最强，分治保持时 10 年美债下行最多</p>
+  <p class="fs">第一层分类下各资产在选举日前后 63 个交易日的平均走势；美股、美元、黄金、WTI 以选举日为 100，美债为收益率变动（bp）</p>
+  <div class="legend"><span><i style="background:var(--s1)"></i>统一→分治</span><span><i style="background:var(--s8)"></i>统一保持</span><span><i style="background:var(--s4)"></i>分治保持</span></div>
+  <div class="grid3" id="reg-ts-grid"></div>
+  <p class="src">资料来源：FRED，Yahoo Finance，LBMA；小图标题括号内依次为三组样本数。分治→统一仅 2002 年一例，未绘制</p>
+</figure>
+
+<figure class="fig">
+  <p class="ft">图表#：同一类分组内部，各次中选后美股表现分化大于组间差异</p>
+  <p class="fs">各次中选标普 500 选后两个月涨跌幅（%），颜色为第一层分类</p>
   <div class="legend" id="lg-bar20"></div>
-  <div class="chart tall"><canvas id="c-bar20" role="img" aria-label="1946 至 2022 年 20 次中期选举后两个月标普 500 涨跌幅柱状图，按选举结果着色"></canvas></div>
+  <div class="chart tall"><canvas id="c-bar20" role="img" aria-label="1946 至 2022 年 20 次中期选举后两个月标普 500 涨跌幅柱状图，按第一层分类着色"></canvas></div>
   <p class="src">资料来源：Yahoo Finance</p>
 </figure>
 
-<div class="grid2">
-<figure class="fig">
-  <p class="ft">图表#：执政党保住两院时，选后两个月美股涨幅最高</p>
-  <p class="fs">标普 500 选后两个月平均涨跌幅（%），括号内为样本数</p>
-  <div class="chart short"><canvas id="c-grp-spx" role="img" aria-label="按选举结果分组的标普 500 选后两个月平均涨跌幅"></canvas></div>
-</figure>
-<figure class="fig">
-  <p class="ft">图表#：四类选举结果下，10 年美债选后两个月均下行</p>
-  <p class="fs">10 年美债选后两个月平均变动（bp），括号内为样本数</p>
-  <div class="chart short"><canvas id="c-grp-ust" role="img" aria-label="按选举结果分组的 10 年美债选后两个月平均变动"></canvas></div>
-</figure>
-</div>
-
-<p><b>置换检验显示，选举结果和美联储所处阶段对选举窗口内资产表现的解释力均不显著。</b>对 7 组资产窗口分别做 2 万次随机置换，按选举结果分组的 p 值介于 0.16—0.78，按美联储阶段分组的 p 值介于 0.15—0.81。美元选举次日、WTI 选后一个月按选举结果分组的解释度较高（0.42、0.49），但样本仅 10—13 次。"执政党保住两院、美股 5/5 上涨"在全样本 80% 胜率下随机出现的概率约为 33%，偶然性较大。</p>
+<p><b>置换检验显示，失去立法主导权对选举窗口内资产表现的影响统计上不显著。</b>对标普 500、3 个月国债、10 年美债的选后一个月、两个月各做 2 万次随机置换，统一→分治与统一保持之间差异的 p 值介于 0.29—1.00，四类分组整体的 p 值介于 0.34—0.76。此前按美联储所处阶段分组，p 值同样介于 0.15—0.81。资产在选举窗口内的方向，更多取决于同期的美联储与宏观环境。</p>
 
 <figure class="fig">
-  <p class="ft">图表#：7 组检验的 p 值均高于 0.15，选举结果对资产表现的解释力不显著</p>
+  <p class="ft">图表#：第一层分类下 6 组检验的 p 值均高于 0.25，影响方向符合财政逻辑但不显著</p>
   <p class="fs">置换检验 p 值（2 万次），虚线以下（p &lt; 0.10）视为显著</p>
-  <div class="legend"><span><i class="box" style="background:var(--s1)"></i>按选举结果分组</span><span><i class="box" style="background:var(--s2)"></i>按美联储阶段分组</span></div>
-  <div class="chart"><canvas id="c-pval" role="img" aria-label="按选举结果和按美联储阶段分组的置换检验 p 值"></canvas></div>
+  <div class="legend"><span><i class="box" style="background:var(--s1)"></i>统一→分治 vs 统一保持</span><span><i class="box" style="background:var(--s2)"></i>四类分组整体</span></div>
+  <div class="chart"><canvas id="c-pval" role="img" aria-label="第一层分类置换检验 p 值"></canvas></div>
   <p class="src">资料来源：本文测算</p>
 </figure>
-
 </section>
 
 <section>
 <h2 id="s4">四、历史复盘：国会格局改写的是 6—24 个月后的财政、人事与监督</h2>
-<p><b>本章复盘二战以来 20 次中期选举后的政策演变。</b>按选举结果分为四类：反对党新获两院 6 次，众议院易主而参议院未易主 3 次，执政党保住两院 5 次，维持原有分治格局 6 次。</p>
-<figure class="fig">
-  <p class="ft">图表#：二战以来 20 次中选，反对党新获两院与维持分治各 6 次</p>
-  <p class="fs">1946—2022 年中期选举结果分布（次）</p>
-  <div class="chart short"><canvas id="c-dist" role="img" aria-label="20 次中期选举结果分布：反对党新获两院 6 次，众议院易主 3 次，执政党保住两院 5 次，维持分治 6 次"></canvas></div>
-  <p class="src">资料来源：美国众议院历史办公室，本文整理</p>
-</figure>
+<p><b>本章复盘二战以来 20 次中期选举后的政策演变，重点看国会格局变化如何改写财政、人事与监督。</b>政策复盘按选后国会由谁控制来组织：执政党保住两院、反对党拿下众议院、反对党同时掌控两院。其中选前为统一政府的 11 次，与第三章第二层的四种结果一一对应。</p>
 <h3 id="s4-1">（一）财政立法：执政党保住两院时最为活跃</h3>
 <p><b>执政党保住两院时，大规模财政立法落地的概率最高，方向取决于战争与周期。</b>1950 年杜鲁门保住两院，1950、1951 年两部收入法为朝鲜战争加税；1962 年肯尼迪保住两院，1964 年减税法落地；1966 年约翰逊保住两院，1968 年通过 10% 所得税附加税；2002 年小布什收复参议院，2003 年通过就业与增长减税法案和医保 D 部分。5 个样本中有 4 次在选后两年内出台大规模财政立法，1978 年的主要变化来自美联储紧缩。</p>
 <h3 id="s4-2">（二）财政博弈：反对党拿下众议院后，债务上限危机频发</h3>
@@ -383,7 +402,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <p class="src">资料来源：美国国会记录、CRS，本文整理</p>
 
 <h3 id="s4-4">（四）横扫复盘：反对党同时拿下两院后，政策的五个变化</h3>
-<p><b>二战以来，反对党在中期选举中同时掌控两院的情形出现过 6 次。</b>1946、1954、1994、2006 年反对党一次拿下两院，1986、2014 年反对党在已控制众议院的基础上收复参议院。这 6 次是本轮"民主党横扫"情景最直接的历史参照。</p>
+<p><b>二战以来，反对党在中期选举后同时掌控两院的情形出现过 6 次。</b>1946、1954、1994、2006 年选前为统一政府、反对党一次拿下两院，即第二层分类中的"两院皆失"，是本轮"民主党横扫"最直接的参照；1986、2014 年反对党在已控制众议院的基础上收复参议院，政策含义相近，资产统计中归入"分治保持"。</p>
 <p><b>立法上，否决与推翻否决成为主线，总统否决权是最后防线。</b>1947 年塔夫脱—哈特利法案、1948 年减税法案均在推翻杜鲁门否决后生效；2007—2008 年国会 4 次推翻小布什否决，涉及水资源、农业和医保法案；2016 年国会推翻奥巴马对《针对恐怖主义资助者的正义法案》的否决。推翻否决需要两院三分之二多数，只在议题跨越党派时才能实现，多数情况下立法陷入僵局。</p>
 <p><b>财政上，扩张让位于约束，最终以两党妥协收尾。</b>1995—1996 年预算对峙导致两次停摆，最终以 1997 年平衡预算法收尾，联邦财政在 1998—2001 年转为盈余；2007 年民主党国会恢复"现收现付"规则；2015 年两党预算法上调支出上限、暂停债务上限。危机时期财政反而能快速出台，2008 年 2 月经济刺激法案即在民主党国会与共和党总统之间达成。</p>
 <p><b>人事上，参议院多数成为否决总统提名的工具。</b>1987 年民主党参议院以 58:42 否决里根提名的最高法院大法官博克；2016 年共和党参议院对奥巴马提名的加兰德不举行听证，直至任期结束。</p>
@@ -467,49 +486,48 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </tbody></table></div>
 <p class="src">注：分治情景概率为本文测算的参议院维持共和党多数、众议院由民主党掌握的概率区间。资料来源：本文整理</p>
 
-<h3 id="s5-6">（六）资产表现：三种结果的历史参照与 2026 年判断</h3>
-<p><b>从执政党的角度，中期选举只有三种结果：只丢众议院、两院皆失、两院皆保，分别对应本轮的分治、民主党横扫和共和党守住两院。</b>二战以来 20 次中选中，只丢众议院的有 2010、2018、2022 年 3 次；两院皆失的有 1946、1954、1994、2006 年 4 次，若计入在已失去众议院基础上再失参议院的 1986、2014 年，共 6 次；两院皆保的有 1950、1962、1966、1978、2002 年 5 次。其余 6 次为执政党选前已不掌握国会的维持分治格局，不在本节比较范围内。每组样本仅 3—6 次，下文逐次列出表现，避免均值被个别年份主导。</p>
+<h3 id="s5-6">（六）资产表现：选前统一政府的四种结果，逐届案例与 2026 年判断</h3>
+<p><b>2026 年共和党选前同时控制两院，可比样本是二战以来选前为统一政府的 11 次中选。</b>按选后格局分为四种结果：只丢众议院 3 次（2010、2018、2022 年），两院皆失 4 次（1946、1954、1994、2006 年），两院皆保 4 次（1950、1962、1966、1978 年），只丢参议院二战以来没有先例。每种结果只有 3—4 次，美元、黄金、WTI 受数据起点限制更少，本节逐届列出表现与当时背景，不报告胜率。</p>
+
+<div class="table-wrap"><table>
+<caption>图表#：同一种结果内部，各届表现主要由当时的美联储与宏观事件决定</caption>
+<thead><tr><th>结果</th><th>年份·总统</th><th>美联储</th><th class="num">标普 500 一个月/两个月</th><th class="num">10 年美债 一个月/两个月</th><th class="num">美元 两个月</th><th class="num">黄金 两个月</th><th>当时背景</th></tr></thead>
+<tbody id="case-body"></tbody>
+</table></div>
+<p class="src">注：选后一个月、两个月分别为选举日起 21、42 个交易日；10 年美债为收益率变动（bp）；黄金为 LBMA 下午定盘价；"—"为无数据。资料来源：FRED，Yahoo Finance，LBMA，本文整理</p>
 
 <figure class="fig">
-  <p class="ft">图表#：两院皆保时美股选后走势最强，两院皆失时 10 年美债下行最为一致</p>
-  <p class="fs">三种选举结果下各资产在选举日前后 63 个交易日的平均走势；美股、美元、黄金、WTI 以选举日为 100，美债为相对选举日的收益率变动（bp）</p>
+  <p class="ft">图表#：两院皆保时美股选后走势最强，只丢众议院时 10 年美债选前上行、选后回落最深</p>
+  <p class="fs">选前统一政府的三种结果下，各资产在选举日前后 63 个交易日的平均走势；美股、美元、黄金、WTI 以选举日为 100，美债为收益率变动（bp）</p>
   <div class="legend"><span><i style="background:var(--s3)"></i>只丢众议院（分治）</span><span><i style="background:var(--s1)"></i>两院皆失（民主党横扫）</span><span><i style="background:var(--s8)"></i>两院皆保（共和党守住两院）</span></div>
   <div class="grid3" id="scn-ts-grid"></div>
-  <p class="src">资料来源：FRED，Yahoo Finance；小图标题括号内依次为只丢众议院、两院皆失、两院皆保的样本数。黄金日度数据始于 2000 年，两院皆失仅 2006、2014 年，两院皆保仅 2002 年；WTI 日度数据始于 1986 年，两院皆保仅 2002 年</p>
+  <p class="src">资料来源：FRED，Yahoo Finance，LBMA；小图标题括号内依次为只丢众议院、两院皆失、两院皆保的样本数，0 表示无数据</p>
 </figure>
 
 <div class="table-wrap"><table>
-<caption>图表#：两院皆保时美股表现最好，两院皆失时 10 年美债全部下行</caption>
+<caption>图表#：两院皆保时美股选后两个月 4 次全部上涨，10 年美债在三种结果下均下行</caption>
 <thead><tr><th>资产</th><th>选举结果</th><th class="num">样本</th><th class="num">选举次日</th><th class="num">选后一个月</th><th class="num">选后两个月</th></tr></thead>
 <tbody id="scn-body"></tbody>
 </table></div>
-<p class="src">注：括号内为上涨次数/有数据的样本数；美债为收益率变动（bp）；两院皆失含 1986、2014 年；黄金为 1974 年以来月度口径（10 月至 11 月、10 月至 12 月），WTI 为 1986 年以来日度口径。资料来源：FRED，Yahoo Finance，datasets/gold-prices，本文测算</p>
+<p class="src">注：括号内为上涨次数/有数据的样本数；美债为收益率变动（bp）；黄金为 LBMA 下午定盘价。描述性统计，样本过小，不代表可重复规律。资料来源：FRED，Yahoo Finance，LBMA，本文测算</p>
 
-<figure class="fig">
-  <p class="ft">图表#：同一种选举结果内部，各次中选的资产表现分化明显</p>
-  <p class="fs">各次中选选后两个月的资产表现，颜色为选举结果；美债为收益率变动（bp），其余为涨跌幅（%）</p>
-  <div class="legend"><span><i class="box" style="background:var(--s3)"></i>只丢众议院（分治）</span><span><i class="box" style="background:var(--s1)"></i>两院皆失（民主党横扫）</span><span><i class="box" style="background:var(--s8)"></i>两院皆保（共和党守住两院）</span></div>
-  <div class="grid3" id="scn-grid"></div>
-  <p class="src">资料来源：FRED，Yahoo Finance，datasets/gold-prices；黄金为月度口径（10 月至 12 月）</p>
-</figure>
+<p><b>美股：两院皆保时选后表现最好，两院皆失与只丢众议院时依赖美联储与个别年份。</b>两院皆保的 4 次，标普 500 选后一个月、两个月全部上涨，平均分别上涨 3.3%、7.1%，其中 1962 年古巴导弹危机解除后的反弹贡献最大。两院皆失的 4 次两个月平均上涨 4.4%，但 1954 年上涨 15.6% 拉高均值，1946、1994 年选后一个月均下跌 4% 以上。只丢众议院的 3 次两个月平均上涨 0.9%，2018 年美联储 12 月加息下跌 6.2%，2010 年 QE2 支撑下上涨 6.6%。</p>
+<p><b>10 年美债：三种结果下均下行，例外都对应政策加码。</b>只丢众议院的 3 次，选后一个月平均下行 18.0bp，2018、2022 年分别下行 37bp、57bp，2010 年因 QE2 与减税延期上行 40bp；两院皆失有数据的 1994、2006 年，选后一个月分别下行 22bp、17bp；两院皆保的 3 次选后一个月基本持平，两个月平均下行 11.7bp，1978 年在美元救助计划与加息下上行 31bp。</p>
+<p><b>美元、黄金：样本始于 1970 年代，方向分化，难以归纳。</b>美元指数选后两个月，只丢众议院时 2010 年上涨 3.1%、2022 年下跌 5.8%，两院皆失时 1994 年上涨 3.3%、2006 年下跌 1.0%。黄金在只丢众议院的 3 次中选后两个月全部上涨、平均上涨 6.1%，2022 年上涨 12.2%；两院皆失的 1994、2006 年均下跌；两院皆保仅 1978 年一次，选后一个月下跌 9.3%、两个月上涨 3.5%，波动来自美元救助计划。</p>
+<p><b>只丢参议院没有历史样本，只能做政策推演。</b>共和党保住众议院、民主党拿下参议院时，和解法案需要两院通过预算决议，财政扩张通道同样关闭；参议院掌握美联储与司法提名的确认权，人事约束与民主党横扫相同；众议院不会启动调查与弹劾。资产含义介于民主党横扫与分治之间，10 年美债下行的逻辑成立。本文测算这一结果的概率仅为 1%—2%。</p>
 
-<p><b>美股：两院皆保时选后表现最好，两院皆失与只丢众议院时涨幅有限。</b>两院皆保的 5 次中，标普 500 选举次日与选后两个月全部上涨，选后两个月平均上涨 5.9%；两院皆失的 6 次平均上涨 3.3%，选举次日平均下跌 0.2%，1954 年上涨 15.6% 拉高了均值，中位数仅 1.4%；只丢众议院的 3 次平均上涨 0.9%，2018 年在美联储加息下跌 6.2%，2010 年在 QE2 支撑下上涨 6.6%。</p>
-<p><b>10 年美债：两院皆失时选后全部下行，两院皆保时下行幅度最小。</b>两院皆失有数据的 4 次（1986、1994、2006、2014 年），选后两个月 10 年美债平均下行 21.8bp、无一上行；只丢众议院的 3 次平均下行 11.7bp，中位数下行 48bp，2010 年在 QE2 与减税延期叠加下上行 73bp；两院皆保的 4 次平均下行 11.3bp，1978 年在美元救助计划下上行 31bp。</p>
-<p><b>短端利率：方向由美联储决定，与选举结果关系不大。</b>3 个月国债选后两个月，只丢众议院的 3 次全部上行、平均上行 18.3bp，两院皆失的 5 次平均上行 13.0bp，两院皆保的 4 次平均下行 8.3bp，分组差异主要对应各次选举所处的加息或降息阶段。</p>
-<p><b>美元、黄金、原油：分组均值方向不一，逐次分化大于组间差异。</b>美元指数选后两个月，只丢众议院平均下跌 1.3%（2010 年上涨 3.1%、2022 年下跌 5.8%），两院皆失平均上涨 0.6%（1986 年下跌 5.1%、2014 年上涨 5.2%）。黄金月度口径下，只丢众议院的 3 次全部上涨、平均上涨 4.9%，但 3 次均处在 2000 年以后的黄金牛市；两院皆失的 4 次中仅 1 次上涨。WTI 在只丢众议院与两院皆失时选后两个月分别平均下跌 7.8%、5.9%，与选后油价普遍偏弱的规律一致。</p>
-
-<p><b>2026 年的判断需要叠加两点：市场已对民主党横扫定价过半，本轮美联储处在加息阶段。</b>民主党横扫的定价为 55%—65%，选举当晚的意外程度有限；共和党守住两院的概率仅 5%—8%，一旦发生意外程度最大，资产波动或最剧烈。本轮加息阶段与 2018、2022 年接近，对应只丢众议院情景的历史样本，美股选后修复或需等待 12 月 FOMC 确认加息结束。</p>
+<p><b>2026 年的判断需要叠加两点：市场已对民主党横扫定价过半，本轮美联储处在加息阶段。</b>民主党横扫的定价为 55%—65%，选举当晚的意外程度有限；共和党守住两院的概率仅 5%—8%，一旦发生意外程度最大，资产波动或最剧烈。本轮加息阶段与 2018、2022 年接近，美股选后修复或需等待 12 月 FOMC 确认加息结束。</p>
 
 <div class="table-wrap"><table>
-<caption>图表#：两院皆失与只丢众议院时美债下行，两院皆保时美债与美元同步走强</caption>
-<thead><tr><th>资产</th><th>只丢众议院（分治，约 38%）</th><th>两院皆失（民主党横扫，约 55%）</th><th>两院皆保（共和党守住两院，约 6.5%）</th></tr></thead>
+<caption>图表#：四种结果中，只有共和党守住两院会重启财政扩张，其余三种下 10 年美债下行</caption>
+<thead><tr><th>资产</th><th>两院皆失（民主党横扫，约 55%）</th><th>只丢众议院（分治，约 36%—40%）</th><th>两院皆保（共和党守住，约 5%—8%）</th><th>只丢参议院（约 1%—2%）</th></tr></thead>
 <tbody>
-<tr><td>美股</td><td>选后修复取决于美联储，参照 2018、2022 年分化较大；能源、金融相对占优</td><td>次日波动有限，选后两个月温和上涨；能源、医疗、私募股权面临监管审查</td><td>意外情景，次日上涨概率高；小盘股、银行、能源走强</td></tr>
-<tr><td>短端利率</td><td>跟随 FOMC，10 月、12 月是否加息为关键</td><td>跟随 FOMC</td><td>财政扩张抬升加息预期，或上行</td></tr>
-<tr><td>10 年美债</td><td>下行，美联储人事仍由白宫主导，期限溢价回落幅度小于横扫</td><td>下行确定性最高，财政扩张通道关闭叠加美联储人事约束，曲线平坦化</td><td>上行，第三轮和解法案重启，参照 2010 年减税延期后两个月上行 73bp，曲线陡峭化</td></tr>
-<tr><td>美元</td><td>利差主导，中性偏强</td><td>长端利率下行略偏空，美联储独立性回升略偏多，方向中性</td><td>财政扩张叠加利差，走强</td></tr>
-<tr><td>黄金</td><td>跟随美联储与地缘，加息构成压制</td><td>"财政主导"尾部风险回落，略偏空，央行购金与伊朗局势托底</td><td>美元走强下短期承压，赤字扩张提供中期支撑</td></tr>
-<tr><td>原油</td><td colspan="3">三种结果下，选前压低油价的政治约束均在选后解除，方向由伊朗局势与 OPEC+ 供给决定</td></tr>
+<tr><td>美股</td><td>次日波动有限，选后温和上涨；能源、医疗、私募股权面临监管审查</td><td>选后修复取决于美联储，参照 2018、2022 年分化较大</td><td>意外情景，次日上涨概率高；小盘股、银行、能源走强</td><td>无调查压力，政策可预期性高于横扫</td></tr>
+<tr><td>短端利率</td><td colspan="2">跟随 FOMC，10 月、12 月是否加息为关键</td><td>财政扩张抬升加息预期，或上行</td><td>跟随 FOMC</td></tr>
+<tr><td>10 年美债</td><td>下行确定性最高：财政扩张通道关闭，美联储人事受约束，曲线平坦化</td><td>下行，美联储人事仍由白宫主导，期限溢价回落幅度小于横扫</td><td>上行：第三轮和解法案重启，参照 2010 年减税延期后两个月上行 73bp</td><td>下行：财政通道关闭，美联储人事受约束</td></tr>
+<tr><td>美元</td><td>长端利率下行略偏空，美联储独立性回升略偏多，方向中性</td><td>利差主导，中性偏强</td><td>财政扩张叠加利差，走强</td><td>方向中性</td></tr>
+<tr><td>黄金</td><td>"财政主导"尾部风险回落，略偏空；央行购金与伊朗局势托底</td><td>跟随美联储与地缘，加息构成压制</td><td>美元走强下短期承压，赤字扩张提供中期支撑</td><td>略偏空</td></tr>
+<tr><td>原油</td><td colspan="4">四种结果下，选前压低油价的政治约束均在选后解除，方向由伊朗局势与 OPEC+ 供给决定</td></tr>
 </tbody></table></div>
 <p class="src">注：情景概率为本文测算。资料来源：本文整理</p>
 </section>
@@ -552,7 +570,8 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <li>窗口统计、平均路径与置换检验由仓库 <code>us-midterm-2026/scripts/</code> 下的脚本生成，可一键复算。</li>
 <li>数据来源：3 个月国债、2 年/10 年美债、WTI、VIX/VXO、联邦财政收支/GDP 来自 FRED；标普 500、美元指数、COMEX 黄金期货来自 Yahoo Finance；黄金月度价格来自 datasets/gold-prices。</li>
 <li>美联储阶段：加息为 1958、1966、1978、1994、2018、2022 年；宽松为 1954、1970、1974、1982、1986、1990、1998、2002、2010 年；暂停为 1946、1950（利率钉住）、1962、2006、2014 年。1966 年处于紧缩末段，划分存在一定主观性。</li>
-<li>选举结果：反对党新获两院为 1946、1954、1986、1994、2006、2014 年；众议院易主为 2010、2018、2022 年；执政党保住两院为 1950、1962、1966、1978、2002 年；维持分治为 1958、1970、1974、1982、1990、1998 年。</li>
+<li>选举结果采用两层分类。第一层（全部 20 次）：统一→分治为 1946、1954、1994、2006、2010、2018、2022 年；统一保持为 1950、1962、1966、1978 年；分治保持为 1958、1970、1974、1982、1986、1990、1998、2014 年；分治→统一为 2002 年。第二层（选前统一政府 11 次）：只丢众议院为 2010、2018、2022 年；两院皆失为 1946、1954、1994、2006 年；两院皆保为 1950、1962、1966、1978 年；只丢参议院无样本。</li>
+<li>黄金：LBMA 伦敦金下午定盘价（美元），1968 年起，取自公开存档（unbalancedparentheses/forex-centuries），校验值 86057834…；COMEX 黄金期货与月度价格仅用于第二章。</li>
 <li>参议院测算：<code>scripts/senate_sim.py</code>，以 6 个有民调州的民调均值为中枢，内布拉斯加、堪萨斯按倾向共和党赋值 -6 个点，密歇根、新罕布什尔按倾向民主党赋值 +4 个点，佐治亚按可能民主党赋值 +7 个点；全国共同误差标准差 3.5 个点、州独立误差标准差 4.5 个点，模拟 20 万次。内布拉斯加独立候选人胜选按席位翻转计。</li>
 <li>政策现状参考：<a href="https://nlihc.org/resource/house-republicans-pass-and-president-signs-law-reconciliation-20-providing-70-billion-ice">NLIHC（第二轮和解法案）</a>、<a href="https://baselinepolicy.substack.com/p/chart-of-the-week-projecting-the">Baseline Policy（债务上限）</a>、<a href="https://globaltradealert.org/blog/from-ieepa-to-section-122">Global Trade Alert（关税）</a>、<a href="https://www.scotusblog.com/2026/06/court-prevents-trump-from-firing-fed-governor/">SCOTUSblog（Trump v. Cook）</a>、<a href="https://www.cbsnews.com/news/kevin-warsh-senate-confirms-fed-governor/">CBS（沃什确认）</a>、<a href="https://www.gelliottmorris.com/p/2026-09-18-race-raters-lagging-midterms">G. Elliott Morris（评级偏差）</a>、<a href="https://decisiondeskhq.substack.com/p/2026-redistricting-math">Decision Desk HQ（选区重划）</a>。</li>
 <li>选情参考：<a href="https://fortune.com/2026/09/22/midterm-polls-show-democrats-taking-senate/">Fortune</a>、<a href="https://polymarket.com/event/balance-of-power-2026-midterms">Polymarket</a>、<a href="https://kalshi.com/markets/controls/senate-winner/controls-2026">Kalshi</a>、<a href="https://www.270towin.com/news/2026/09/24/2026-house-election-current-consensus-forecast-type_1844.html">270toWin</a>、<a href="https://fiftyplusone.news/polls/approval/president">FiftyPlusOne</a>、<a href="https://www.cnbc.com/2026/09/16/fed-rate-decision-september-2026.html">CNBC</a>、<a href="https://www.morganstanley.com/insights/articles/2026-us-midterm-elections-stock-market-impact">Morgan Stanley</a>。</li>
@@ -639,12 +658,12 @@ const D = /*__DATA__*/null;
     add('c-sensens',{type:'line',data:{datasets:[lineDs('拿下参议院概率',sk.map(k=>({x:k,y:Math.round(D.senate.sensitivity[k]*1000)/10})),t.s1,{pointRadius:4,pointBackgroundColor:t.s1,pointBorderColor:t.surface,pointBorderWidth:2,tension:0})]},
       options:Object.assign(b(),{interaction:{mode:'index',intersect:false},scales:{x:axis(t,{type:'linear',min:-3,max:3,ticks:{color:t.muted,stepSize:1,callback:v=>(v>0?'D+':v<0?'R+':'')+Math.abs(v)+(v===0?'（当前）':'')}}),y:axis(t,{min:0,max:100,ticks:{color:t.muted,stepSize:25,callback:v=>v+'%'}})},
         plugins:Object.assign(b().plugins,{hline:{y:50,color:t.muted},tooltip:Object.assign(b().plugins.tooltip,{callbacks:{title:i=>{const v=i[0].parsed.x;return v===0?'当前民调':(v>0?'向民主党偏移 ':'向共和党偏移 ')+Math.abs(v)+' 个点';},label:c=>' 概率：'+c.parsed.y+'%'}})})})});
-    // 图表2 结果分布
-    const cnt = OUT.map(o=>Object.values(D.elections).filter(e=>e.outcome===o).length);
-    const oc = outColor(t);
-    add('c-dist',{type:'pie',data:{labels:OUT,datasets:[{data:cnt,backgroundColor:OUT.map(o=>oc[o]),borderColor:t.surface,borderWidth:2}]},
+    // 第一层分类分布
+    const RGN=[['统一→分治',t.s1],['统一保持',t.s8],['分治保持',t.s4],['分治→统一',t.s3]];
+    const cnt = RGN.map(([g])=>D.rows.filter(r=>r.asset==='SPX'&&r.regime===g).length);
+    add('c-dist',{type:'pie',data:{labels:RGN.map(g=>g[0]),datasets:[{data:cnt,backgroundColor:RGN.map(g=>g[1]),borderColor:t.surface,borderWidth:2}]},
       options:Object.assign(b(),{plugins:Object.assign(b().plugins,{legend:{display:true,position:'right',labels:{color:t.ink2,boxWidth:10,boxHeight:10,
-        generateLabels:c=>c.data.labels.map((l,i)=>({text:l+' '+cnt[i]+' 次',fillStyle:oc[l],strokeStyle:oc[l],fontColor:t.ink2,index:i}))}},
+        generateLabels:c=>c.data.labels.map((l,i)=>({text:l+' '+cnt[i]+' 次',fillStyle:RGN[i][1],strokeStyle:RGN[i][1],fontColor:t.ink2,index:i}))}},
         tooltip:Object.assign(b().plugins.tooltip,{callbacks:{label:c=>' '+c.label+'：'+c.raw+' 次'}})})})});
 
     // 图表3、4 事件路径
@@ -697,67 +716,65 @@ const D = /*__DATA__*/null;
           const cells=[j===0?lab:'',y,String(r.n),fmt(r.m1,u==='bp'?1:2)+u+'（'+r.up1+'/'+r.n+'）',fmt(r.m2,u==='bp'?1:2)+u+'（'+r.up2+'/'+r.n+'）'];
           cells.forEach((v,ci)=>{const td=document.createElement('td'); if(ci>=2) td.className='num'; td.textContent=v; tr.appendChild(td);}); tb.appendChild(tr);});});}
 
-    // 三种选举结果：时间序列
-    const tsg=document.getElementById('scn-ts-grid'); if(tsg){ tsg.textContent='';
-      const SG=[['只丢众议院','众议院易主',t.s3],['两院皆失','反对党新获两院',t.s1],['两院皆保','执政党保住两院',t.s8]];
-      [['标普 500','SPX','idx'],['3 个月国债（bp）','UST3M','bp'],['10 年美债（bp）','UST10','bp'],['美元指数','DXY','idx'],['黄金','Gold','idx'],['WTI','WTI','idx']].forEach(([lab,a,unit],k)=>{
-        const box=document.createElement('div'); box.className='mini';
-        const h=document.createElement('p'); h.className='mini-t'; h.textContent=lab+'（样本 '+SG.map(g=>D.event[a][g[1]].n).join('/')+'）'; box.appendChild(h);
-        const wrap=document.createElement('div'); wrap.className='chart mini-ts'; const cv=document.createElement('canvas'); cv.id='scn-ts-'+k;
-        cv.setAttribute('role','img'); cv.setAttribute('aria-label',lab+'在三种选举结果下选举前后的平均走势');
-        wrap.appendChild(cv); box.appendChild(wrap); tsg.appendChild(box);
-        const ds=SG.filter(g=>D.event[a][g[1]].n>0).map(g=>lineDs(g[0]+'（'+D.event[a][g[1]].n+'）',xy(D.event[a][g[1]].values),g[2],{borderWidth:1.8}));
-        const o=pathOpts(unit); o.scales.x.ticks.stepSize=42; o.scales.y.ticks={color:t.muted,maxTicksLimit:6}; o.plugins.vline.label='';
-        add(cv.id,{type:'line',data:{datasets:ds},options:o});
-      });}
-
-    // 三种选举结果：统计表与逐次表现小图
-    const SCN=[['只丢众议院',['2010','2018','2022'],t.s3],['两院皆失',['1946','1954','1986','1994','2006','2014'],t.s1],['两院皆保',['1950','1962','1966','1978','2002'],t.s8]];
-    const SA=[['标普 500','SPX','%',2],['3 个月国债','UST3M','bp',1],['10 年美债','UST10','bp',1],['美元指数','DXY','%',2],['黄金（月度）','Gold_M','%',2],['WTI','WTI','%',2]];
-    const cell=(a,ys,col,dec,u)=>{const v=rows.filter(r=>r.asset===a&&ys.includes(r.election.slice(0,4))&&r[col]!==null).map(r=>r[col]);
+    // 两层分类：公共定义
+    const LA=[['标普 500','SPX','idx','%',2],['3 个月国债（bp）','UST3M','bp','bp',1],['10 年美债（bp）','UST10','bp','bp',1],['美元指数','DXY','idx','%',2],['黄金（LBMA）','GoldL','idx','%',2],['WTI','WTI','idx','%',2]];
+    const RG=[['统一→分治',t.s1],['统一保持',t.s8],['分治保持',t.s4],['分治→统一',t.s3]];
+    const SG=[['只丢众议院',t.s3],['两院皆失',t.s1],['两院皆保',t.s8]];
+    const statCell=(a,key,g,col,dec,u)=>{const v=rows.filter(r=>r.asset===a&&r[key]===g&&r[col]!==null).map(r=>r[col]);
       return v.length?fmt(mean(v),dec)+u+'（'+v.filter(x=>x>0).length+'/'+v.length+'）':'—';};
-    const sb=document.getElementById('scn-body'); if(sb){ sb.textContent='';
-      SA.forEach(([lab,a,u,dec])=>SCN.forEach(([g,ys],j)=>{const tr=document.createElement('tr');
-        const n=rows.filter(r=>r.asset===a&&ys.includes(r.election.slice(0,4))&&r.post_2m!==null).length;
-        [j===0?lab:'',g,String(n),cell(a,ys,'day_after',dec,u),cell(a,ys,'post_1m',dec,u),cell(a,ys,'post_2m',dec,u)].forEach((v,ci)=>{const td=document.createElement('td'); if(ci>=2) td.className='num'; td.textContent=v; tr.appendChild(td);});
-        sb.appendChild(tr);}));}
-    const grid=document.getElementById('scn-grid'); if(grid){ grid.textContent='';
-      SA.forEach(([lab,a,u],k)=>{
-        const pts=[]; SCN.forEach(([g,ys,c])=>ys.forEach(y=>{const r=rows.find(r=>r.asset===a&&r.election.slice(0,4)===y); if(r&&r.post_2m!==null) pts.push({y,g,c,v:r.post_2m});}));
+    const fillTable=(id,key,groups,cols)=>{const tb=document.getElementById(id); if(!tb) return; tb.textContent='';
+      LA.forEach(([lab,a,,u,dec])=>groups.forEach(([g],j)=>{const tr=document.createElement('tr');
+        const n=rows.filter(r=>r.asset===a&&r[key]===g&&r.post_2m!==null).length;
+        [j===0?lab.replace(/（bp）/,''):'',g,String(n),...cols.map(c=>statCell(a,key,g,c,dec,u))].forEach((v,ci)=>{const td=document.createElement('td'); if(ci>=2) td.className='num'; td.textContent=v; tr.appendChild(td);});
+        tb.appendChild(tr);}));};
+    const tsGrid=(id,layer,groups,prefix)=>{const el=document.getElementById(id); if(!el) return; el.textContent='';
+      LA.forEach(([lab,a,unit],k)=>{const L=D.layer[layer][a];
         const box=document.createElement('div'); box.className='mini';
-        const h=document.createElement('p'); h.className='mini-t'; h.textContent=lab+'（'+u+'）'; box.appendChild(h);
-        const wrap=document.createElement('div'); wrap.className='chart mini-c'; const cv=document.createElement('canvas'); cv.id='scn-'+k;
-        cv.setAttribute('role','img'); cv.setAttribute('aria-label',lab+'在三种选举结果下各次选后两个月的表现');
-        wrap.appendChild(cv); box.appendChild(wrap); grid.appendChild(box);
-        add(cv.id,{type:'bar',data:{labels:pts.map(p=>p.y),datasets:[{data:pts.map(p=>p.v),backgroundColor:pts.map(p=>p.c),borderRadius:3,borderSkipped:'start',maxBarThickness:18}]},
-          options:Object.assign(b(),{scales:{x:axis(t,{grid:{display:false},ticks:{color:t.ink2,autoSkip:false,maxRotation:90,minRotation:90,font:{size:10}}}),y:axis(t,{ticks:{color:t.muted,maxTicksLimit:5}})},
-            plugins:Object.assign(b().plugins,{hline:{y:0,color:t.muted},tooltip:Object.assign(b().plugins.tooltip,{callbacks:{title:i=>pts[i[0].dataIndex].y+' 年·'+pts[i[0].dataIndex].g,label:c=>' 选后两个月：'+fmt(c.raw,u==='bp'?1:2)+u}})})})});
-      });}
+        const h=document.createElement('p'); h.className='mini-t'; h.textContent=lab+'（样本 '+groups.map(g=>L[g[0]].n).join('/')+'）'; box.appendChild(h);
+        const wrap=document.createElement('div'); wrap.className='chart mini-ts'; const cv=document.createElement('canvas'); cv.id=prefix+k;
+        cv.setAttribute('role','img'); cv.setAttribute('aria-label',lab+'在不同选举结果下选举前后的平均走势');
+        wrap.appendChild(cv); box.appendChild(wrap); el.appendChild(box);
+        const ds=groups.filter(g=>L[g[0]].n>0).map(g=>lineDs(g[0]+'（'+L[g[0]].n+'）',L[g[0]].values.map((v,i)=>({x:D.layer.offsets[i],y:v})),g[1],{borderWidth:1.8}));
+        const o=pathOpts(unit); o.scales.x.ticks.stepSize=42; o.scales.y.ticks={color:t.muted,maxTicksLimit:6}; o.plugins.vline.label='';
+        add(cv.id,{type:'line',data:{datasets:ds},options:o});});};
 
-    // 图表7 20 次标普选后两个月
+    // 第一层：统计表、时间序列
+    fillTable('reg-body','regime',RG,['post_1m','post_2m']);
+    tsGrid('reg-ts-grid','regime',RG.slice(0,3),'reg-ts-');
+    // 第二层：时间序列、统计表、逐届案例
+    tsGrid('scn-ts-grid','strict',SG,'scn-ts-');
+    fillTable('scn-body','strict',SG,['day_after','post_1m','post_2m']);
+    const CASES=[['只丢众议院','2010','奥巴马','QE2 后宽松','11 月 3 日宣布 QE2；12 月两党达成减税延期'],['只丢众议院','2018','特朗普','加息','12 月再次加息，叠加中美贸易摩擦'],['只丢众议院','2022','拜登','加息尾声','11 月 10 日 CPI 低于预期，美元与利率见顶'],
+      ['两院皆失','1946','杜鲁门','利率钉住','战后复员，价格管制取消后通胀抬升'],['两院皆失','1954','艾森豪威尔','宽松','衰退后复苏，战后繁荣'],['两院皆失','1994','克林顿','加息','11 月 15 日加息 75bp'],['两院皆失','2006','小布什','暂停','6 月起暂停加息'],
+      ['两院皆保','1950','杜鲁门','利率钉住','11 月下旬中国出兵朝鲜'],['两院皆保','1962','肯尼迪','暂停','10 月 28 日古巴导弹危机解除'],['两院皆保','1966','约翰逊','紧缩尾声','年末转向宽松'],['两院皆保','1978','卡特','加息','11 月 1 日美元救助计划，贴现率上调 1 个点']];
+    const get=(a,y,c)=>{const r=rows.find(r=>r.asset===a&&r.election.slice(0,4)===y); return r&&r[c]!==null?r[c]:null;};
+    const pair=(a,y,dec,u)=>{const x=get(a,y,'post_1m'), z=get(a,y,'post_2m'); return x===null?'—':fmt(x,dec)+u+' / '+fmt(z,dec)+u;};
+    const one=(a,y,dec,u)=>{const z=get(a,y,'post_2m'); return z===null?'—':fmt(z,dec)+u;};
+    const cb=document.getElementById('case-body'); if(cb){ cb.textContent='';
+      CASES.forEach(([g,y,p,fed,ctx],i)=>{const tr=document.createElement('tr');
+        const first=i===0||CASES[i-1][0]!==g;
+        [first?g:'',y+'·'+p,fed,pair('SPX',y,1,'%'),pair('UST10',y,0,'bp'),one('DXY',y,1,'%'),one('GoldL',y,1,'%'),ctx].forEach((v,ci)=>{const td=document.createElement('td'); if(ci>=3&&ci<=6) td.className='num'; td.textContent=v; tr.appendChild(td);});
+        cb.appendChild(tr);});
+      const tr=document.createElement('tr'); ['只丢参议院','二战以来无先例','—','—','—','—','—','本文测算 2026 年概率 1%—2%'].forEach((v,ci)=>{const td=document.createElement('td'); if(ci>=3&&ci<=6) td.className='num'; td.textContent=v; tr.appendChild(td);}); cb.appendChild(tr);}
+
+    // 第一层：20 次标普选后两个月，按第一层分类着色
+    const rc=Object.fromEntries(RG);
     const spx = rows.filter(r=>r.asset==='SPX');
     add('c-bar20',{type:'bar',data:{labels:spx.map(r=>r.election.slice(0,4)),datasets:[{label:'选后两个月',data:spx.map(r=>r.post_2m),
-      backgroundColor:spx.map(r=>oc[r.outcome]),borderRadius:4,borderSkipped:'start',maxBarThickness:24}]},
+      backgroundColor:spx.map(r=>rc[r.regime]),borderRadius:4,borderSkipped:'start',maxBarThickness:24}]},
       options:Object.assign(b(),{scales:{x:axis(t,{grid:{display:false},ticks:{color:t.ink2,autoSkip:false,maxRotation:90,minRotation:0}}),y:axis(t,{ticks:{color:t.muted,callback:v=>v+'%'}})},
-        plugins:Object.assign(b().plugins,{tooltip:Object.assign(b().plugins.tooltip,{callbacks:{title:i=>spx[i[0].dataIndex].election,label:c=>{const r=spx[c.dataIndex];return [' 标普 500：'+fmt(r.post_2m,2)+'%',' 结果：'+r.outcome,' 美联储：'+r.fed];}}})})})});
-    legend('lg-bar20',OUT.map(o=>[o,oc[o],true]));
+        plugins:Object.assign(b().plugins,{tooltip:Object.assign(b().plugins.tooltip,{callbacks:{title:i=>spx[i[0].dataIndex].election,label:c=>{const r=spx[c.dataIndex];return [' 标普 500：'+fmt(r.post_2m,2)+'%',' 第一层：'+r.regime,' 美联储：'+r.fed];}}})})})});
+    legend('lg-bar20',RG.map(([g,c])=>[g,c,true]));
 
-    // 图表8、9 分组均值
-    const grp = (a) => OUT.map(o=>{const v=pick(a,'post_2m',r=>r.outcome===o);return {m:v.length?mean(v):0,n:v.length};});
-    const gs = grp('SPX'), gu = grp('UST10');
-    const gOpts = (unit, g) => Object.assign(b(),{scales:{x:axis(t,{grid:{display:false},ticks:{color:t.ink2,autoSkip:false,maxRotation:0,callback(v){return [OUT[v],'（'+g[v].n+'）'];}}}),
-      y:axis(t,{ticks:{color:t.muted,callback:v=>v+unit}})},
-      plugins:Object.assign(b().plugins,{tooltip:Object.assign(b().plugins.tooltip,{callbacks:{label:c=>' 均值：'+fmt(c.raw,2)+unit+'（样本 '+g[c.dataIndex].n+'）'}})})});
-    add('c-grp-spx',{type:'bar',data:{labels:OUT,datasets:[{data:gs.map(x=>x.m),backgroundColor:OUT.map(o=>oc[o]),borderRadius:4,borderSkipped:'start',maxBarThickness:24}]},options:gOpts('%',gs)});
-    add('c-grp-ust',{type:'bar',data:{labels:OUT,datasets:[{data:gu.map(x=>x.m),backgroundColor:OUT.map(o=>oc[o]),borderRadius:4,borderSkipped:'start',maxBarThickness:24}]},options:gOpts('bp',gu)});
-
-    // 图表10 p 值
-    const te = D.tests;
-    add('c-pval',{type:'bar',data:{labels:te.map(x=>x.label),datasets:[
-      {label:'按选举结果分组',data:te.map(x=>x.outcome.p),backgroundColor:t.s1,borderRadius:{topRight:4,bottomRight:4},borderSkipped:'start',maxBarThickness:14,categoryPercentage:0.75,barPercentage:0.9},
-      {label:'按美联储阶段分组',data:te.map(x=>x.fed.p),backgroundColor:t.s2,borderRadius:{topRight:4,bottomRight:4},borderSkipped:'start',maxBarThickness:14,categoryPercentage:0.75,barPercentage:0.9}]},
+    // 第一层：置换检验 p 值
+    const RT=(D.regime_tests||[]).filter(x=>x.p!==null);
+    const nm={SPX:'标普 500',UST3M:'3 个月国债',UST10:'10 年美债'};
+    add('c-pval',{type:'bar',data:{labels:RT.map(x=>nm[x.asset]+'·'+(x.col==='post_1m'?'选后一个月':'选后两个月')),datasets:[
+      {label:'统一→分治 vs 统一保持',data:RT.map(x=>x.p),backgroundColor:t.s1,borderRadius:{topRight:4,bottomRight:4},borderSkipped:'start',maxBarThickness:14,categoryPercentage:0.75,barPercentage:0.9},
+      {label:'四类分组整体',data:RT.map(x=>x.regime_all.p),backgroundColor:t.s2,borderRadius:{topRight:4,bottomRight:4},borderSkipped:'start',maxBarThickness:14,categoryPercentage:0.75,barPercentage:0.9}]},
       options:Object.assign(b(),{indexAxis:'y',scales:{x:axis(t,{min:0,max:1,ticks:{color:t.muted,stepSize:0.2}}),y:axis(t,{grid:{display:false},ticks:{color:t.ink2,autoSkip:false}})},
-        plugins:Object.assign(b().plugins,{hline:{y:0.1,axis:'x',color:t.muted},tooltip:Object.assign(b().plugins.tooltip,{callbacks:{label:c=>{const x=te[c.dataIndex][c.datasetIndex?'fed':'outcome'];return ' '+c.dataset.label+'：p = '+x.p.toFixed(3)+'，解释度 '+x.eta2+'，样本 '+x.n;}}})})})});
+        plugins:Object.assign(b().plugins,{hline:{y:0.1,axis:'x',color:t.muted},tooltip:Object.assign(b().plugins.tooltip,{callbacks:{label:c=>{const x=RT[c.dataIndex];
+          return c.datasetIndex?' 四类整体：p = '+x.regime_all.p.toFixed(3)+'，解释度 '+x.regime_all.eta2:' 统一→分治 vs 统一保持：p = '+x.p.toFixed(3)+'，差值 '+fmt(x.diff,2)+'（样本 '+x.na+' vs '+x.nb+'）';}}})})})});
 
     // 图表11 赤字率
     const def = D.long.deficit;

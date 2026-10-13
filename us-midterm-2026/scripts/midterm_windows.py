@@ -51,16 +51,38 @@ ELECTIONS = {
     "2022-11-08": ("加息", "众议院易主"),
 }
 
+# 第一层：政策机制四分类（选举是否改变总统党的立法主导权）
+REGIME = {
+    "统一→分治": {"1946", "1954", "1994", "2006", "2010", "2018", "2022"},
+    "统一保持": {"1950", "1962", "1966", "1978"},
+    "分治保持": {"1958", "1970", "1974", "1982", "1986", "1990", "1998", "2014"},
+    "分治→统一": {"2002"},
+}
+# 第二层：选前统一政府内部的四种结果（只丢参议院无历史样本）
+STRICT = {
+    "只丢众议院": {"2010", "2018", "2022"},
+    "两院皆失": {"1946", "1954", "1994", "2006"},
+    "两院皆保": {"1950", "1962", "1966", "1978"},
+    "只丢参议院": set(),
+}
+
+
+def label(groups, year):
+    return next((g for g, ys in groups.items() if year in ys), "")
+
+
 FRED = {"UST10": "DGS10", "UST2": "DGS2", "UST3M": "DTB3", "WTI": "DCOILWTICO",
         "VIX": "VIXCLS", "VXO": "VXOCLS", "WTI_M": "WTISPLC"}
 YAHOO = {"SPX": "%5EGSPC", "DXY": "DX-Y.NYB", "Gold": "GC%3DF"}
+LBMA_URL = ("https://raw.githubusercontent.com/unbalancedparentheses/forex-centuries/main/"
+            "data/sources/lbma/lbma_gold_daily.csv")
 GOLD_M_URL = "https://raw.githubusercontent.com/datasets/gold-prices/main/data/monthly.csv"
 RATES = {"UST10", "UST2", "UST3M"}
 LEVELS = {"VIX"}
 START = {"DXY": dt.date(1974, 1, 1)}  # 1971—1973 为布雷顿森林体系解体过渡期
 OFFSETS = [(-21, 0), (0, 1), (0, 21), (0, 42)]
 M_OFFSETS = [(-1, 0), (0, 1), (0, 2)]  # 相对 10 月
-ASSETS = ["SPX", "UST3M", "UST2", "UST10", "DXY", "Gold", "WTI", "VIX", "Gold_M", "WTI_M"]
+ASSETS = ["SPX", "UST3M", "UST2", "UST10", "DXY", "Gold", "GoldL", "WTI", "VIX", "Gold_M", "WTI_M"]
 
 
 def fetch():
@@ -69,6 +91,18 @@ def fetch():
         urllib.request.urlretrieve(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}",
                                    os.path.join(DATA, f"{sid}.csv"))
     urllib.request.urlretrieve(GOLD_M_URL, os.path.join(DATA, "gold_monthly.csv"))
+    # LBMA 伦敦金下午定盘价（美元），只保留日期与美元价格
+    with urllib.request.urlopen(LBMA_URL) as resp:
+        rows = list(csv.reader(resp.read().decode().splitlines()))[1:]
+    with open(os.path.join(DATA, "GoldLBMA.csv"), "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["date", "GoldL"])
+        for r in rows:
+            try:
+                if float(r[1]) > 0:
+                    w.writerow([r[0], float(r[1])])
+            except (ValueError, IndexError):
+                pass
     for name, tk in YAHOO.items():
         url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{tk}"
                "?period1=-1400000000&period2=1800000000&interval=1d")
@@ -100,6 +134,7 @@ def series():
     s = {k: load(os.path.join(DATA, f"{v}.csv")) for k, v in FRED.items()}
     s.update({k: load(os.path.join(DATA, f"{k}.csv")) for k in YAHOO})
     s["Gold_M"] = load(os.path.join(DATA, "gold_monthly.csv"))
+    s["GoldL"] = load(os.path.join(DATA, "GoldLBMA.csv"))
     # VIX 1990 年起，此前用 VXO 补足
     vxo = s.pop("VXO")
     s["VIX"] = {**{d: v for d, v in vxo.items() if d.year < 1990}, **s["VIX"]}
@@ -144,7 +179,8 @@ def build_rows(S):
             monthly = name.endswith("_M")
             offs = M_OFFSETS if monthly else OFFSETS
             at = monthly_at if monthly else daily_at
-            row = {"election": e, "fed": fed, "outcome": outcome, "asset": name,
+            row = {"election": e, "fed": fed, "outcome": outcome,
+                   "regime": label(REGIME, e[:4]), "strict": label(STRICT, e[:4]), "asset": name,
                    "level_T": at(s, day.replace(month=10) if monthly else day, 0)}
             cols = ["pre_1m", "post_1m", "post_2m"] if monthly else COLS
             for c, (a, b) in zip(cols, offs):
@@ -201,7 +237,7 @@ def main():
     S = series()
     rows = build_rows(S)
     with open(os.path.join(DATA, "midterm_windows.csv"), "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=["election", "fed", "outcome", "asset", "level_T"] + COLS)
+        w = csv.DictWriter(f, fieldnames=["election", "fed", "outcome", "regime", "strict", "asset", "level_T"] + COLS)
         w.writeheader()
         w.writerows(rows)
 

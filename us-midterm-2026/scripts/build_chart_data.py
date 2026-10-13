@@ -10,7 +10,7 @@ import os
 import random
 import statistics as st
 
-from midterm_windows import DATA, ELECTIONS, build_rows, load, series
+from midterm_windows import DATA, ELECTIONS, REGIME, STRICT, build_rows, load, series
 
 S = series()
 ROWS = build_rows(S)
@@ -196,6 +196,44 @@ def tests():
     return out
 
 
+LAYER_ASSETS = [("SPX", "pct"), ("UST3M", "bp"), ("UST10", "bp"), ("DXY", "pct"), ("GoldL", "pct"), ("WTI", "pct")]
+
+
+def layer_paths():
+    """两层分类下各资产的选举前后平均路径。"""
+    out = {"offsets": list(SPAN)}
+    for layer, groups in (("regime", REGIME), ("strict", STRICT)):
+        out[layer] = {}
+        for name, mode in LAYER_ASSETS:
+            out[layer][name] = {}
+            for g, years in groups.items():
+                ps = [p for e in ELECTIONS if e[:4] in years
+                      for p in [path(name, dt.date.fromisoformat(e), mode)] if p]
+                out[layer][name][g] = {"n": len(ps), "values": [round(st.mean(c), 3) for c in zip(*ps)] if ps else []}
+    return out
+
+
+def regime_tests():
+    """第一层：统一→分治与统一保持的差异，以及四类分组整体的解释度。"""
+    rnd = random.Random(2026)
+    res = []
+    for name, _ in LAYER_ASSETS:
+        for col in ("post_1m", "post_2m"):
+            a = [r[col] for r in ROWS if r["asset"] == name and r["regime"] == "统一→分治" and r[col] is not None]
+            b = [r[col] for r in ROWS if r["asset"] == name and r["regime"] == "统一保持" and r[col] is not None]
+            if len(a) < 2 or len(b) < 2:
+                res.append({"asset": name, "col": col, "na": len(a), "nb": len(b), "p": None})
+                continue
+            obs = st.mean(a) - st.mean(b)
+            vals, hit = a + b, 0
+            for _ in range(20000):
+                rnd.shuffle(vals)
+                hit += abs(st.mean(vals[:len(a)]) - st.mean(vals[len(a):])) >= abs(obs)
+            res.append({"asset": name, "col": col, "na": len(a), "nb": len(b), "diff": round(obs, 2),
+                        "p": round(hit / 20000, 3), "regime_all": perm_test(name, col, "regime")})
+    return res
+
+
 def main():
     data = {
         "rows": ROWS,
@@ -205,6 +243,8 @@ def main():
         "long": long_series(),
         "deficit_regime": deficit_by_regime(),
         "tests": tests(),
+        "layer": layer_paths(),
+        "regime_tests": regime_tests(),
         "control": control(),
     }
     with open(os.path.join(DATA, "chart_data.json"), "w") as f:
