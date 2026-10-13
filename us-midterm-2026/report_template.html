@@ -70,6 +70,7 @@ figure.fig .fs{color:var(--muted);font-size:12.5px;margin:0 0 10px;line-height:1
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 18px}
 .mini-t{font-size:13px;font-weight:700;margin:0 0 4px;color:var(--ink-2)}
 .chart.mini-c{height:200px}
+.chart.mini-ts{height:230px}
 .src{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.5}
 .table-wrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
 table{border-collapse:collapse;width:100%;font-size:13.5px;line-height:1.6}
@@ -469,6 +470,14 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <h3 id="s5-6">（六）资产表现：三种结果的历史参照与 2026 年判断</h3>
 <p><b>从执政党的角度，中期选举只有三种结果：只丢众议院、两院皆失、两院皆保，分别对应本轮的分治、民主党横扫和共和党守住两院。</b>二战以来 20 次中选中，只丢众议院的有 2010、2018、2022 年 3 次；两院皆失的有 1946、1954、1994、2006 年 4 次，若计入在已失去众议院基础上再失参议院的 1986、2014 年，共 6 次；两院皆保的有 1950、1962、1966、1978、2002 年 5 次。其余 6 次为执政党选前已不掌握国会的维持分治格局，不在本节比较范围内。每组样本仅 3—6 次，下文逐次列出表现，避免均值被个别年份主导。</p>
 
+<figure class="fig">
+  <p class="ft">图表#：两院皆保时美股选后走势最强，两院皆失时 10 年美债下行最为一致</p>
+  <p class="fs">三种选举结果下各资产在选举日前后 63 个交易日的平均走势；美股、美元、黄金、WTI 以选举日为 100，美债为相对选举日的收益率变动（bp）</p>
+  <div class="legend"><span><i style="background:var(--s3)"></i>只丢众议院（分治）</span><span><i style="background:var(--s1)"></i>两院皆失（民主党横扫）</span><span><i style="background:var(--s8)"></i>两院皆保（共和党守住两院）</span></div>
+  <div class="grid3" id="scn-ts-grid"></div>
+  <p class="src">资料来源：FRED，Yahoo Finance；小图标题括号内依次为只丢众议院、两院皆失、两院皆保的样本数。黄金日度数据始于 2000 年，两院皆失仅 2006、2014 年，两院皆保仅 2002 年；WTI 日度数据始于 1986 年，两院皆保仅 2002 年</p>
+</figure>
+
 <div class="table-wrap"><table>
 <caption>图表#：两院皆保时美股表现最好，两院皆失时 10 年美债全部下行</caption>
 <thead><tr><th>资产</th><th>选举结果</th><th class="num">样本</th><th class="num">选举次日</th><th class="num">选后一个月</th><th class="num">选后两个月</th></tr></thead>
@@ -687,6 +696,20 @@ const D = /*__DATA__*/null;
         yt.forEach((y,j)=>{const r=C[k][y]; const tr=document.createElement('tr');
           const cells=[j===0?lab:'',y,String(r.n),fmt(r.m1,u==='bp'?1:2)+u+'（'+r.up1+'/'+r.n+'）',fmt(r.m2,u==='bp'?1:2)+u+'（'+r.up2+'/'+r.n+'）'];
           cells.forEach((v,ci)=>{const td=document.createElement('td'); if(ci>=2) td.className='num'; td.textContent=v; tr.appendChild(td);}); tb.appendChild(tr);});});}
+
+    // 三种选举结果：时间序列
+    const tsg=document.getElementById('scn-ts-grid'); if(tsg){ tsg.textContent='';
+      const SG=[['只丢众议院','众议院易主',t.s3],['两院皆失','反对党新获两院',t.s1],['两院皆保','执政党保住两院',t.s8]];
+      [['标普 500','SPX','idx'],['3 个月国债（bp）','UST3M','bp'],['10 年美债（bp）','UST10','bp'],['美元指数','DXY','idx'],['黄金','Gold','idx'],['WTI','WTI','idx']].forEach(([lab,a,unit],k)=>{
+        const box=document.createElement('div'); box.className='mini';
+        const h=document.createElement('p'); h.className='mini-t'; h.textContent=lab+'（样本 '+SG.map(g=>D.event[a][g[1]].n).join('/')+'）'; box.appendChild(h);
+        const wrap=document.createElement('div'); wrap.className='chart mini-ts'; const cv=document.createElement('canvas'); cv.id='scn-ts-'+k;
+        cv.setAttribute('role','img'); cv.setAttribute('aria-label',lab+'在三种选举结果下选举前后的平均走势');
+        wrap.appendChild(cv); box.appendChild(wrap); tsg.appendChild(box);
+        const ds=SG.filter(g=>D.event[a][g[1]].n>0).map(g=>lineDs(g[0]+'（'+D.event[a][g[1]].n+'）',xy(D.event[a][g[1]].values),g[2],{borderWidth:1.8}));
+        const o=pathOpts(unit); o.scales.x.ticks.stepSize=42; o.scales.y.ticks={color:t.muted,maxTicksLimit:6}; o.plugins.vline.label='';
+        add(cv.id,{type:'line',data:{datasets:ds},options:o});
+      });}
 
     // 三种选举结果：统计表与逐次表现小图
     const SCN=[['只丢众议院',['2010','2018','2022'],t.s3],['两院皆失',['1946','1954','1986','1994','2006','2014'],t.s1],['两院皆保',['1950','1962','1966','1978','2002'],t.s8]];

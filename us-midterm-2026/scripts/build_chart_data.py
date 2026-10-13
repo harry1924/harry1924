@@ -45,6 +45,8 @@ def event_paths():
     out["UST10"] = {g: avg_path("UST10", "bp", f) for g, f in groups.items()}
     out["DXY"] = {g: avg_path("DXY", "pct", f) for g, f in groups.items()}
     out["Gold"] = {g: avg_path("Gold", "pct", f) for g, f in groups.items()}
+    out["UST3M"] = {g: avg_path("UST3M", "bp", f) for g, f in groups.items()}
+    out["WTI"] = {g: avg_path("WTI", "pct", f) for g, f in groups.items()}
     out["Gold_years"] = {e[:4]: p for e in ELECTIONS
                          for p in [path("Gold", dt.date.fromisoformat(e), "pct")] if p}
     return out
