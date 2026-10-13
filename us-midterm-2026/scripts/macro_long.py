@@ -10,6 +10,10 @@
 月度长样本：长期国债收益率（FRED LTGOVTBD，1925—2000 年）与 10 年美债月均值（GS10，1953 年起），
 1961 年及以前用 LTGOVTBD、1962 年起用 GS10；3 个月国债月均值（TB3MS，1934 年起）。
 1942 年 4 月至 1951 年 3 月美联储钉住国债收益率，期间的中期选举（1942、1946、1950）不计入利率统计。
+
+超额表现 = 中期选举年的原值 - 基准。基准为相邻两个普通年份（y-1、y+1，均为非选举年）同一日历时点、
+同一窗口的平均表现；只有一个相邻年份可用时取该年。稳健性对照另算两种基准：
+全部普通年份同期均值、全部非中期选举年份同期均值。
 """
 import argparse
 import bisect
@@ -75,6 +79,14 @@ def path(s, keys, day, unit):
     return [(s[keys[i + k]] - base) * 100 if unit == "bp" else s[keys[i + k]] / base * 100 for k in SPAN]
 
 
+def signflip(x, rnd, n=20000):
+    """单样本均值是否为 0：随机翻转符号的置换检验（双侧）。"""
+    obs, hit = abs(st.mean(x)), 0
+    for _ in range(n):
+        hit += abs(st.mean(v if rnd.random() < 0.5 else -v for v in x)) >= obs - 1e-12
+    return round(hit / n, 3)
+
+
 def usable(code, year):
     return int(year) >= DAILY[code][3]
 
@@ -85,7 +97,8 @@ def main():
     if p.parse_args().fetch:
         fetch()
     S = {c: load(v[1]) for c, v in DAILY.items()}
-    S["DXY"] = {d: v for d, v in S["DXY"].items() if d.year >= 1974}
+    # 1973 年 3 月起美元汇率浮动；1973 年只作为 1974 年的基准年
+    S["DXY"] = {d: v for d, v in S["DXY"].items() if d >= dt.date(1973, 3, 19)}
     K = {c: sorted(s) for c, s in S.items()}
 
     rows = []
@@ -96,10 +109,18 @@ def main():
                    "common": COMMON[0] <= int(y) <= COMMON[1]}
             for c, (a, b) in COLS.items():
                 row[c] = window(S[code], K[code], day, a, b, unit) if usable(code, y) else None
+                bench = [v for yy in (int(y) - 1, int(y) + 1)
+                         for v in [window(S[code], K[code], election_day(yy), a, b, unit)] if v is not None]
+                row["bm_" + c] = round(st.mean(bench), 2) if bench else None
+                row["ex_" + c] = round(row[c] - row["bm_" + c], 2) if row[c] is not None and bench else None
             rows.append(row)
 
     # 月度长债：10 月均值至 11 月、12 月均值（1961 年及以前 LTGOVTBD，1962 年起 GS10）
     lt, g10, tb = load("LTGOVTBD.csv"), load("GS10.csv"), load("TB3MS.csv")
+    def lt2(y, src):
+        o, d = src.get(dt.date(y, 10, 1)), src.get(dt.date(y, 12, 1))
+        return round((d - o) * 100) if o is not None and d is not None else None
+
     monthly = []
     for y in range(1926, 2026):
         src = lt if y <= 1961 else g10
@@ -112,8 +133,21 @@ def main():
                         "lt_1m": round((n - o) * 100) if o and n else None,
                         "lt_2m": round((d - o) * 100) if o and d else None,
                         "tb_2m": round((td - to) * 100) if to and td else None})
+        bench = [v for yy in (y - 1, y + 1) for v in [lt2(yy, src)] if v is not None]
+        m = monthly[-1]
+        m["bm_2m"] = round(st.mean(bench), 1) if bench else None
+        m["ex_2m"] = round(m["lt_2m"] - m["bm_2m"], 1) if m["lt_2m"] is not None and bench else None
 
-    # 平均路径：统一样本与最长样本
+    def ex_path(code, e):
+        """中期选举路径减去相邻普通年份同期平均路径（bp 或百分点）。"""
+        unit, y = DAILY[code][2], int(e[:4])
+        p = path(S[code], K[code], dt.date.fromisoformat(e), unit)
+        bs = [b for yy in (y - 1, y + 1) for b in [path(S[code], K[code], election_day(yy), unit)] if b]
+        if not p or not bs:
+            return None
+        return [v - st.mean(c) for v, c in zip(p, zip(*bs))]
+
+    # 平均超额路径：统一样本与最长样本
     groups = {"regime": ["统一→分治", "统一保持", "分治保持"], "strict": ["只丢众议院", "两院皆失", "两院皆保"]}
     paths = {}
     for sample in ("common", "longest"):
@@ -126,8 +160,13 @@ def main():
                     ps = [p for e, (r, s) in ELECTIONS.items()
                           if (r if layer == "regime" else s) == g and usable(code, e[:4])
                           and (sample == "longest" or COMMON[0] <= int(e[:4]) <= COMMON[1])
-                          for p in [path(S[code], K[code], dt.date.fromisoformat(e), unit)] if p]
+                          for p in [ex_path(code, e)] if p]
                     paths[sample][layer][code][g] = {"n": len(ps), "values": [round(st.mean(c), 3) for c in zip(*ps)] if ps else []}
+        paths[sample]["all"] = {}
+        for code in DAILY:
+            ps = [p for e in ELECTIONS if usable(code, e[:4])
+                  and (sample == "longest" or COMMON[0] <= int(e[:4]) <= COMMON[1]) for p in [ex_path(code, e)] if p]
+            paths[sample]["all"][code] = {"n": len(ps), "values": [round(st.mean(c), 3) for c in zip(*ps)] if ps else []}
 
     # 对照：中期选举年 vs 大选年 vs 其他年份（日度，各资产最长样本）
     control = {}
@@ -150,24 +189,50 @@ def main():
         mres[k].append(m["lt_2m"])
     control["LT_monthly"] = {k: {"n": len(v), "m2": round(st.mean(v), 1), "down2": sum(x < 0 for x in v)} for k, v in mres.items()}
 
-    # 检验：统一→分治 vs 统一保持（有至少 2 个样本时）
+    # 超额表现汇总：三种基准 + 符号翻转检验（相邻普通年份基准）
     rnd = random.Random(2026)
+    excess = {}
+    for code, (_, _, unit, y0) in DAILY.items():
+        excess[code] = {}
+        for c in ("pre_1m", "day_after", "post_1m", "post_2m"):
+            a, b = COLS[c]
+            mid = {y: window(S[code], K[code], election_day(y), a, b, unit) for y in range(max(y0, 1954), 2023, 4)}
+            mid = {y: v for y, v in mid.items() if v is not None}
+            odd = [v for y in range(max(y0, 1954) - 1, 2026) if y % 2 == 1
+                   for v in [window(S[code], K[code], election_day(y), a, b, unit)] if v is not None]
+            nonmid = [v for y in range(max(y0, 1954) - 1, 2026) if y % 4 != 2
+                      for v in [window(S[code], K[code], election_day(y), a, b, unit)] if v is not None]
+            ex = [r["ex_" + c] for r in rows if r["asset"] == code and r["ex_" + c] is not None]
+            excess[code][c] = {"n": len(ex), "raw": round(st.mean(mid.values()), 2),
+                               "bm_adj": round(st.mean(r["bm_" + c] for r in rows if r["asset"] == code and r["ex_" + c] is not None), 2),
+                               "ex_adj": round(st.mean(ex), 2), "neg": sum(x < 0 for x in ex), "p": signflip(ex, rnd),
+                               "bm_odd": round(st.mean(odd), 2), "ex_odd": round(st.mean(mid.values()) - st.mean(odd), 2),
+                               "bm_nonmid": round(st.mean(nonmid), 2), "ex_nonmid": round(st.mean(mid.values()) - st.mean(nonmid), 2)}
+    ex_lt = [m["ex_2m"] for m in monthly if m["midterm"] and not m["peg"] and m["ex_2m"] is not None]
+    raw_lt = [m["lt_2m"] for m in monthly if m["midterm"] and not m["peg"] and m["ex_2m"] is not None]
+    odd_lt = [m["lt_2m"] for m in monthly if int(m["year"]) % 2 == 1 and not m["peg"] and m["lt_2m"] is not None]
+    excess["LT_monthly"] = {"post_2m": {"n": len(ex_lt), "raw": round(st.mean(raw_lt), 1), "ex_adj": round(st.mean(ex_lt), 1),
+                                        "neg": sum(x < 0 for x in ex_lt), "p": signflip(ex_lt, rnd),
+                                        "bm_odd": round(st.mean(odd_lt), 1), "ex_odd": round(st.mean(raw_lt) - st.mean(odd_lt), 1)}}
+
+    # 检验（超额）：统一→分治 vs 统一保持（有至少 2 个样本时）
     tests = []
     for code in DAILY:
-        for c in ("post_1m", "post_2m"):
+        for c in ("ex_post_1m", "ex_post_2m"):
             a = [r[c] for r in rows if r["asset"] == code and r["regime"] == "统一→分治" and r[c] is not None]
             b = [r[c] for r in rows if r["asset"] == code and r["regime"] == "统一保持" and r[c] is not None]
             if len(a) >= 2 and len(b) >= 2:
                 d, pv = perm(a, b, rnd)
                 tests.append({"asset": code, "col": c, "diff": d, "p": pv, "n": [len(a), len(b)]})
-    ma = [m["lt_2m"] for m in monthly if m["regime"] == "统一→分治" and not m["peg"] and m["lt_2m"] is not None]
-    mb = [m["lt_2m"] for m in monthly if m["regime"] == "统一保持" and not m["peg"] and m["lt_2m"] is not None]
+    ma = [m["ex_2m"] for m in monthly if m["regime"] == "统一→分治" and not m["peg"] and m["ex_2m"] is not None]
+    mb = [m["ex_2m"] for m in monthly if m["regime"] == "统一保持" and not m["peg"] and m["ex_2m"] is not None]
     d, pv = perm(ma, mb, rnd)
-    tests.append({"asset": "LT_monthly", "col": "post_2m", "diff": d, "p": pv, "n": [len(ma), len(mb)]})
+    tests.append({"asset": "LT_monthly", "col": "ex_post_2m", "diff": d, "p": pv, "n": [len(ma), len(mb)]})
 
     out = {"assets": [{"code": c, "name": v[0], "unit": v[2], "start": v[3]} for c, v in DAILY.items()],
            "elections": {e: {"regime": r, "strict": s} for e, (r, s) in ELECTIONS.items()},
-           "rows": rows, "monthly": monthly, "offsets": list(SPAN), "paths": paths, "control": control, "tests": tests}
+           "rows": rows, "monthly": monthly, "offsets": list(SPAN), "paths": paths, "control": control,
+           "excess": excess, "tests": tests}
     with open(os.path.join(DATA, "macro_long.json"), "w") as f:
         json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
 
@@ -176,14 +241,14 @@ def main():
             line = []
             for layer, gs in groups.items():
                 for g in gs:
-                    v = [r["post_2m"] for r in rows if r["asset"] == code and r[layer] == g and r["post_2m"] is not None
+                    v = [r["ex_post_2m"] for r in rows if r["asset"] == code and r[layer] == g and r["ex_post_2m"] is not None
                          and (sample == "longest" or r["common"])]
                     if v:
                         line.append(f"{g}{st.mean(v):+.1f}({sum(x > 0 for x in v)}/{len(v)})")
             print(code, sample, " ".join(line))
-    print(json.dumps(control, ensure_ascii=False))
+    print(json.dumps(excess, ensure_ascii=False))
     print(tests)
-    print([(m["year"], m["regime"], m["strict"], m["lt_2m"]) for m in monthly if m["year"] in [e[:4] for e in ELECTIONS]])
+    print([(m["year"], m["regime"], m["strict"], m["lt_2m"], m["bm_2m"], m["ex_2m"]) for m in monthly if m["year"] in [e[:4] for e in ELECTIONS]])
 
 
 if __name__ == "__main__":
